@@ -50,7 +50,7 @@ export default function Admin() {
       title: "Systems & Configurations", 
       icon: <Settings size={18} />,
       description: "Manage APIs, integrations, and runtime environment",
-      subItems: ["API Keys", "Integrations", "Environment"]
+      subItems: ["Systems Setups", "Model Config", "Integrations", "Environment"]
     },
     { 
       id: "agent_lifecycle", 
@@ -679,16 +679,11 @@ export default function Admin() {
                       <p className="text-muted-foreground">Configure global variables, integrations, and runtime environments.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <div className="space-y-6">
-                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
-                          <CardHeader>
-                            <CardTitle className="font-mono text-lg flex items-center gap-2">
-                              <BrainCircuit size={16} className="text-primary" /> Model Configuration
-                            </CardTitle>
-                            <CardDescription>Configure AI model providers and API access.</CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                       <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                          <Server size={16} /> Systems Setups
+                       </h3>
+                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {/* DGX Config Card */}
                             <Card className="bg-card/30 border-border/50 backdrop-blur-sm relative overflow-hidden group">
                               <div className="absolute top-0 right-0 p-4 opacity-50">
@@ -812,11 +807,28 @@ export default function Admin() {
                               </CardContent>
                             </Card>
 
+                            {/* Add New System */}
+                            <Card className="bg-card/10 border-dashed border-border flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-card/20 hover:border-primary/30 transition-all group">
+                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                  <Plus size={24} className="text-primary" />
+                                </div>
+                                <h3 className="font-mono font-bold text-sm">Add New System</h3>
+                                <p className="text-xs text-muted-foreground mt-1">Connect hardware or cloud resource</p>
+                            </Card>
+                       </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <div className="space-y-6">
+                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                          <CardHeader>
+                            <CardTitle className="font-mono text-lg flex items-center gap-2">
+                              <BrainCircuit size={16} className="text-primary" /> Model Configuration
+                            </CardTitle>
+                            <CardDescription>Configure AI model providers and API access.</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-6">
                             {/* Proxy OAuth / BYOK Section */}
-                            <div className="p-4 rounded border border-blue-500/20 bg-blue-500/5 space-y-3">
-                               <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2">
-                                     <ShieldCheck size={16} className="text-blue-400" />
                                      <span className="font-bold text-sm text-blue-100">Proxy OAuth / BYOK</span>
                                   </div>
                                   <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px]">SECURE VAULT</Badge>
