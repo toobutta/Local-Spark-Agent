@@ -135,38 +135,56 @@ export default function Admin() {
               </h2>
             </div>
             
-            <TabsList className="flex flex-col h-auto bg-transparent gap-2 p-0">
-              {menuItems.map((item) => (
-                <div key={item.id} className="flex flex-col gap-1">
-                  <TabsTrigger
-                    value={item.id}
-                    className="w-full justify-start gap-3 px-4 py-3 h-auto border border-transparent data-[state=active]:bg-card/40 data-[state=active]:border-primary/30 data-[state=active]:text-primary transition-all duration-300 font-mono text-sm group"
+            <TabsList className="flex flex-col h-full bg-transparent p-0 justify-between">
+              <AnimatePresence>
+                {menuItems.map((item) => (
+                  <motion.div 
+                    layout
+                    key={item.id} 
+                    className="flex flex-col gap-1 w-full"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                   >
-                    <div className={`p-1.5 rounded bg-black/20 group-data-[state=active]:text-primary text-muted-foreground transition-colors`}>
-                      {item.icon}
-                    </div>
-                    <div className="flex flex-col items-start text-left">
-                      <span className="font-bold">{item.title}</span>
-                    </div>
-                    <ChevronRight className="ml-auto opacity-0 group-data-[state=active]:opacity-100 transition-opacity" size={14} />
-                  </TabsTrigger>
-                  
-                  {item.subItems && activeTab === item.id && (
-                     <motion.div 
-                       initial={{ opacity: 0, height: 0 }}
-                       animate={{ opacity: 1, height: 'auto' }}
-                       className="pl-12 flex flex-col gap-1 pb-2 overflow-hidden"
-                     >
-                       {item.subItems.map(sub => (
-                         <div key={sub} className="text-[10px] text-muted-foreground hover:text-primary cursor-pointer flex items-center gap-2 py-1 transition-colors">
-                            <div className="w-1 h-1 rounded-full bg-primary/40" />
-                            {sub}
-                         </div>
-                       ))}
-                     </motion.div>
-                  )}
-                </div>
-              ))}
+                    <TabsTrigger
+                      value={item.id}
+                      className="w-full justify-start gap-3 px-4 py-3 h-auto border border-transparent data-[state=active]:bg-card/40 data-[state=active]:border-primary/30 data-[state=active]:text-primary transition-all duration-300 font-mono text-sm group"
+                    >
+                      <div className={`p-1.5 rounded bg-black/20 group-data-[state=active]:text-primary text-muted-foreground transition-colors`}>
+                        {item.icon}
+                      </div>
+                      <div className="flex flex-col items-start text-left">
+                        <span className="font-bold">{item.title}</span>
+                      </div>
+                      <ChevronRight className="ml-auto opacity-0 group-data-[state=active]:opacity-100 transition-opacity" size={14} />
+                    </TabsTrigger>
+                    
+                    {item.subItems && activeTab === item.id && (
+                       <motion.div 
+                         layout
+                         initial={{ opacity: 0, height: 0 }}
+                         animate={{ opacity: 1, height: 'auto' }}
+                         exit={{ opacity: 0, height: 0 }}
+                         transition={{ duration: 0.3, ease: "easeInOut" }}
+                         className="pl-12 flex flex-col gap-1 pb-2 overflow-hidden"
+                       >
+                         {item.subItems.map(sub => (
+                           <motion.div 
+                              key={sub} 
+                              layout
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              className="text-[10px] text-muted-foreground hover:text-primary cursor-pointer flex items-center gap-2 py-1 transition-colors"
+                           >
+                              <div className="w-1 h-1 rounded-full bg-primary/40" />
+                              {sub}
+                           </motion.div>
+                         ))}
+                       </motion.div>
+                    )}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </TabsList>
           </div>
 
