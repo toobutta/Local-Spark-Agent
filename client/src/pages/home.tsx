@@ -4,8 +4,11 @@ import { TerminalPrompt } from "@/components/terminal/TerminalPrompt";
 import { LegoLoader } from "@/components/terminal/LegoLoader";
 import { AICore } from "@/components/terminal/AICore";
 import { AgentGraph } from "@/components/terminal/AgentGraph";
-import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen } from "lucide-react";
-import { motion } from "framer-motion";
+import { MatrixLoader } from "@/components/terminal/MatrixLoader";
+import { ActiveAgentsFeed } from "@/components/terminal/ActiveAgentsFeed";
+import { SphereSpinner } from "@/components/terminal/SphereSpinner";
+import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Types
 interface LogEntry {
@@ -22,18 +25,21 @@ interface Agent {
   role: string;
 }
 
+interface ThoughtLog {
+  id: string;
+  agent: string;
+  thought: string;
+  file?: string;
+  timestamp: Date;
+}
+
 export default function Home() {
-  const [history, setHistory] = useState<LogEntry[]>([
-    {
-      id: "init",
-      type: "system",
-      content: "NEXUS CLI v2.4.0 INITIALIZED. CONNECTED TO LOCALHOST.",
-      timestamp: new Date()
-    }
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState<LogEntry[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeAgents, setActiveAgents] = useState<Agent[]>([]);
   const [dgxConnected, setDgxConnected] = useState(false);
+  const [thoughtLogs, setThoughtLogs] = useState<ThoughtLog[]>([]);
   const outputRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom
@@ -52,12 +58,22 @@ export default function Home() {
     }]);
   };
 
+  const addThought = (agent: string, thought: string, file?: string) => {
+    setThoughtLogs(prev => [...prev, {
+      id: Math.random().toString(36).substring(7),
+      agent,
+      thought,
+      file,
+      timestamp: new Date()
+    }]);
+  };
+
   const handleCommand = async (cmd: string) => {
     const command = cmd.trim().toLowerCase();
     addLog("command", cmd);
     setIsProcessing(true);
 
-    // Simulate processing delay
+    // Simulate processing delay with spinning sphere
     await new Promise(resolve => setTimeout(resolve, 600));
 
     try {
@@ -70,12 +86,31 @@ export default function Home() {
                 <li><span className="text-foreground">build &lt;project&gt;</span> - Compile project artifacts</li>
                 <li><span className="text-foreground">deploy agent &lt;name&gt;</span> - Spawn autonomous agent</li>
                 <li><span className="text-foreground">connect dgx</span> - Link to Nvidia DGX Spark</li>
+                <li><span className="text-foreground">research &lt;topic&gt;</span> - Initiate neural search</li>
                 <li><span className="text-foreground">status</span> - System diagnostics</li>
                 <li><span className="text-foreground">clear</span> - Clear terminal output</li>
               </ul>
             </div>
           </div>
         ));
+      } else if (command.startsWith("research")) {
+        const topic = command.split(" ").slice(1).join(" ") || "General Knowledge";
+        addLog("system", `INITIATING NEURAL SEARCH: ${topic.toUpperCase()}...`);
+        
+        // Simulate Agent Thoughts
+        const thoughts = [
+          { msg: "Scanning local vector database...", file: "knowledge_base.vdb" },
+          { msg: "Querying semantic index...", file: "index_shard_01.dat" },
+          { msg: "Synthesizing research nodes...", file: "graph_builder.py" },
+          { msg: "Optimizing results..." }
+        ];
+
+        for (const t of thoughts) {
+          await new Promise(r => setTimeout(r, 800));
+          addThought("RESEARCH-AGENT", t.msg, t.file);
+        }
+
+        addLog("success", "RESEARCH COMPLETE. DATA ASSIMILATED.");
       } else if (command.startsWith("build")) {
         addLog("system", "INITIATING BUILD SEQUENCE...");
         addLog("output", <LegoLoader />);
@@ -95,6 +130,7 @@ export default function Home() {
         
         setActiveAgents(prev => [...prev, newAgent]);
         addLog("success", `AGENT [${newAgent.name}] DEPLOYED WITH ROLE [${newAgent.role.toUpperCase()}]`);
+        addThought(newAgent.name, "System interface established.", "init.sh");
       } else if (command === "connect dgx") {
         addLog("system", "ESTABLISHING SECURE HANDSHAKE WITH NVIDIA DGX SPARK...");
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -120,6 +156,10 @@ export default function Home() {
       setIsProcessing(false);
     }
   };
+
+  if (loading) {
+    return <MatrixLoader onComplete={() => setLoading(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground font-mono overflow-hidden flex flex-col md:flex-row">
@@ -209,7 +249,9 @@ export default function Home() {
           <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
             <Cpu size={14} /> SYSTEM CORE
           </h2>
-          <AICore />
+          <div className="relative">
+            <SphereSpinner isActive={isProcessing} />
+          </div>
         </div>
 
         {/* System Stats */}
@@ -253,11 +295,13 @@ export default function Home() {
         </div>
 
         {/* Agent Orchestration */}
-        <div className="space-y-2 flex-1">
+        <div className="space-y-2 flex-1 flex flex-col min-h-0">
           <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
-            <Box size={14} /> ACTIVE AGENTS
+            <Brain size={14} /> NEURAL LINK
           </h2>
-          <AgentGraph agents={activeAgents} />
+          <div className="flex-1 min-h-0">
+            <ActiveAgentsFeed logs={thoughtLogs} />
+          </div>
         </div>
       </div>
     </div>
