@@ -35,7 +35,27 @@ interface ThoughtLog {
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [history, setHistory] = useState<LogEntry[]>([]);
+  const [history, setHistory] = useState<LogEntry[]>([
+    {
+      id: "init",
+      type: "system",
+      content: (
+        <div className="font-mono text-xs leading-tight">
+          <span className="text-green-500">
+            ███╗   ██╗███████╗██╗  ██╗██╗   ██╗███████╗<br/>
+            ████╗  ██║██╔════╝╚██╗██╔╝██║   ██║██╔════╝<br/>
+            ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗<br/>
+            ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║<br/>
+            ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║<br/>
+            ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝<br/>
+          </span>
+          <br/>
+          <span className="text-blue-400">System v2.4.0</span> <span className="text-muted-foreground">|</span> <span className="text-yellow-500">READY</span>
+        </div>
+      ),
+      timestamp: new Date()
+    }
+  ]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeAgents, setActiveAgents] = useState<Agent[]>([]);
   const [dgxConnected, setDgxConnected] = useState(false);
@@ -79,23 +99,29 @@ export default function Home() {
     try {
       if (command === "help") {
         addLog("output", (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <div className="text-primary font-bold mb-1">CORE COMMANDS</div>
-              <ul className="space-y-1 text-muted-foreground">
-                <li><span className="text-foreground">build &lt;project&gt;</span> - Compile project artifacts</li>
-                <li><span className="text-foreground">deploy agent &lt;name&gt;</span> - Spawn autonomous agent</li>
-                <li><span className="text-foreground">connect dgx</span> - Link to Nvidia DGX Spark</li>
-                <li><span className="text-foreground">research &lt;topic&gt;</span> - Initiate neural search</li>
-                <li><span className="text-foreground">status</span> - System diagnostics</li>
-                <li><span className="text-foreground">clear</span> - Clear terminal output</li>
-              </ul>
+          <div className="font-mono text-sm space-y-2">
+            <div className="text-primary font-bold border-b border-primary/30 pb-1 mb-2">AVAILABLE COMMANDS</div>
+            <div className="grid grid-cols-[120px_1fr] gap-x-4 gap-y-1">
+              <span className="text-yellow-500">build</span>      <span className="text-muted-foreground">Compile project artifacts</span>
+              <span className="text-yellow-500">deploy</span>     <span className="text-muted-foreground">Spawn autonomous agent</span>
+              <span className="text-yellow-500">connect</span>    <span className="text-muted-foreground">Link to external compute</span>
+              <span className="text-yellow-500">research</span>   <span className="text-muted-foreground">Initiate neural search</span>
+              <span className="text-yellow-500">status</span>     <span className="text-muted-foreground">System diagnostics</span>
+              <span className="text-yellow-500">clear</span>      <span className="text-muted-foreground">Clear terminal output</span>
+            </div>
+            <div className="mt-2 text-xs text-muted-foreground bg-white/5 p-2 rounded">
+              <span className="text-blue-400">TIP:</span> Use <span className="text-white">deploy agent &lt;name&gt;</span> to assign specific roles.
             </div>
           </div>
         ));
       } else if (command.startsWith("research")) {
         const topic = command.split(" ").slice(1).join(" ") || "General Knowledge";
-        addLog("system", `INITIATING NEURAL SEARCH: ${topic.toUpperCase()}...`);
+        addLog("system", (
+          <span className="text-cyan-400">
+            [SYS] INITIATING NEURAL SEARCH<br/>
+            <span className="text-muted-foreground">TARGET:</span> {topic.toUpperCase()}
+          </span>
+        ));
         
         // Simulate Agent Thoughts
         const thoughts = [
@@ -110,12 +136,17 @@ export default function Home() {
           addThought("RESEARCH-AGENT", t.msg, t.file);
         }
 
-        addLog("success", "RESEARCH COMPLETE. DATA ASSIMILATED.");
+        addLog("success", (
+          <span className="text-green-400">
+             ✔ RESEARCH COMPLETE<br/>
+             <span className="text-muted-foreground text-xs">Data assimilated into knowledge graph.</span>
+          </span>
+        ));
       } else if (command.startsWith("build")) {
-        addLog("system", "INITIATING BUILD SEQUENCE...");
+        addLog("system", <span className="text-blue-400">➔ INITIATING BUILD SEQUENCE...</span>);
         addLog("output", <LegoLoader />);
         await new Promise(resolve => setTimeout(resolve, 3000));
-        addLog("success", "BUILD COMPLETE. ARTIFACTS DEPLOYED.");
+        addLog("success", <span className="text-green-400">✔ BUILD COMPLETE. ARTIFACTS DEPLOYED.</span>);
       } else if (command.startsWith("deploy agent")) {
         const name = cmd.split(" ").slice(2).join(" ") || "Unnamed Agent";
         const roles = ["general", "security", "data", "compute"];
@@ -129,7 +160,15 @@ export default function Home() {
         };
         
         setActiveAgents(prev => [...prev, newAgent]);
-        addLog("success", `AGENT [${newAgent.name}] DEPLOYED WITH ROLE [${newAgent.role.toUpperCase()}]`);
+        addLog("success", (
+          <div className="bg-green-500/10 border border-green-500/30 p-2 rounded text-green-400">
+            <div className="font-bold">AGENT DEPLOYED</div>
+            <div className="text-xs grid grid-cols-2 mt-1 gap-4">
+              <span>ID: {newAgent.id.substring(0,8)}</span>
+              <span>ROLE: {newAgent.role.toUpperCase()}</span>
+            </div>
+          </div>
+        ));
         addThought(newAgent.name, "System interface established.", "init.sh");
       } else if (command === "connect dgx") {
         addLog("system", "ESTABLISHING SECURE HANDSHAKE WITH NVIDIA DGX SPARK...");
@@ -138,17 +177,21 @@ export default function Home() {
         addLog("success", "CONNECTION ESTABLISHED. 8x A100 GPU CLUSTER AVAILABLE.");
       } else if (command === "status") {
         addLog("output", (
-          <div className="flex flex-col gap-2 font-mono text-xs">
-            <div className="flex justify-between"><span>CPU USAGE:</span> <span className="text-primary">12%</span></div>
-            <div className="flex justify-between"><span>MEMORY:</span> <span className="text-primary">8.4GB / 32GB</span></div>
-            <div className="flex justify-between"><span>DGX LINK:</span> <span className={dgxConnected ? "text-green-400" : "text-red-400"}>{dgxConnected ? "ONLINE" : "OFFLINE"}</span></div>
-            <div className="flex justify-between"><span>ACTIVE AGENTS:</span> <span className="text-primary">{activeAgents.length}</span></div>
+          <div className="flex flex-col gap-1 font-mono text-xs border border-border p-3 rounded bg-black/20">
+            <div className="flex justify-between border-b border-white/5 pb-1 mb-1">
+              <span className="font-bold text-muted-foreground">SYSTEM DIAGNOSTICS</span>
+              <span className="text-green-500">NORMAL</span>
+            </div>
+            <div className="flex justify-between"><span>CPU USAGE</span> <span className="text-primary">▓▓▓░░░░░░░ 32%</span></div>
+            <div className="flex justify-between"><span>MEMORY</span> <span className="text-primary">▓▓▓▓▓░░░░░ 8.4GB</span></div>
+            <div className="flex justify-between"><span>DGX LINK</span> <span className={dgxConnected ? "text-green-400" : "text-red-400"}>{dgxConnected ? "● ONLINE" : "○ OFFLINE"}</span></div>
+            <div className="flex justify-between"><span>AGENTS</span> <span className="text-blue-400">{activeAgents.length} ACTIVE</span></div>
           </div>
         ));
       } else if (command === "clear") {
         setHistory([]);
       } else {
-        addLog("error", `COMMAND NOT RECOGNIZED: ${command}`);
+        addLog("error", <span className="text-red-500">✖ COMMAND NOT RECOGNIZED: {command}</span>);
       }
     } catch (err) {
       addLog("error", "SYSTEM ERROR: COMMAND EXECUTION FAILED");
