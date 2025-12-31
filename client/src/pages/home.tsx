@@ -470,6 +470,24 @@ export default function Home() {
                <span>SESSION COST:</span>
                <span className="text-green-400">$0.042</span>
              </div>
+             <div className="h-4 w-px bg-white/10" />
+             <div className="flex items-center gap-2">
+               <Select defaultValue="gpt4">
+                 <SelectTrigger className="h-6 w-[140px] text-[10px] bg-black/40 border-white/10 text-muted-foreground px-2">
+                   <SelectValue placeholder="Model" />
+                 </SelectTrigger>
+                 <SelectContent className="bg-black/95 border-white/10 backdrop-blur-xl text-white">
+                   <div className="px-2 py-1.5 text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Available Models</div>
+                   <SelectItem value="gpt4" className="text-xs">GPT-4 Turbo</SelectItem>
+                   <SelectItem value="claude3" className="text-xs">Claude 3 Opus</SelectItem>
+                   <SelectItem value="llama3" className="text-xs">Llama 3 70B</SelectItem>
+                   <SelectItem value="mistral" className="text-xs">Mistral Large</SelectItem>
+                   <div className="px-2 py-1.5 text-[10px] text-muted-foreground font-bold uppercase tracking-wider mt-1 border-t border-white/10 pt-2">Custom / Local</div>
+                   <SelectItem value="local-llama" className="text-xs">Local Llama 3 (8B)</SelectItem>
+                   <SelectItem value="finetune-1" className="text-xs">Project Genesis v2</SelectItem>
+                 </SelectContent>
+               </Select>
+             </div>
           </div>
 
           <Sheet>
