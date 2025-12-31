@@ -4,6 +4,8 @@ import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -616,9 +618,74 @@ export default function Admin() {
                                                 <div className="text-[10px] text-muted-foreground">{sub.role}</div>
                                              </div>
                                           </div>
-                                          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-white/10 rounded-full">
-                                             <Settings size={12} className="text-muted-foreground" />
-                                          </Button>
+                                          <Sheet>
+                                            <SheetTrigger asChild>
+                                              <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-white/10 rounded-full">
+                                                 <Settings size={12} className="text-muted-foreground" />
+                                              </Button>
+                                            </SheetTrigger>
+                                            <SheetContent className="bg-black/90 border-l border-white/10 backdrop-blur-xl min-w-[400px]">
+                                              <SheetHeader>
+                                                <SheetTitle className="font-mono text-blue-400 flex items-center gap-2">
+                                                  <Bot size={18} /> AGENT CONFIG: {sub.id}
+                                                </SheetTitle>
+                                                <SheetDescription>
+                                                  Configure behavioral parameters and capabilities.
+                                                </SheetDescription>
+                                              </SheetHeader>
+                                              
+                                              <div className="space-y-6 mt-6">
+                                                {/* Instructions */}
+                                                <div className="space-y-2">
+                                                  <Label className="text-xs font-mono text-muted-foreground">SYSTEM INSTRUCTIONS</Label>
+                                                  <Textarea 
+                                                    className="bg-black/40 border-white/10 font-mono text-xs h-32 text-gray-300" 
+                                                    defaultValue={`You are ${sub.role}. Your primary directive is to execute tasks with precision and minimal resource consumption.\n\nReport all anomalies to SECURITY-PRIME.`}
+                                                  />
+                                                </div>
+
+                                                {/* Permissions */}
+                                                <div className="space-y-3">
+                                                  <Label className="text-xs font-mono text-muted-foreground">TOOL PERMISSIONS</Label>
+                                                  <div className="grid grid-cols-2 gap-2">
+                                                    {['Filesystem Read', 'Filesystem Write', 'Network Access', 'Process Control', 'Memory Dump', 'Code Execution'].map(perm => (
+                                                      <div key={perm} className="flex items-center justify-between p-2 rounded bg-white/5 border border-white/5">
+                                                        <span className="text-[10px] font-mono">{perm}</span>
+                                                        <Switch defaultChecked={['Filesystem Read', 'Network Access'].includes(perm)} className="scale-75" />
+                                                      </div>
+                                                    ))}
+                                                  </div>
+                                                </div>
+
+                                                {/* Skills */}
+                                                 <div className="space-y-3">
+                                                  <Label className="text-xs font-mono text-muted-foreground">ACTIVE SKILLS</Label>
+                                                  <div className="space-y-2">
+                                                    {['LogParser_v2.py', 'AnomalyDetector.js'].map(skill => (
+                                                       <div key={skill} className="flex items-center justify-between p-2 rounded bg-purple-500/10 border border-purple-500/20">
+                                                         <div className="flex items-center gap-2">
+                                                           <FileCode size={12} className="text-purple-400" />
+                                                           <span className="text-[10px] font-mono text-purple-200">{skill}</span>
+                                                         </div>
+                                                         <Button variant="ghost" size="sm" className="h-5 w-5 p-0 text-purple-400 hover:text-purple-200 hover:bg-purple-500/20">
+                                                           <Settings size={10} />
+                                                         </Button>
+                                                       </div>
+                                                    ))}
+                                                    <Button variant="outline" className="w-full h-7 text-[10px] border-dashed border-white/10 text-muted-foreground hover:text-white hover:bg-white/5">
+                                                      + ASSIGN SKILL
+                                                    </Button>
+                                                  </div>
+                                                </div>
+                                                
+                                                {/* Actions */}
+                                                <div className="pt-4 flex gap-2">
+                                                   <Button className="w-full bg-blue-600 hover:bg-blue-500 text-xs font-mono">APPLY CONFIG</Button>
+                                                   <Button variant="outline" className="w-full border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs font-mono">RESET MEMORY</Button>
+                                                </div>
+                                              </div>
+                                            </SheetContent>
+                                          </Sheet>
                                        </div>
                                     ))}
                                  </div>
