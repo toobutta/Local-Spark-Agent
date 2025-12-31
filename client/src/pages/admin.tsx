@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot, Factory, ShieldCheck, Check } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot, Factory, ShieldCheck, Check, ArrowRight, ArrowLeft, CheckCircle, Code } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,10 +15,13 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function Admin() {
   const [_, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("profile");
+  const [toolWizardStep, setToolWizardStep] = useState(1);
+  const [toolWizardOpen, setToolWizardOpen] = useState(false);
 
   const menuItems = [
     { 
@@ -597,9 +600,239 @@ export default function Admin() {
                               </div>
                             </div>
 
-                            <Button variant="outline" className="w-full border-dashed border-border text-muted-foreground hover:text-primary hover:border-primary/50 h-10 text-xs mt-4">
-                              <Plus size={14} className="mr-2" /> ADD CUSTOM TOOL / API
-                            </Button>
+                            <Dialog open={toolWizardOpen} onOpenChange={(open) => {
+                              setToolWizardOpen(open);
+                              if (!open) setToolWizardStep(1);
+                            }}>
+                              <DialogTrigger asChild>
+                                <Button variant="outline" className="w-full border-dashed border-border text-muted-foreground hover:text-primary hover:border-primary/50 h-10 text-xs mt-4">
+                                  <Plus size={14} className="mr-2" /> ADD CUSTOM TOOL / API
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="bg-black/95 border-blue-500/20 text-white backdrop-blur-xl max-w-2xl">
+                                <DialogHeader>
+                                  <DialogTitle className="font-mono text-xl text-blue-400 flex items-center gap-2">
+                                    <Wrench size={20} /> TOOL CONFIGURATOR
+                                  </DialogTitle>
+                                  <DialogDescription className="text-gray-400">
+                                    Define a new tool capability for the agent swarm.
+                                  </DialogDescription>
+                                </DialogHeader>
+
+                                {/* Wizard Progress */}
+                                <div className="flex items-center justify-between mb-6 px-2">
+                                  {['Basics', 'Auth & Connection', 'Operations'].map((step, i) => (
+                                    <div key={step} className="flex flex-col items-center gap-2 relative z-10">
+                                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
+                                        toolWizardStep > i + 1 ? 'bg-green-500 text-black' :
+                                        toolWizardStep === i + 1 ? 'bg-blue-500 text-white shadow-[0_0_10px_rgba(59,130,246,0.5)]' :
+                                        'bg-white/10 text-muted-foreground'
+                                      }`}>
+                                        {toolWizardStep > i + 1 ? <Check size={14} /> : i + 1}
+                                      </div>
+                                      <span className={`text-[10px] uppercase font-mono ${toolWizardStep === i + 1 ? 'text-blue-400' : 'text-muted-foreground'}`}>{step}</span>
+                                    </div>
+                                  ))}
+                                  {/* Progress Bar Background */}
+                                  <div className="absolute left-10 right-10 top-[88px] h-0.5 bg-white/10 -z-0" />
+                                  {/* Active Progress */}
+                                  <div 
+                                    className="absolute left-10 h-0.5 bg-blue-500 transition-all duration-300 -z-0" 
+                                    style={{ width: `${((toolWizardStep - 1) / 2) * 80}%` }}
+                                  />
+                                </div>
+
+                                <div className="py-2 min-h-[300px]">
+                                  {toolWizardStep === 1 && (
+                                    <div className="space-y-4 animate-in slide-in-from-right-4 fade-in duration-300">
+                                      <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                          <Label className="text-xs font-mono text-blue-300">TOOL ID</Label>
+                                          <Input placeholder="e.g. linear_tickets" className="bg-black/40 border-white/10 font-mono text-xs" />
+                                        </div>
+                                        <div className="space-y-2">
+                                          <Label className="text-xs font-mono text-blue-300">DISPLAY LABEL</Label>
+                                          <Input placeholder="Linear Integration" className="bg-black/40 border-white/10 font-mono text-xs" />
+                                        </div>
+                                      </div>
+                                      
+                                      <div className="space-y-2">
+                                        <Label className="text-xs font-mono text-blue-300">MODEL DESCRIPTION</Label>
+                                        <Textarea placeholder="Describe when the agent should use this tool..." className="bg-black/40 border-white/10 font-mono text-xs h-20 resize-none" />
+                                        <p className="text-[10px] text-muted-foreground text-right">0/150 chars</p>
+                                      </div>
+
+                                      <div className="grid grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                          <Label className="text-xs font-mono text-blue-300">CATEGORY</Label>
+                                          <Select>
+                                            <SelectTrigger className="bg-black/40 border-white/10 text-xs font-mono h-9">
+                                              <SelectValue placeholder="Select Category" />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-black/90 border-white/10 backdrop-blur-xl">
+                                              <SelectItem value="database">Database</SelectItem>
+                                              <SelectItem value="monitoring">Monitoring</SelectItem>
+                                              <SelectItem value="search">Search</SelectItem>
+                                              <SelectItem value="internal">Internal API</SelectItem>
+                                            </SelectContent>
+                                          </Select>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                          <Label className="text-xs font-mono text-blue-300">SCOPE</Label>
+                                          <RadioGroup defaultValue="all">
+                                            <div className="flex items-center space-x-2">
+                                              <RadioGroupItem value="all" id="r1" />
+                                              <Label htmlFor="r1" className="text-xs font-normal text-gray-300">Available to all agents</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                              <RadioGroupItem value="restricted" id="r2" />
+                                              <Label htmlFor="r2" className="text-xs font-normal text-gray-300">Restricted access</Label>
+                                            </div>
+                                          </RadioGroup>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {toolWizardStep === 2 && (
+                                    <div className="space-y-5 animate-in slide-in-from-right-4 fade-in duration-300">
+                                      <div className="space-y-2">
+                                        <Label className="text-xs font-mono text-blue-300">BASE URL</Label>
+                                        <div className="flex gap-2">
+                                          <Select defaultValue="https">
+                                            <SelectTrigger className="w-[80px] bg-black/40 border-white/10 text-xs font-mono h-9">
+                                              <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-black/90 border-white/10">
+                                              <SelectItem value="https">https://</SelectItem>
+                                              <SelectItem value="http">http://</SelectItem>
+                                            </SelectContent>
+                                          </Select>
+                                          <Input placeholder="api.myservice.com/v1" className="bg-black/40 border-white/10 font-mono text-xs flex-1" />
+                                        </div>
+                                      </div>
+
+                                      <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                          <Label className="text-xs font-mono text-blue-300">ENVIRONMENT</Label>
+                                          <Select defaultValue="prod">
+                                            <SelectTrigger className="bg-black/40 border-white/10 text-xs font-mono h-9">
+                                              <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-black/90 border-white/10">
+                                              <SelectItem value="prod">Production</SelectItem>
+                                              <SelectItem value="staging">Staging</SelectItem>
+                                              <SelectItem value="dev">Development</SelectItem>
+                                            </SelectContent>
+                                          </Select>
+                                        </div>
+                                        <div className="space-y-2">
+                                          <Label className="text-xs font-mono text-blue-300">AUTH TYPE</Label>
+                                          <Select defaultValue="bearer">
+                                            <SelectTrigger className="bg-black/40 border-white/10 text-xs font-mono h-9">
+                                              <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-black/90 border-white/10">
+                                              <SelectItem value="none">None</SelectItem>
+                                              <SelectItem value="bearer">Bearer Token</SelectItem>
+                                              <SelectItem value="basic">Basic Auth</SelectItem>
+                                              <SelectItem value="oauth">OAuth2</SelectItem>
+                                            </SelectContent>
+                                          </Select>
+                                        </div>
+                                      </div>
+
+                                      <div className="p-3 rounded border border-yellow-500/20 bg-yellow-500/5 flex items-center gap-3">
+                                        <ShieldCheck className="text-yellow-500 shrink-0" size={20} />
+                                        <div className="flex-1">
+                                           <div className="text-xs font-bold text-yellow-500 mb-1">PROXY OAUTH / BYOK VAULT</div>
+                                           <div className="text-[10px] text-muted-foreground">Credentials are encrypted and stored in the secure vault. Values are injected at runtime.</div>
+                                        </div>
+                                        <Button size="sm" variant="outline" className="h-7 text-[10px] border-yellow-500/30 text-yellow-500 hover:bg-yellow-500/10">CONFIGURE SECRETS</Button>
+                                      </div>
+
+                                      <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-muted-foreground text-xs font-mono h-9">
+                                        <Activity size={14} className="mr-2" /> TEST CONNECTION
+                                      </Button>
+                                    </div>
+                                  )}
+
+                                  {toolWizardStep === 3 && (
+                                    <div className="space-y-4 animate-in slide-in-from-right-4 fade-in duration-300">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <Label className="text-xs font-mono text-blue-300">OPERATIONS SCHEMA</Label>
+                                        <div className="flex items-center gap-2">
+                                          <Label className="text-[10px] text-muted-foreground">USE OPENAPI SPEC</Label>
+                                          <Switch className="scale-75" />
+                                        </div>
+                                      </div>
+
+                                      <div className="border border-white/10 rounded-md overflow-hidden bg-black/40 h-[200px] flex flex-col">
+                                         {/* Header */}
+                                         <div className="grid grid-cols-12 gap-2 p-2 bg-white/5 border-b border-white/5 text-[10px] font-mono text-muted-foreground">
+                                           <div className="col-span-3">METHOD</div>
+                                           <div className="col-span-4">PATH</div>
+                                           <div className="col-span-4">OPERATION ID</div>
+                                           <div className="col-span-1"></div>
+                                         </div>
+                                         
+                                         {/* Mock Rows */}
+                                         <div className="p-1 space-y-1 overflow-y-auto flex-1">
+                                            <div className="grid grid-cols-12 gap-2 p-2 rounded hover:bg-white/5 items-center text-xs font-mono group">
+                                               <div className="col-span-3"><Badge variant="outline" className="text-green-400 border-green-500/30 bg-green-500/10 text-[10px]">GET</Badge></div>
+                                               <div className="col-span-4 text-gray-300">/v1/issues</div>
+                                               <div className="col-span-4 text-muted-foreground">list_issues</div>
+                                               <div className="col-span-1 opacity-0 group-hover:opacity-100 cursor-pointer text-muted-foreground hover:text-white"><Edit3 size={12} /></div>
+                                            </div>
+                                            <div className="grid grid-cols-12 gap-2 p-2 rounded hover:bg-white/5 items-center text-xs font-mono group">
+                                               <div className="col-span-3"><Badge variant="outline" className="text-blue-400 border-blue-500/30 bg-blue-500/10 text-[10px]">POST</Badge></div>
+                                               <div className="col-span-4 text-gray-300">/v1/issues</div>
+                                               <div className="col-span-4 text-muted-foreground">create_issue</div>
+                                               <div className="col-span-1 opacity-0 group-hover:opacity-100 cursor-pointer text-muted-foreground hover:text-white"><Edit3 size={12} /></div>
+                                            </div>
+                                         </div>
+
+                                         <div className="p-2 border-t border-white/5 bg-white/5">
+                                            <Button variant="ghost" className="w-full h-7 text-[10px] border-dashed border border-white/10 text-muted-foreground hover:text-primary">
+                                              + ADD OPERATION
+                                            </Button>
+                                         </div>
+                                      </div>
+
+                                      <div className="flex items-center gap-2 p-3 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs mt-4">
+                                        <Code size={16} />
+                                        <span>2 operations defined. Schema valid.</span>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+
+                                <DialogFooter className="flex justify-between sm:justify-between">
+                                  <Button 
+                                    variant="ghost" 
+                                    onClick={() => setToolWizardStep(prev => Math.max(1, prev - 1))}
+                                    disabled={toolWizardStep === 1}
+                                    className="text-muted-foreground hover:text-white"
+                                  >
+                                    <ArrowLeft size={14} className="mr-2" /> BACK
+                                  </Button>
+
+                                  {toolWizardStep < 3 ? (
+                                    <Button 
+                                      className="bg-blue-600 hover:bg-blue-500"
+                                      onClick={() => setToolWizardStep(prev => Math.min(3, prev + 1))}
+                                    >
+                                      NEXT STEP <ArrowRight size={14} className="ml-2" />
+                                    </Button>
+                                  ) : (
+                                    <Button className="bg-green-600 hover:bg-green-500" onClick={() => setToolWizardOpen(false)}>
+                                      <CheckCircle size={14} className="mr-2" /> DEPLOY TOOL
+                                    </Button>
+                                  )}
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
                           </CardContent>
                         </Card>
 

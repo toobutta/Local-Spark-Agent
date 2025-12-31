@@ -1,0 +1,85 @@
+Clicking ADD Custom Tool / API should open a modal / drawer that walks the user through defining a new tool in three clear steps: Basics, Auth, and Operations.
+
+Step 1: Tool basics
+The first view should capture high-level identity and behavior so the Agent can decide when to use it.
+
+Fields:
+
+Tool name (ID, e.g. linear_tickets)
+
+Display label (what shows in the UI)
+
+Short description for the model: “Create and update Linear issues for this project”
+
+Category (Database, Monitoring, Search, Internal API, etc.)
+
+Scope selector: “Available to all agents” vs “Only these agents / sub‑agents”
+
+UX:
+
+Show a list of existing tools on the left, with the new one highlighted.
+
+Include a small preview of “How the model will see this tool” (system prompt snippet).
+
+Step 2: Authentication & connection
+After basics, the modal should slide or tab into Auth & Connection so the user can wire it to a real service.
+
+Connection:
+
+Base URL (e.g. https://api.myservice.com)
+
+Environment: Dev / Staging / Prod selector
+
+Auth type:
+
+None
+
+API Key (header name or query param)
+
+OAuth2 (auth URL, token URL, scopes)
+
+Secrets:
+
+Inputs bound to the existing Proxy OAuth / BYOK vault so keys never appear in plaintext.
+
+Test connection button: “Ping API” → show success/error inline.
+
+Step 3: Operations / schema
+The last view should define what calls the agent can make. This is where users specify endpoints and arguments.
+
+Operation list:
+
+“+ Add Operation” → for each operation:
+
+Name (create_issue, get_user)
+
+Method + path (GET/POST/etc + /v1/issues)
+
+Request schema editor: key, type, required, description
+
+Response schema (optional, or paste JSON example → infer schema)
+
+Advanced mode:
+
+Toggle “Use OpenAPI JSON/YAML” to paste an entire spec and have operations auto-populate.
+
+Agent hints:
+
+Optional “When to use this operation” text so the tool description is rich for the model.
+
+Final confirmation & visibility
+Once configured, the last panel of the modal should summarize and integrate with the rest of your admin UI.
+
+Summary card:
+
+Connection status, enabled agents, number of operations, auth type.
+
+Toggles:
+
+“Enable tool” and “Log calls in Build Pipeline / Verbose Logging”.
+
+Integration:
+
+After save, the tool appears in External Tools & APIs with on/off toggle, just like GitHub / Pinecone / Brave Search.
+
+If you want, a concrete TypeScript interface for CustomToolDefinition that mirrors this 3-step UI can be drafted next so you can wire the modal directly into your existing admin.tsx structure.
