@@ -7,7 +7,9 @@ import { AgentGraph } from "@/components/terminal/AgentGraph";
 import { MatrixLoader } from "@/components/terminal/MatrixLoader";
 import { ActiveAgentsFeed } from "@/components/terminal/ActiveAgentsFeed";
 import { SphereSpinner } from "@/components/terminal/SphereSpinner";
-import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode, Code, Database, Braces } from "lucide-react";
+import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode, Code, Database, Braces, FileText, Download, Upload, RefreshCw, ChevronRight } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -366,6 +368,91 @@ export default function Home() {
                        ))}
                      </div>
                   </div>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="w-full mt-2 bg-green-500/10 hover:bg-green-500/20 text-green-400 border border-green-500/30 rounded p-2 text-[10px] font-bold flex items-center justify-center gap-2 transition-colors">
+                        <Terminal size={12} /> OPEN DGX COMMANDER
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-black/95 border-green-500/30 text-green-400 max-w-4xl h-[600px] flex flex-col p-0 gap-0 font-mono backdrop-blur-xl">
+                      <DialogHeader className="px-4 py-2 border-b border-green-500/20 bg-green-500/5 flex flex-row items-center justify-between">
+                        <DialogTitle className="text-sm font-bold flex items-center gap-2">
+                          <Zap size={16} /> DGX A100 :: SSH://192.168.1.108
+                        </DialogTitle>
+                        <div className="text-[10px] bg-green-500/20 px-2 py-0.5 rounded text-green-300">CONNECTED</div>
+                      </DialogHeader>
+                      
+                      <div className="flex-1 flex overflow-hidden">
+                        {/* Sidebar */}
+                        <div className="w-48 border-r border-green-500/20 p-2 bg-black/40">
+                          <div className="text-[10px] text-muted-foreground mb-2 px-2">MOUNT POINTS</div>
+                          <div className="space-y-1">
+                            {['/', '/home', '/mnt/data', '/opt/nvidia', '/tmp'].map(dir => (
+                              <div key={dir} className="px-2 py-1 rounded hover:bg-green-500/10 cursor-pointer text-xs flex items-center gap-2 transition-colors">
+                                <HardDrive size={12} className="opacity-70" /> {dir}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* File List */}
+                        <div className="flex-1 flex flex-col bg-black/20">
+                          <div className="h-8 border-b border-green-500/20 flex items-center px-4 gap-2 text-xs bg-green-500/5">
+                            <span className="text-muted-foreground">/mnt/data/</span>
+                            <span className="text-white">projects/</span>
+                            <span className="text-white font-bold">genesis-core/</span>
+                          </div>
+                          
+                          <ScrollArea className="flex-1 p-2">
+                             <div className="grid grid-cols-1 gap-1">
+                                <div className="grid grid-cols-12 px-2 py-1 text-[10px] text-green-500/50 font-bold border-b border-green-500/10 mb-1">
+                                  <div className="col-span-6">NAME</div>
+                                  <div className="col-span-2">SIZE</div>
+                                  <div className="col-span-2">TYPE</div>
+                                  <div className="col-span-2">MODIFIED</div>
+                                </div>
+                                {[
+                                  { name: "..", size: "", type: "DIR", mod: "" },
+                                  { name: "checkpoints", size: "40 GB", type: "DIR", mod: "Today" },
+                                  { name: "training_logs", size: "1.2 GB", type: "DIR", mod: "Yesterday" },
+                                  { name: "config.yaml", size: "2 KB", type: "YAML", mod: "2h ago" },
+                                  { name: "train.py", size: "14 KB", type: "PY", mod: "5h ago" },
+                                  { name: "model_weights.pt", size: "12 GB", type: "BIN", mod: "1d ago" },
+                                  { name: "dataset_manifest.json", size: "45 MB", type: "JSON", mod: "1w ago" },
+                                ].map((file, i) => (
+                                  <div key={i} className="grid grid-cols-12 px-2 py-1.5 rounded hover:bg-green-500/10 cursor-pointer text-xs transition-colors group items-center">
+                                    <div className="col-span-6 flex items-center gap-2 text-green-300 group-hover:text-green-200">
+                                      {file.type === 'DIR' ? <FolderOpen size={14} className="text-blue-400" /> : <FileText size={14} className="opacity-70" />}
+                                      {file.name}
+                                    </div>
+                                    <div className="col-span-2 text-muted-foreground">{file.size}</div>
+                                    <div className="col-span-2 text-muted-foreground">{file.type}</div>
+                                    <div className="col-span-2 text-muted-foreground">{file.mod}</div>
+                                  </div>
+                                ))}
+                             </div>
+                          </ScrollArea>
+                        </div>
+                      </div>
+
+                      {/* Footer Actions */}
+                      <div className="h-10 border-t border-green-500/20 bg-black/60 flex items-center justify-between px-4">
+                        <div className="text-[10px] text-muted-foreground flex gap-4">
+                          <span>TOTAL: 54.2 GB</span>
+                          <span>FREE: 1.4 TB</span>
+                        </div>
+                        <div className="flex gap-2">
+                           <button className="flex items-center gap-1 bg-green-500/10 hover:bg-green-500/20 text-green-400 px-3 py-1 rounded text-[10px] border border-green-500/20 transition-colors">
+                             <Upload size={10} /> UPLOAD
+                           </button>
+                           <button className="flex items-center gap-1 bg-green-500/10 hover:bg-green-500/20 text-green-400 px-3 py-1 rounded text-[10px] border border-green-500/20 transition-colors">
+                             <Download size={10} /> DOWNLOAD
+                           </button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </motion.div>
               )}
 
