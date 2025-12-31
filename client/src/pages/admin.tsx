@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot, Factory, ShieldCheck, Check, ArrowRight, ArrowLeft, CheckCircle, Code, Download, RefreshCw, Terminal, Brain } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot, Factory, ShieldCheck, Check, ArrowRight, ArrowLeft, CheckCircle, Code, Download, RefreshCw, Terminal, Brain, Cpu, Zap, Play, Pause, StopCircle, Network, Share2, Layers } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -53,18 +53,11 @@ export default function Admin() {
       subItems: ["API Keys", "Integrations", "Environment"]
     },
     { 
-      id: "agents", 
-      title: "Agent Management", 
+      id: "agent_lifecycle", 
+      title: "Agent Lifecycle", 
       icon: <Users size={18} />,
-      description: "Orchestrate active agents and resource allocation",
-      subItems: ["Active Swarm", "Logs", "Performance"]
-    },
-    { 
-      id: "foundry", 
-      title: "Agent Foundry", 
-      icon: <BrainCircuit size={18} />,
-      description: "Advanced skill creation and tool allocation",
-      subItems: ["Skill Library", "Tool Builder", "Testing"]
+      description: "Create, orchestrate, and deploy intelligent agent ecosystems",
+      subItems: ["Ecosystem Map", "Foundry", "Deployments"]
     },
     { 
       id: "customization", 
@@ -1126,307 +1119,263 @@ export default function Admin() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="agents" className="mt-0 h-full border-none p-0">
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-display font-bold text-green-400 mb-1">Agent Management</h2>
-                      <p className="text-muted-foreground">Monitor and orchestrate your autonomous workforce.</p>
+                <TabsContent value="agent_lifecycle" className="mt-0 h-full border-none p-0">
+                  <div className="space-y-6 h-full flex flex-col">
+                    <div className="flex items-center justify-between shrink-0">
+                      <div>
+                        <h2 className="text-2xl font-display font-bold text-green-400 mb-1">Agent Lifecycle</h2>
+                        <p className="text-muted-foreground">Design, train, and orchestrate your autonomous workforce.</p>
+                      </div>
+                      <div className="flex gap-2">
+                         <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-green-900/10 border border-green-500/20 text-green-400 text-xs font-mono">
+                            <Activity size={14} />
+                            <span>SYSTEM HEALTH: 98%</span>
+                         </div>
+                      </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6">
-                      {[{
-                        id: "CODER-ALPHA",
-                        role: "Lead Architect",
-                        status: "active",
-                        uptime: "42h 12m",
-                        subAgents: [
-                           { id: "CODE-GEN-01", role: "Frontend Implementation", status: "active", uptime: "2h 45m" },
-                           { id: "TEST-BOT-X", role: "Unit Testing", status: "idle", uptime: "12h 10m" }
-                        ]
-                      }, {
-                        id: "SECURITY-PRIME",
-                        role: "Systems Overwatch",
-                        status: "active",
-                        uptime: "156h 30m",
-                        subAgents: [
-                           { id: "AUDIT-LOG-V2", role: "Log Analysis", status: "active", uptime: "156h 30m" }
-                        ]
-                      }, {
-                        id: "DATA-SENTRY",
-                        role: "Knowledge Manager",
-                        status: "active",
-                        uptime: "8h 15m",
-                        subAgents: []
-                      }].map((agent) => (
-                        <Card key={agent.id} className="bg-card/30 border-border/50 backdrop-blur-sm overflow-hidden relative">
-                          <CardHeader className="pb-2 border-b border-white/5 bg-white/5">
-                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                   <div className="w-10 h-10 rounded bg-primary/20 flex items-center justify-center border border-primary/30">
-                                      <Bot size={20} className="text-primary" />
+                    <Tabs defaultValue="ecosystem" className="flex-1 flex flex-col min-h-0">
+                       <div className="flex justify-between items-center mb-4 shrink-0">
+                          <TabsList className="bg-black/40 border border-white/10 h-auto p-1">
+                             <TabsTrigger value="ecosystem" className="text-xs font-mono py-1.5 gap-2"><Network size={14}/> ECOSYSTEM MAP</TabsTrigger>
+                             <TabsTrigger value="foundry" className="text-xs font-mono py-1.5 gap-2"><Factory size={14}/> FOUNDRY (BUILDER)</TabsTrigger>
+                             <TabsTrigger value="deployments" className="text-xs font-mono py-1.5 gap-2"><Globe size={14}/> DEPLOYMENTS</TabsTrigger>
+                          </TabsList>
+                          
+                          <Button size="sm" className="bg-green-600 hover:bg-green-500 text-black font-bold h-8 text-xs gap-2">
+                             <Plus size={14}/> NEW AGENT
+                          </Button>
+                       </div>
+
+                       <div className="flex-1 overflow-hidden relative rounded-lg border border-white/5 bg-black/20">
+                          
+                          {/* ECOSYSTEM TAB */}
+                          <TabsContent value="ecosystem" className="h-full p-4 mt-0 overflow-y-auto">
+                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {[{
+                                   id: "CODER-ALPHA",
+                                   role: "Lead Architect",
+                                   status: "active",
+                                   framework: "LangChain",
+                                   runtime: "Python 3.11",
+                                   load: 32
+                                }, {
+                                   id: "SECURITY-PRIME",
+                                   role: "Systems Overwatch",
+                                   status: "active",
+                                   framework: "CrewAI",
+                                   runtime: "Python 3.10",
+                                   load: 12
+                                }, {
+                                   id: "DATA-SENTRY",
+                                   role: "Knowledge Manager",
+                                   status: "training",
+                                   framework: "AutoGPT",
+                                   runtime: "Node.js 20",
+                                   load: 85
+                                }].map((agent) => (
+                                  <Card key={agent.id} className="bg-card/30 border-white/5 backdrop-blur-sm group hover:border-green-500/30 transition-all cursor-pointer">
+                                     <CardHeader className="pb-2">
+                                        <div className="flex justify-between items-start">
+                                           <div className="flex items-center gap-3">
+                                              <div className={`w-10 h-10 rounded flex items-center justify-center border ${agent.status === 'active' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'}`}>
+                                                 <Bot size={20} />
+                                              </div>
+                                              <div>
+                                                 <CardTitle className="text-sm font-mono font-bold group-hover:text-primary transition-colors">{agent.id}</CardTitle>
+                                                 <CardDescription className="text-[10px]">{agent.role}</CardDescription>
+                                              </div>
+                                           </div>
+                                           <Badge className={`${agent.status === 'active' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'} text-[10px] border`}>
+                                              {agent.status.toUpperCase()}
+                                           </Badge>
+                                        </div>
+                                     </CardHeader>
+                                     <CardContent className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-muted-foreground">
+                                           <div className="p-2 bg-black/40 rounded border border-white/5">
+                                              <div className="text-gray-500 mb-0.5">RUNTIME</div>
+                                              <div className="text-white flex items-center gap-1.5"><Terminal size={10}/> {agent.runtime}</div>
+                                           </div>
+                                           <div className="p-2 bg-black/40 rounded border border-white/5">
+                                              <div className="text-gray-500 mb-0.5">FRAMEWORK</div>
+                                              <div className="text-white flex items-center gap-1.5"><Layers size={10}/> {agent.framework}</div>
+                                           </div>
+                                        </div>
+                                        
+                                        <div className="space-y-1">
+                                           <div className="flex justify-between text-[10px] text-muted-foreground">
+                                              <span>Compute Load</span>
+                                              <span className={agent.load > 80 ? "text-red-400" : "text-green-400"}>{agent.load}%</span>
+                                           </div>
+                                           <div className="w-full bg-black/40 h-1 rounded-full overflow-hidden">
+                                              <div 
+                                                 className={`h-full transition-all duration-1000 ${agent.load > 80 ? 'bg-red-500' : 'bg-green-500'}`} 
+                                                 style={{ width: `${agent.load}%` }} 
+                                              />
+                                           </div>
+                                        </div>
+
+                                        <div className="pt-2 border-t border-white/5 flex gap-2">
+                                           <Button size="sm" variant="ghost" className="h-6 text-[10px] flex-1 hover:bg-white/5">LOGS</Button>
+                                           <Button size="sm" variant="ghost" className="h-6 text-[10px] flex-1 hover:bg-white/5">CONFIG</Button>
+                                           <Button size="sm" variant="ghost" className="h-6 text-[10px] flex-1 hover:bg-white/5">TERMINAL</Button>
+                                        </div>
+                                     </CardContent>
+                                  </Card>
+                                ))}
+                                
+                                {/* Add New Ghost Card */}
+                                <Card className="bg-card/10 border-dashed border-white/10 flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-card/20 hover:border-green-500/30 transition-all group">
+                                   <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform group-hover:bg-green-500/20 group-hover:text-green-400">
+                                      <Plus size={24} className="text-muted-foreground group-hover:text-green-400" />
                                    </div>
-                                   <div>
-                                      <CardTitle className="font-mono text-md flex items-center gap-2">
-                                         {agent.id}
-                                         <Badge variant="outline" className="text-[10px] h-5 border-green-500/30 text-green-400 bg-green-500/10">ONLINE</Badge>
-                                      </CardTitle>
-                                      <CardDescription className="text-xs">{agent.role}</CardDescription>
+                                   <h3 className="font-mono font-bold text-sm text-muted-foreground group-hover:text-green-400">Deploy New Agent</h3>
+                                </Card>
+                             </div>
+                          </TabsContent>
+
+                          {/* FOUNDRY TAB */}
+                          <TabsContent value="foundry" className="h-full mt-0 flex flex-col overflow-hidden">
+                             <div className="flex-1 flex overflow-hidden">
+                                {/* Foundry Sidebar */}
+                                <div className="w-64 border-r border-white/10 bg-black/20 flex flex-col">
+                                   <div className="p-4 border-b border-white/10">
+                                      <h3 className="font-mono text-xs font-bold text-muted-foreground mb-4">COMPONENT LIBRARY</h3>
+                                      <Input placeholder="Search components..." className="h-8 bg-black/40 border-white/10 text-xs font-mono mb-4" />
+                                      
+                                      <div className="space-y-4">
+                                         <div className="space-y-2">
+                                            <Label className="text-[10px] text-blue-400">CORE TEMPLATES</Label>
+                                            <div className="space-y-1">
+                                               {['ReAct Agent', 'Plan & Execute', 'RAG Pipeline', 'Router Chain'].map(item => (
+                                                  <div key={item} className="flex items-center gap-2 p-2 rounded hover:bg-white/5 cursor-pointer text-xs font-mono text-gray-400 hover:text-white transition-colors">
+                                                     <Box size={12} /> {item}
+                                                  </div>
+                                               ))}
+                                            </div>
+                                         </div>
+                                         
+                                         <div className="space-y-2">
+                                            <Label className="text-[10px] text-purple-400">TOOLS & SKILLS</Label>
+                                            <div className="space-y-1">
+                                               {['Web Search', 'Code Interpreter', 'File System', 'Vector Store'].map(item => (
+                                                  <div key={item} className="flex items-center gap-2 p-2 rounded hover:bg-white/5 cursor-pointer text-xs font-mono text-gray-400 hover:text-white transition-colors">
+                                                     <Wrench size={12} /> {item}
+                                                  </div>
+                                               ))}
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </div>
+                                   <div className="mt-auto p-4 border-t border-white/10">
+                                      <div className="text-[10px] text-muted-foreground mb-2">SDK VERSION</div>
+                                      <Select defaultValue="v2">
+                                         <SelectTrigger className="h-7 text-xs bg-black/40 border-white/10"><SelectValue/></SelectTrigger>
+                                         <SelectContent className="bg-black/90 border-white/10">
+                                            <SelectItem value="v2">SparkPlug SDK v2.1 (Stable)</SelectItem>
+                                            <SelectItem value="v3">SparkPlug SDK v3.0 (Beta)</SelectItem>
+                                         </SelectContent>
+                                      </Select>
                                    </div>
                                 </div>
-                                <div className="text-right">
-                                   <div className="text-[10px] text-muted-foreground font-mono">UPTIME</div>
-                                   <div className="text-xs font-bold text-white font-mono">{agent.uptime}</div>
+
+                                {/* Foundry Canvas */}
+                                <div className="flex-1 bg-[#0a0a0a] relative overflow-hidden flex flex-col">
+                                   {/* Canvas Toolbar */}
+                                   <div className="h-10 border-b border-white/5 bg-black/20 flex items-center justify-between px-4">
+                                      <div className="flex items-center gap-2">
+                                         <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-white/10"><ArrowLeft size={14}/></Button>
+                                         <span className="text-xs font-mono text-gray-400">/</span>
+                                         <span className="text-xs font-mono font-bold text-white">Untitled_Agent_01</span>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                         <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-white/10"><Play size={14} className="text-green-400"/></Button>
+                                         <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-white/10"><Code size={14}/></Button>
+                                         <Button size="sm" className="h-6 text-[10px] bg-blue-600 hover:bg-blue-500">SAVE & BUILD</Button>
+                                      </div>
+                                   </div>
+                                   
+                                   {/* Canvas Area */}
+                                   <div className="flex-1 flex items-center justify-center relative">
+                                      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #333 1px, transparent 0)', backgroundSize: '20px 20px' }}></div>
+                                      
+                                      {/* Empty State / Placeholder */}
+                                      <div className="text-center p-8 border-2 border-dashed border-white/5 rounded-xl bg-black/20 backdrop-blur-sm max-w-md">
+                                         <div className="w-16 h-16 rounded-full bg-purple-500/10 flex items-center justify-center mx-auto mb-4 border border-purple-500/20">
+                                            <BrainCircuit size={32} className="text-purple-400" />
+                                         </div>
+                                         <h3 className="text-lg font-bold font-display text-white mb-2">Start Building</h3>
+                                         <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
+                                            Drag and drop components from the library to define your agent's architecture, tools, and cognitive flow.
+                                         </p>
+                                         <div className="grid grid-cols-2 gap-3">
+                                            <Button variant="outline" className="border-white/10 hover:bg-white/5 text-xs font-mono h-9">
+                                               IMPORT BLUEPRINT
+                                            </Button>
+                                            <Button className="bg-purple-600 hover:bg-purple-500 text-xs font-mono h-9">
+                                               USE TEMPLATE
+                                            </Button>
+                                         </div>
+                                      </div>
+                                   </div>
                                 </div>
                              </div>
-                          </CardHeader>
-                          <CardContent className="pt-4 space-y-4">
-                            {/* Main Agent Stats */}
-                            <div className="space-y-2 text-xs font-mono">
-                              <div className="flex justify-between">
-                                <span>Compute Load</span>
-                                <span className="text-primary">32%</span>
-                              </div>
-                              <div className="w-full bg-black/40 h-1.5 rounded-full overflow-hidden">
-                                <div className="bg-primary/50 h-full w-[32%]" />
-                              </div>
-                            </div>
-                            
-                            {/* Sub Agents Hierarchy */}
-                            <div className="space-y-3 pl-4 border-l border-white/10 ml-4 relative">
-                               <div className="absolute -left-[17px] top-0 bottom-0 w-px bg-white/10" />
-                               
-                               <div className="text-[10px] font-bold text-muted-foreground flex items-center gap-2">
-                                  <GitBranch size={12} className="rotate-90" /> SUB-AGENTS ({agent.subAgents.length})
-                               </div>
+                          </TabsContent>
 
-                               {agent.subAgents.length > 0 ? (
-                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    {agent.subAgents.map(sub => (
-                                       <div key={sub.id} className="bg-black/20 border border-white/5 rounded p-2 flex items-center justify-between">
-                                          <div className="flex items-center gap-2">
-                                             <div className={`w-1.5 h-1.5 rounded-full ${sub.status === 'active' ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`} />
-                                             <div>
-                                                <div className="font-bold text-xs text-white">{sub.id}</div>
-                                                <div className="text-[10px] text-muted-foreground">{sub.role}</div>
-                                             </div>
-                                          </div>
-                                          <Sheet>
-                                            <SheetTrigger asChild>
-                                              <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-white/10 rounded-full">
-                                                 <Settings size={12} className="text-muted-foreground" />
-                                              </Button>
-                                            </SheetTrigger>
-                                            <SheetContent className="bg-black/90 border-l border-white/10 backdrop-blur-xl min-w-[400px]">
-                                              <SheetHeader>
-                                                <SheetTitle className="font-mono text-blue-400 flex items-center gap-2">
-                                                  <Bot size={18} /> AGENT CONFIG: {sub.id}
-                                                </SheetTitle>
-                                                <SheetDescription>
-                                                  Configure behavioral parameters and capabilities.
-                                                </SheetDescription>
-                                              </SheetHeader>
-                                              
-                                              <div className="space-y-6 mt-6">
-                                                {/* Instructions */}
-                                                <div className="space-y-2">
-                                                  <Label className="text-xs font-mono text-muted-foreground">SYSTEM INSTRUCTIONS</Label>
-                                                  <Textarea 
-                                                    className="bg-black/40 border-white/10 font-mono text-xs h-32 text-gray-300" 
-                                                    defaultValue={`You are ${sub.role}. Your primary directive is to execute tasks with precision and minimal resource consumption.\n\nReport all anomalies to SECURITY-PRIME.`}
-                                                  />
-                                                </div>
-
-                                                {/* Permissions */}
-                                                <div className="space-y-3">
-                                                  <Label className="text-xs font-mono text-muted-foreground">TOOL PERMISSIONS</Label>
-                                                  <div className="grid grid-cols-2 gap-2">
-                                                    {['Filesystem Read', 'Filesystem Write', 'Network Access', 'Process Control', 'Memory Dump', 'Code Execution'].map(perm => (
-                                                      <div key={perm} className="flex items-center justify-between p-2 rounded bg-white/5 border border-white/5">
-                                                        <span className="text-[10px] font-mono">{perm}</span>
-                                                        <Switch defaultChecked={['Filesystem Read', 'Network Access'].includes(perm)} className="scale-75" />
-                                                      </div>
-                                                    ))}
+                          {/* DEPLOYMENTS TAB */}
+                          <TabsContent value="deployments" className="h-full p-4 mt-0 overflow-y-auto">
+                             <div className="space-y-4">
+                                <Card className="bg-card/30 border-white/5">
+                                   <CardHeader className="py-3 px-4 border-b border-white/5 bg-white/5">
+                                      <div className="flex justify-between items-center">
+                                         <CardTitle className="font-mono text-sm">Active Deployments</CardTitle>
+                                         <div className="flex gap-2">
+                                             <Badge variant="outline" className="text-[10px] border-green-500/30 text-green-400 bg-green-500/10">3 RUNNING</Badge>
+                                             <Badge variant="outline" className="text-[10px] border-yellow-500/30 text-yellow-400 bg-yellow-500/10">1 STOPPED</Badge>
+                                         </div>
+                                      </div>
+                                   </CardHeader>
+                                   <CardContent className="p-0">
+                                      <div className="divide-y divide-white/5">
+                                         {[
+                                            { name: "coder-alpha-prod", region: "us-east-1", type: "k8s", status: "running", cpu: "4.2", mem: "8.1" },
+                                            { name: "security-prime-v2", region: "us-east-1", type: "lambda", status: "running", cpu: "1.2", mem: "2.4" },
+                                            { name: "data-sentry-dev", region: "eu-west-1", type: "docker", status: "stopped", cpu: "0.0", mem: "0.0" }
+                                         ].map((dep) => (
+                                            <div key={dep.name} className="flex items-center justify-between p-4 hover:bg-white/5 transition-colors group">
+                                               <div className="flex items-center gap-4">
+                                                  <div className={`w-2 h-2 rounded-full ${dep.status === 'running' ? 'bg-green-500 shadow-[0_0_8px_#22c55e]' : 'bg-red-500'}`} />
+                                                  <div>
+                                                     <div className="font-mono text-xs font-bold text-white flex items-center gap-2">
+                                                        {dep.name}
+                                                        <Badge variant="outline" className="h-4 text-[9px] px-1 border-white/10 text-muted-foreground">{dep.type}</Badge>
+                                                     </div>
+                                                     <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center gap-3">
+                                                        <span className="flex items-center gap-1"><Globe size={10}/> {dep.region}</span>
+                                                        <span className="flex items-center gap-1"><Cpu size={10}/> {dep.cpu}vCPU</span>
+                                                        <span className="flex items-center gap-1"><Zap size={10}/> {dep.mem}GB</span>
+                                                     </div>
                                                   </div>
-                                                </div>
-
-                                                {/* Skills */}
-                                                 <div className="space-y-3">
-                                                  <Label className="text-xs font-mono text-muted-foreground">ACTIVE SKILLS</Label>
-                                                  <div className="space-y-2">
-                                                    {['LogParser_v2.py', 'AnomalyDetector.js'].map(skill => (
-                                                       <div key={skill} className="flex items-center justify-between p-2 rounded bg-purple-500/10 border border-purple-500/20">
-                                                         <div className="flex items-center gap-2">
-                                                           <FileCode size={12} className="text-purple-400" />
-                                                           <span className="text-[10px] font-mono text-purple-200">{skill}</span>
-                                                         </div>
-                                                         <Button variant="ghost" size="sm" className="h-5 w-5 p-0 text-purple-400 hover:text-purple-200 hover:bg-purple-500/20">
-                                                           <Settings size={10} />
-                                                         </Button>
-                                                       </div>
-                                                    ))}
-                                                    <Button variant="outline" className="w-full h-7 text-[10px] border-dashed border-white/10 text-muted-foreground hover:text-white hover:bg-white/5">
-                                                      + ASSIGN SKILL
-                                                    </Button>
-                                                  </div>
-                                                </div>
-                                                
-                                                {/* Actions */}
-                                                <div className="pt-4 flex gap-2">
-                                                   <Button className="w-full bg-blue-600 hover:bg-blue-500 text-xs font-mono">APPLY CONFIG</Button>
-                                                   <Button variant="outline" className="w-full border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs font-mono">RESET MEMORY</Button>
-                                                </div>
-                                              </div>
-                                            </SheetContent>
-                                          </Sheet>
-                                       </div>
-                                    ))}
-                                 </div>
-                               ) : (
-                                  <div className="text-[10px] text-muted-foreground italic p-2 border border-dashed border-white/10 rounded bg-white/5">
-                                     No sub-agents deployed.
-                                  </div>
-                               )}
-                            </div>
-
-                            <Separator className="bg-white/5" />
-                            <div className="flex gap-2 justify-end">
-                              <Button size="sm" variant="outline" className="h-7 text-xs border-white/10 hover:bg-white/5 text-muted-foreground">VIEW LOGS</Button>
-                              <Button size="sm" variant="outline" className="h-7 text-xs border-primary/50 text-primary hover:bg-primary/10">MANAGE FLEET</Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                      
-                      <Card className="bg-card/10 border-dashed border-border flex items-center justify-center min-h-[100px] cursor-pointer hover:bg-card/20 hover:border-primary/30 transition-all group">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                            <Plus size={16} />
-                          </div>
-                          <p className="font-mono text-sm text-muted-foreground group-hover:text-primary">DEPLOY NEW AGENT CLUSTER</p>
-                        </div>
-                      </Card>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                {/* NEW AGENT FOUNDRY MODULE */}
-                <TabsContent value="foundry" className="mt-0 h-full border-none p-0">
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-display font-bold text-purple-400 mb-1">Agent Foundry</h2>
-                      <p className="text-muted-foreground">Advanced skill creation, file access control, and tool allocation.</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
-                      
-                      {/* Left Column: File & Skill Management */}
-                      <div className="space-y-4 lg:col-span-2 flex flex-col h-full">
-                        {/* File Access Manager */}
-                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm flex-1">
-                          <CardHeader className="py-3">
-                            <CardTitle className="font-mono text-sm flex items-center gap-2">
-                              <Folder size={16} className="text-yellow-500" /> FILE ACCESS SCOPE
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent className="h-[200px]">
-                            <ScrollArea className="h-full pr-4">
-                              <div className="space-y-2">
-                                {["src/components", "src/lib", "public/assets", "server/routes"].map((path) => (
-                                  <div key={path} className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5 hover:border-primary/30 transition-colors group">
-                                    <div className="flex items-center gap-2 text-xs font-mono">
-                                      <Folder size={12} className="text-muted-foreground group-hover:text-primary" />
-                                      {path}
-                                    </div>
-                                    <div className="flex gap-2">
-                                      <Badge variant="outline" className="text-[10px] h-5 bg-green-500/10 text-green-400 border-green-500/20">READ</Badge>
-                                      <Badge variant="outline" className="text-[10px] h-5 bg-orange-500/10 text-orange-400 border-orange-500/20">WRITE</Badge>
-                                    </div>
-                                  </div>
-                                ))}
-                                <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground border-dashed border border-border mt-2 h-8">
-                                  + ADD PATH
-                                </Button>
-                              </div>
-                            </ScrollArea>
-                          </CardContent>
-                        </Card>
-
-                        {/* Skill Builder */}
-                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm flex-[1.5]">
-                          <CardHeader className="py-3">
-                            <CardTitle className="font-mono text-sm flex items-center gap-2">
-                              <Sparkles size={16} className="text-purple-500" /> SKILL FABRICATOR
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                              <div className="space-y-2">
-                                <Label className="text-xs">SKILL NAME</Label>
-                                <Input placeholder="e.g. DataScraper" className="h-8 bg-black/20 font-mono text-xs" />
-                              </div>
-                              <div className="space-y-2">
-                                <Label className="text-xs">TRIGGER TYPE</Label>
-                                <div className="flex gap-2">
-                                  <Badge variant="secondary" className="cursor-pointer hover:bg-primary/20">ON_COMMAND</Badge>
-                                  <Badge variant="outline" className="cursor-pointer hover:bg-primary/20">CRON</Badge>
-                                  <Badge variant="outline" className="cursor-pointer hover:bg-primary/20">EVENT</Badge>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="space-y-2">
-                              <Label className="text-xs">LOGIC DEFINITION (PYTHON/JS)</Label>
-                              <div className="h-32 bg-black/40 rounded border border-white/10 p-2 font-mono text-xs text-muted-foreground">
-                                // Define skill logic here...
-                                <br />
-                                <span className="text-purple-400">def</span> <span className="text-yellow-400">execute</span>(context):
-                                <br />
-                                &nbsp;&nbsp;<span className="text-purple-400">return</span> context.data
-                              </div>
-                            </div>
-                            <div className="flex justify-end gap-2">
-                              <Button size="sm" variant="outline" className="h-7 text-xs">TEST</Button>
-                              <Button size="sm" className="h-7 text-xs bg-purple-600 hover:bg-purple-700">COMPILE SKILL</Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
-
-                      {/* Right Column: Tool Allocation */}
-                      <Card className="bg-card/30 border-border/50 backdrop-blur-sm flex flex-col h-full">
-                        <CardHeader className="py-3">
-                          <CardTitle className="font-mono text-sm flex items-center gap-2">
-                            <Hammer size={16} className="text-blue-500" /> TOOLKIT ALLOCATION
-                          </CardTitle>
-                          <CardDescription className="text-xs">Drag tools to assign to active agent</CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex-1 overflow-y-auto">
-                          <div className="space-y-4">
-                            <div className="p-3 bg-black/20 rounded border border-primary/20 mb-4">
-                              <div className="text-[10px] text-primary uppercase tracking-wider mb-1">TARGET AGENT</div>
-                              <div className="font-bold text-sm">CODER-ALPHA</div>
-                            </div>
-
-                            <div className="space-y-2">
-                              {tools.map((tool) => (
-                                <div key={tool.id} className="flex items-center justify-between p-3 rounded bg-card/50 border border-border hover:border-primary/50 cursor-grab active:cursor-grabbing transition-all group">
-                                  <div className="flex items-center gap-3">
-                                    <div className="p-2 rounded bg-black/40 text-muted-foreground group-hover:text-primary transition-colors">
-                                      {tool.icon}
-                                    </div>
-                                    <div>
-                                      <div className="font-bold text-xs">{tool.name}</div>
-                                      <div className="text-[10px] text-muted-foreground">{tool.category}</div>
-                                    </div>
-                                  </div>
-                                  <Switch />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                    </div>
+                                               </div>
+                                               <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                  {dep.status === 'running' ? (
+                                                     <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-red-400 hover:bg-red-500/20"><StopCircle size={14}/></Button>
+                                                  ) : (
+                                                     <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-green-400 hover:bg-green-500/20"><Play size={14}/></Button>
+                                                  )}
+                                                  <Button size="sm" variant="ghost" className="h-7 w-7 p-0 hover:bg-white/10"><Terminal size={14}/></Button>
+                                                  <Button size="sm" variant="ghost" className="h-7 w-7 p-0 hover:bg-white/10"><Settings size={14}/></Button>
+                                               </div>
+                                            </div>
+                                         ))}
+                                      </div>
+                                   </CardContent>
+                                </Card>
+                             </div>
+                          </TabsContent>
+                       </div>
+                    </Tabs>
                   </div>
                 </TabsContent>
 
