@@ -7,8 +7,10 @@ import { AgentGraph } from "@/components/terminal/AgentGraph";
 import { MatrixLoader } from "@/components/terminal/MatrixLoader";
 import { ActiveAgentsFeed } from "@/components/terminal/ActiveAgentsFeed";
 import { SphereSpinner } from "@/components/terminal/SphereSpinner";
-import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain } from "lucide-react";
+import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 // Types
 interface LogEntry {
@@ -60,6 +62,7 @@ export default function Home() {
   const [activeAgents, setActiveAgents] = useState<Agent[]>([]);
   const [dgxConnected, setDgxConnected] = useState(false);
   const [thoughtLogs, setThoughtLogs] = useState<ThoughtLog[]>([]);
+  const [selectedCoreView, setSelectedCoreView] = useState("core");
   const outputRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom
@@ -287,13 +290,124 @@ export default function Home() {
       {/* Sidebar / Status Panel */}
       <div className="w-full md:w-80 bg-card/10 border-l border-border/50 h-screen flex flex-col p-4 gap-6 overflow-y-auto relative z-10 backdrop-blur-sm">
         
-        {/* AI Visual */}
+        {/* Core View Selector */}
         <div className="space-y-2">
-          <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
-            <Cpu size={14} /> SYSTEM CORE
-          </h2>
-          <div className="relative">
-            <SphereSpinner isActive={isProcessing} />
+           <div className="flex items-center justify-between">
+            <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
+              <Cpu size={14} /> 
+              {selectedCoreView === 'core' && 'SYSTEM CORE'}
+              {selectedCoreView === 'spark' && 'SPARKPLUG (DGX)'}
+              {selectedCoreView === 'ml' && 'AI/ML WORKLOADS'}
+            </h2>
+            <Select value={selectedCoreView} onValueChange={setSelectedCoreView}>
+              <SelectTrigger className="h-6 w-[130px] text-[10px] bg-black/40 border-primary/20 text-primary">
+                <SelectValue placeholder="View" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="core">System Core</SelectItem>
+                <SelectItem value="spark">SparkPlug (DGX)</SelectItem>
+                <SelectItem value="ml">AI/ML Work</SelectItem>
+              </SelectContent>
+            </Select>
+           </div>
+          
+          <div className="relative min-h-[200px] flex flex-col">
+            <AnimatePresence mode="wait">
+              {selectedCoreView === "core" && (
+                <motion.div 
+                  key="core"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="relative"
+                >
+                  <SphereSpinner isActive={isProcessing} />
+                  <div className="absolute -bottom-2 w-full text-center text-[10px] text-primary/60 font-mono">
+                    NEXUS KERNEL ACTIVE
+                  </div>
+                </motion.div>
+              )}
+
+              {selectedCoreView === "spark" && (
+                <motion.div 
+                  key="spark"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-3 p-3 rounded bg-black/20 border border-green-500/10 h-full"
+                >
+                  <div className="flex items-center justify-between border-b border-green-500/20 pb-2 mb-2">
+                     <span className="text-green-400 font-bold text-xs flex items-center gap-2">
+                       <Zap size={12} /> NVIDIA DGX A100
+                     </span>
+                     <Badge variant="outline" className="text-[10px] h-4 border-green-500/40 text-green-400 bg-green-500/5">ONLINE</Badge>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-[10px] text-muted-foreground">
+                      <span>GPU CLUSTER</span>
+                      <span className="text-green-300">8x A100 80GB</span>
+                    </div>
+                    <div className="w-full bg-black/40 h-1.5 rounded-full overflow-hidden">
+                       <div className="bg-green-500 h-full w-[12%] animate-pulse" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                     <div className="text-[10px] font-bold text-muted-foreground flex items-center gap-1">
+                       <HardDrive size={10} /> FILESYSTEM MOUNTS
+                     </div>
+                     <div className="grid grid-cols-1 gap-1">
+                       {['/spark/datasets', '/spark/models', '/spark/checkpoints'].map(path => (
+                         <div key={path} className="flex items-center gap-2 text-[10px] font-mono text-green-400/70 bg-green-500/5 p-1 rounded">
+                           <FolderOpen size={10} /> {path}
+                         </div>
+                       ))}
+                     </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {selectedCoreView === "ml" && (
+                <motion.div 
+                  key="ml"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-3 p-3 rounded bg-black/20 border border-purple-500/10 h-full"
+                >
+                  <div className="flex items-center justify-between border-b border-purple-500/20 pb-2 mb-2">
+                     <span className="text-purple-400 font-bold text-xs flex items-center gap-2">
+                       <Brain size={12} /> ACTIVE WORKLOADS
+                     </span>
+                     <span className="text-[10px] text-purple-400/60">2 RUNNING</span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="p-2 bg-purple-500/5 border border-purple-500/10 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[10px] font-bold text-purple-300">TRAINING: LLAMA-3-FT</span>
+                        <span className="text-[10px] text-purple-400">EPOCH 4/10</span>
+                      </div>
+                      <div className="w-full bg-black/40 h-1 rounded-full overflow-hidden">
+                         <div className="bg-purple-500 h-full w-[45%]" />
+                      </div>
+                    </div>
+
+                    <div className="p-2 bg-purple-500/5 border border-purple-500/10 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[10px] font-bold text-purple-300">INFERENCE: RAG-PIPELINE</span>
+                        <span className="text-[10px] text-green-400 animate-pulse">SERVING</span>
+                      </div>
+                      <div className="flex gap-2 text-[10px] text-muted-foreground font-mono mt-1">
+                         <span className="flex items-center gap-1"><Activity size={8}/> 45 req/s</span>
+                         <span className="flex items-center gap-1"><FileCode size={8}/> 12ms</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
