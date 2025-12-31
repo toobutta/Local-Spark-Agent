@@ -8,6 +8,11 @@ from tui.components.footer import FooterWidget
 
 class SparkPlugTUI(App):
     CSS_PATH = "styles.tcss"
+    BINDINGS = [
+        ("f1", "switch_tab('systems')", "Systems"),
+        ("f2", "switch_tab('agents')", "Agents"),
+        ("q", "quit", "Quit"),
+    ]
     
     def compose(self) -> ComposeResult:
         yield Container(
@@ -17,6 +22,10 @@ class SparkPlugTUI(App):
             FooterWidget(),
             id="app-grid"
         )
+
+    def action_switch_tab(self, tab: str) -> None:
+        # Tab switching logic for TUI
+        self.notify(f"CHANNEL {tab.upper()} ACTIVE", title="CHANNEL SWITCH")
 
 if __name__ == "__main__":
     app = SparkPlugTUI()

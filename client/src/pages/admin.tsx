@@ -101,12 +101,45 @@ export default function Admin() {
             </SelectContent>
           </Select>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-black/40 px-3 py-1.5 rounded border border-white/5">
-            <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            ADMIN MODE
+            <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-black/40 px-3 py-1.5 rounded border border-white/5">
+              <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+              ADMIN MODE
+            </div>
+            
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="h-8 border-primary/30 text-primary hover:bg-primary/10 gap-2">
+                  <Download size={14} /> DOWNLOAD CLI
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-black/95 border-primary/30 text-white max-w-lg backdrop-blur-xl">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Terminal size={18} className="text-primary" /> INSTALL SPARKPLUG CLI
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <Label className="text-[10px] text-muted-foreground uppercase tracking-widest">PowerShell / Command Line</Label>
+                    <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs flex items-center justify-between group">
+                      <code className="text-primary">pip install sparkplug-dgx</code>
+                      <button className="opacity-0 group-hover:opacity-100 transition-opacity"><RefreshCw size={12}/></button>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-primary/5 border border-primary/20 rounded-md">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      SparkPlug is a high-performance TUI designed for direct terminal integration. 
+                      Supports <span className="text-white font-bold">PowerShell</span>, <span className="text-white font-bold">Bash</span>, and <span className="text-white font-bold">Warp</span>.
+                    </p>
+                  </div>
+                  <Button className="w-full bg-primary text-black font-bold">
+                    DOWNLOAD .EXE / .DMG (NATIVE)
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
-        </div>
-      </header>
+        </header>
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden flex relative z-10 max-w-7xl mx-auto w-full p-6 gap-6">
