@@ -22,6 +22,7 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState("profile");
   const [toolWizardStep, setToolWizardStep] = useState(1);
   const [toolWizardOpen, setToolWizardOpen] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<any>(null); // State for selected agent
 
   const menuItems = [
     { 
