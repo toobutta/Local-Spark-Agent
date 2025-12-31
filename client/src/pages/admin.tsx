@@ -28,43 +28,50 @@ export default function Admin() {
       id: "profile", 
       title: "User Profile", 
       icon: <User size={18} />,
-      description: "Manage personal settings and credentials"
+      description: "Manage personal settings and credentials",
+      subItems: ["General Info", "Security & Keys", "Notifications"]
     },
     { 
       id: "models", 
       title: "Model Management", 
       icon: <BrainCircuit size={18} />,
-      description: "Configure inference providers and models"
+      description: "Configure inference providers and models",
+      subItems: ["Hosted APIs", "Local Inference", "Fine-tuning"]
     },
     { 
       id: "projects", 
       title: "Project Profiles", 
       icon: <Briefcase size={18} />,
-      description: "Manage workspaces and project-specific configurations"
+      description: "Manage workspaces and project-specific configurations",
+      subItems: ["Active Workspaces", "Archives", "Templates"]
     },
     { 
       id: "systems", 
       title: "Systems & Configurations", 
       icon: <Settings size={18} />,
-      description: "Manage APIs, integrations, and runtime environment"
+      description: "Manage APIs, integrations, and runtime environment",
+      subItems: ["API Keys", "Integrations", "Environment"]
     },
     { 
       id: "agents", 
       title: "Agent Management", 
       icon: <Users size={18} />,
-      description: "Orchestrate active agents and resource allocation"
+      description: "Orchestrate active agents and resource allocation",
+      subItems: ["Active Swarm", "Logs", "Performance"]
     },
     { 
       id: "foundry", 
       title: "Agent Foundry", 
       icon: <BrainCircuit size={18} />,
-      description: "Advanced skill creation and tool allocation"
+      description: "Advanced skill creation and tool allocation",
+      subItems: ["Skill Library", "Tool Builder", "Testing"]
     },
     { 
       id: "customization", 
       title: "Customizations", 
       icon: <Palette size={18} />,
-      description: "Theme editor and UI preferences"
+      description: "Theme editor and UI preferences",
+      subItems: ["Themes", "Layout", "Typography"]
     }
   ];
 
@@ -130,19 +137,35 @@ export default function Admin() {
             
             <TabsList className="flex flex-col h-auto bg-transparent gap-2 p-0">
               {menuItems.map((item) => (
-                <TabsTrigger
-                  key={item.id}
-                  value={item.id}
-                  className="w-full justify-start gap-3 px-4 py-3 h-auto border border-transparent data-[state=active]:bg-card/40 data-[state=active]:border-primary/30 data-[state=active]:text-primary transition-all duration-300 font-mono text-sm group"
-                >
-                  <div className={`p-1.5 rounded bg-black/20 group-data-[state=active]:text-primary text-muted-foreground transition-colors`}>
-                    {item.icon}
-                  </div>
-                  <div className="flex flex-col items-start text-left">
-                    <span className="font-bold">{item.title}</span>
-                  </div>
-                  <ChevronRight className="ml-auto opacity-0 group-data-[state=active]:opacity-100 transition-opacity" size={14} />
-                </TabsTrigger>
+                <div key={item.id} className="flex flex-col gap-1">
+                  <TabsTrigger
+                    value={item.id}
+                    className="w-full justify-start gap-3 px-4 py-3 h-auto border border-transparent data-[state=active]:bg-card/40 data-[state=active]:border-primary/30 data-[state=active]:text-primary transition-all duration-300 font-mono text-sm group"
+                  >
+                    <div className={`p-1.5 rounded bg-black/20 group-data-[state=active]:text-primary text-muted-foreground transition-colors`}>
+                      {item.icon}
+                    </div>
+                    <div className="flex flex-col items-start text-left">
+                      <span className="font-bold">{item.title}</span>
+                    </div>
+                    <ChevronRight className="ml-auto opacity-0 group-data-[state=active]:opacity-100 transition-opacity" size={14} />
+                  </TabsTrigger>
+                  
+                  {item.subItems && activeTab === item.id && (
+                     <motion.div 
+                       initial={{ opacity: 0, height: 0 }}
+                       animate={{ opacity: 1, height: 'auto' }}
+                       className="pl-12 flex flex-col gap-1 pb-2 overflow-hidden"
+                     >
+                       {item.subItems.map(sub => (
+                         <div key={sub} className="text-[10px] text-muted-foreground hover:text-primary cursor-pointer flex items-center gap-2 py-1 transition-colors">
+                            <div className="w-1 h-1 rounded-full bg-primary/40" />
+                            {sub}
+                         </div>
+                       ))}
+                     </motion.div>
+                  )}
+                </div>
               ))}
             </TabsList>
           </div>
