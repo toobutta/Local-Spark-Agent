@@ -3,7 +3,7 @@ import { TerminalPrompt } from "@/components/terminal/TerminalPrompt";
 import { LegoLoader } from "@/components/terminal/LegoLoader";
 import { AICore } from "@/components/terminal/AICore";
 import { AgentGraph } from "@/components/terminal/AgentGraph";
-import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle } from "lucide-react";
+import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Types
@@ -129,17 +129,40 @@ export default function Home() {
       {/* Main Terminal Area */}
       <div className="flex-1 flex flex-col h-screen relative z-10 border-r border-border/50">
         {/* Header */}
-        <header className="h-12 border-b border-border/50 bg-card/20 flex items-center justify-between px-4 backdrop-blur-md">
-          <div className="flex items-center gap-2 text-primary">
-            <Terminal size={18} />
-            <h1 className="font-display font-bold tracking-widest text-lg">NEXUS CLI</h1>
-          </div>
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              LOCAL
+        <header className="h-14 border-b border-border/50 bg-card/20 flex items-center justify-between px-4 backdrop-blur-md shrink-0">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-primary">
+              <Terminal size={18} />
+              <h1 className="font-display font-bold tracking-widest text-lg">NEXUS CLI</h1>
             </div>
-            <div className="font-mono">v2.4.0</div>
+            
+            <div className="h-8 w-px bg-border/30 mx-2 hidden md:block" />
+            
+            <div className="hidden md:flex flex-col justify-center">
+              <span className="text-[10px] text-primary/70 uppercase tracking-widest font-bold mb-0.5">Project: Genesis</span>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono bg-black/20 px-2 py-0.5 rounded border border-white/5">
+                <FolderOpen size={10} className="text-secondary" />
+                <span>~/workspace/nexus-core/src</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-black/40 border border-white/5">
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_5px_#22c55e]" />
+                <span className="font-bold tracking-wider text-[10px]">LOCAL</span>
+              </div>
+              <span className="text-border/50">|</span>
+              <span className="font-mono text-[10px] opacity-70">v2.4.0</span>
+            </div>
+            
+            <button 
+              className="p-2 hover:bg-primary/10 hover:text-primary rounded-md transition-all duration-300 border border-white/5 hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,255,255,0.2)] group"
+              title="Configurations"
+            >
+              <Settings size={18} className="group-hover:rotate-90 transition-transform duration-500" />
+            </button>
           </div>
         </header>
 
