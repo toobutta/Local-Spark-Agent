@@ -374,7 +374,9 @@ export default function Admin() {
                             {[
                               { name: "PostgreSQL Connector", status: "Active", type: "Database" },
                               { name: "Filesystem Watcher", status: "Active", type: "System" },
-                              { name: "GitHub Repository", status: "Inactive", type: "VCS" }
+                              { name: "GitHub Repository", status: "Inactive", type: "VCS" },
+                              { name: "Memory Service", status: "Inactive", type: "Core" },
+                              { name: "Google Drive", status: "Inactive", type: "Storage" }
                             ].map((mcp) => (
                               <div key={mcp.name} className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
                                 <div className="flex items-center gap-3">
@@ -403,35 +405,90 @@ export default function Admin() {
                             <CardDescription>Connected services and toolkits.</CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-4">
-                            <div className="space-y-3">
-                              <div className="flex items-center justify-between p-3 rounded bg-card/50 border border-border">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                  <div className="p-2 rounded bg-black/40 text-blue-400"><Globe size={16} /></div>
+                                  <div className="p-2 rounded bg-black/40 text-white"><FileCode size={16} /></div>
                                   <div>
-                                    <div className="font-bold text-sm">Brave Search API</div>
-                                    <div className="text-[10px] text-green-400">Connected</div>
+                                    <div className="font-bold text-sm">GitHub</div>
+                                    <div className="text-[10px] text-muted-foreground">Code & Issues</div>
+                                  </div>
+                                </div>
+                                <Switch />
+                              </div>
+
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-blue-400"><Database size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">PostgreSQL</div>
+                                    <div className="text-[10px] text-muted-foreground">Structured DB</div>
                                   </div>
                                 </div>
                                 <Switch defaultChecked />
                               </div>
-                              
-                              <div className="flex items-center justify-between p-3 rounded bg-card/50 border border-border">
+
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                   <div className="p-2 rounded bg-black/40 text-yellow-400"><Database size={16} /></div>
                                   <div>
-                                    <div className="font-bold text-sm">Pinecone Vector DB</div>
+                                    <div className="font-bold text-sm">Pinecone</div>
                                     <div className="text-[10px] text-green-400">Connected</div>
                                   </div>
                                 </div>
                                 <Switch defaultChecked />
                               </div>
 
-                              <div className="flex items-center justify-between p-3 rounded bg-card/50 border border-border opacity-60">
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-orange-400"><Globe size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">Brave Search</div>
+                                    <div className="text-[10px] text-green-400">Connected</div>
+                                  </div>
+                                </div>
+                                <Switch defaultChecked />
+                              </div>
+
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between opacity-60">
                                 <div className="flex items-center gap-3">
                                   <div className="p-2 rounded bg-black/40 text-pink-400"><Box size={16} /></div>
                                   <div>
-                                    <div className="font-bold text-sm">Slack Webhooks</div>
-                                    <div className="text-[10px] text-muted-foreground">Not Configured</div>
+                                    <div className="font-bold text-sm">Slack</div>
+                                    <div className="text-[10px] text-muted-foreground">Webhooks</div>
+                                  </div>
+                                </div>
+                                <Switch />
+                              </div>
+
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between opacity-60">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-white"><LayoutGrid size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">Vercel</div>
+                                    <div className="text-[10px] text-muted-foreground">Deployment</div>
+                                  </div>
+                                </div>
+                                <Switch />
+                              </div>
+                              
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between opacity-60">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-purple-400"><Activity size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">Sentry</div>
+                                    <div className="text-[10px] text-muted-foreground">Monitoring</div>
+                                  </div>
+                                </div>
+                                <Switch />
+                              </div>
+
+                              <div className="p-3 rounded bg-card/50 border border-border flex items-center justify-between opacity-60">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-yellow-600"><BrainCircuit size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">Hugging Face</div>
+                                    <div className="text-[10px] text-muted-foreground">Models</div>
                                   </div>
                                 </div>
                                 <Switch />
