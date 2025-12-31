@@ -1,0 +1,195 @@
+$charcoal: #050509;
+$amber: #ffb000;
+$teal: #00f5d4;
+$magenta: #ff4bcb;
+$white: #ffffff;
+$gray: #444444;
+
+Screen {
+    background: $charcoal;
+    color: $amber;
+}
+
+/* --- Layout --- */
+
+#app-grid {
+    layout: grid;
+    grid-size: 2 3; /* Sidebar, Content */
+    grid-columns: 30 1fr;
+    grid-rows: 3 1fr 3; /* Header, Main, Footer */
+    height: 100%;
+}
+
+HeaderWidget {
+    column-span: 2;
+    background: $charcoal;
+    border-bottom: double $teal;
+    height: 3;
+    padding: 0 1;
+    layout: horizontal;
+    align-vertical: middle;
+}
+
+Sidebar {
+    row-span: 1;
+    background: $charcoal;
+    border-right: double $teal;
+    padding: 1;
+    width: 100%;
+    height: 100%;
+}
+
+MainContent {
+    background: $charcoal;
+    padding: 1;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+FooterWidget {
+    column-span: 2;
+    background: $charcoal;
+    border-top: double $magenta;
+    height: 3;
+    color: $white;
+    padding: 0 1;
+    layout: horizontal;
+    align-vertical: middle;
+}
+
+/* --- Typography & Elements --- */
+
+Label {
+    color: $amber;
+}
+
+.title {
+    color: $teal;
+    text-style: bold;
+}
+
+.subtitle {
+    color: $gray;
+}
+
+.section-header {
+    background: $teal;
+    color: $charcoal;
+    text-style: bold;
+    padding: 0 1;
+    margin-bottom: 1;
+}
+
+.card {
+    border: ascii $gray;
+    padding: 1;
+    margin: 1;
+    background: #111111;
+}
+
+.card:focus {
+    border: double $amber;
+}
+
+/* --- Components --- */
+
+/* Header */
+#header-title {
+    color: $teal;
+    text-style: bold;
+    width: 1fr;
+}
+
+#project-indicator {
+    color: $magenta;
+    width: 1fr;
+    text-align: center;
+}
+
+#admin-badge {
+    background: $amber;
+    color: $charcoal;
+    text-style: bold;
+    padding: 0 1;
+}
+
+/* Sidebar */
+.nav-item {
+    padding: 1 2;
+    margin-bottom: 1;
+    border-left: vbar $gray;
+}
+
+.nav-item:hover {
+    background: $gray;
+    color: $white;
+}
+
+.nav-item.active {
+    border-left: vbar $teal;
+    background: #00f5d4 20%;
+    color: $teal;
+    text-style: bold;
+}
+
+/* Systems Tab */
+#model-config-panel {
+    border: double $amber;
+    margin-bottom: 1;
+    padding: 1;
+}
+
+.secure-vault-label {
+    background: $magenta;
+    color: $white;
+    text-style: bold;
+    padding: 0 1;
+    margin-bottom: 1;
+}
+
+Tabs {
+    dock: top;
+}
+
+Tab {
+    padding: 1 2;
+}
+
+.tools-grid {
+    layout: grid;
+    grid-size: 4 2;
+    grid-gutter: 1;
+    margin-bottom: 1;
+}
+
+.tool-card {
+    border: ascii $gray;
+    height: 5;
+    padding: 0 1;
+    align: center middle;
+}
+
+.tool-card.active {
+    border: double $teal;
+    color: $teal;
+}
+
+.mcp-tree {
+    border: ascii $gray;
+    height: auto;
+    margin-bottom: 1;
+}
+
+/* Footer */
+#now-playing {
+    color: $magenta;
+    text-style: bold;
+    width: 1fr;
+    text-align: center;
+}
+
+#equalizer {
+    color: $teal;
+    width: 20;
+    text-align: right;
+}
