@@ -1212,7 +1212,7 @@ export default function Admin() {
                         <CardTitle className="font-mono text-lg">Theme Settings</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-4 gap-4">
                           {[
                             { name: "Cyberpunk", color: "bg-cyan-500" },
                             { name: "Matrix", color: "bg-green-500" },
@@ -1223,6 +1223,47 @@ export default function Admin() {
                               <div className="font-mono text-xs text-center font-bold">{theme.name}</div>
                             </div>
                           ))}
+                           <div className="border border-dashed border-border rounded-md p-3 cursor-pointer hover:border-primary/50 transition-colors bg-black/20 relative group">
+                              <div className="w-full h-20 rounded-md mb-2 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 opacity-20 group-hover:opacity-40 transition-opacity flex items-center justify-center">
+                                 <Palette className="text-white opacity-50" />
+                              </div>
+                              <div className="font-mono text-xs text-center font-bold">Custom</div>
+                              <input type="color" className="absolute inset-0 opacity-0 cursor-pointer" />
+                           </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                      <CardHeader>
+                        <CardTitle className="font-mono text-lg">Typography</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                              <Label>Terminal Font</Label>
+                              <Select defaultValue="jetbrains">
+                                <SelectTrigger className="bg-black/40 border-white/10 font-mono">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-black/90 border-white/10 backdrop-blur-xl">
+                                  <SelectItem value="jetbrains" className="font-mono">JetBrains Mono</SelectItem>
+                                  <SelectItem value="fira" className="font-mono">Fira Code</SelectItem>
+                                  <SelectItem value="source" className="font-mono">Source Code Pro</SelectItem>
+                                  <SelectItem value="vt323" className="font-mono">VT323 (Retro)</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Font Size</Label>
+                              <div className="flex items-center gap-3 pt-2">
+                                <span className="text-xs font-mono text-muted-foreground">12px</span>
+                                <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden relative">
+                                   <div className="absolute top-0 left-0 h-full bg-primary w-[40%]" />
+                                </div>
+                                <span className="text-xs font-mono text-muted-foreground">24px</span>
+                              </div>
+                            </div>
                         </div>
                       </CardContent>
                     </Card>
