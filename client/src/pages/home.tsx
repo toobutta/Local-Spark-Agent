@@ -257,7 +257,7 @@ export default function Home() {
         addLog("system", "ESTABLISHING SECURE HANDSHAKE WITH NVIDIA DGX SPARK...");
         await new Promise(resolve => setTimeout(resolve, 1500));
         setDgxConnected(true);
-        addLog("success", "CONNECTION ESTABLISHED. 8x A100 GPU CLUSTER AVAILABLE.");
+        addLog("success", "CONNECTION ESTABLISHED. GB10 BLACKWELL SUPERCHIP DETECTED.");
       } else if (command === "status") {
         addLog("output", (
           <div className="flex flex-col gap-1 font-mono text-xs border border-border p-3 rounded bg-black/20">
@@ -496,18 +496,22 @@ export default function Home() {
                 >
                   <div className="flex items-center justify-between border-b border-green-500/20 pb-2 mb-2">
                      <span className="text-green-400 font-bold text-xs flex items-center gap-2">
-                       <Zap size={12} /> NVIDIA DGX A100
+                       <Zap size={12} /> NVIDIA DGX SPARK
                      </span>
                      <Badge variant="outline" className="text-[10px] h-4 border-green-500/40 text-green-400 bg-green-500/5">ONLINE</Badge>
                   </div>
                   
                   <div className="space-y-2">
                     <div className="flex justify-between text-[10px] text-muted-foreground">
-                      <span>GPU CLUSTER</span>
-                      <span className="text-green-300">8x A100 80GB</span>
+                      <span>GB10 GRACE BLACKWELL</span>
+                      <span className="text-green-300">128GB UNIFIED</span>
                     </div>
                     <div className="w-full bg-black/40 h-1.5 rounded-full overflow-hidden">
                        <div className="bg-green-500 h-full w-[12%] animate-pulse" />
+                    </div>
+                    <div className="flex justify-between text-[9px] text-muted-foreground pt-1">
+                      <span>FP4: 1 PFLOPS</span>
+                      <span>NVMe: 4TB</span>
                     </div>
                   </div>
 
@@ -533,7 +537,7 @@ export default function Home() {
                     <DialogContent className="bg-black/95 border-green-500/30 text-green-400 max-w-4xl h-[600px] flex flex-col p-0 gap-0 font-mono backdrop-blur-xl">
                       <DialogHeader className="px-4 py-2 border-b border-green-500/20 bg-green-500/5 flex flex-row items-center justify-between">
                         <DialogTitle className="text-sm font-bold flex items-center gap-2">
-                          <Zap size={16} /> DGX A100 :: SSH://192.168.1.108
+                          <Zap size={16} /> DGX SPARK :: SSH://192.168.1.108
                         </DialogTitle>
                         <div className="text-[10px] bg-green-500/20 px-2 py-0.5 rounded text-green-300">CONNECTED</div>
                       </DialogHeader>
