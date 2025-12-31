@@ -1390,8 +1390,16 @@ export default function Admin() {
                              <div className="flex items-center justify-center min-h-full">
                                 <div className="flex flex-col items-center min-w-[800px] scale-90 origin-top">
                                     {/* Level 1: Director */}
-                                    <div className="flex flex-col items-center relative z-10">
-                                        <div className="w-48 p-4 bg-purple-500/20 border border-purple-500/50 rounded-lg flex flex-col items-center gap-2 backdrop-blur-md shadow-[0_0_30px_rgba(168,85,247,0.15)]">
+                                    <div className="flex flex-col items-center relative z-10" onClick={() => setSelectedAgent({ 
+                                        name: "DirectorAI", 
+                                        role: "Orchestrator Node",
+                                        model: "GPT-4-Turbo",
+                                        context: "128k",
+                                        temp: "0.2",
+                                        desc: "Root level strategic planner. Decomposes high-level objectives into actionable sub-tasks for lead agents.",
+                                        tools: ["System Registry", "Task Queue", "Memory Bank"]
+                                    })}>
+                                        <div className="w-48 p-4 bg-purple-500/20 border border-purple-500/50 rounded-lg flex flex-col items-center gap-2 backdrop-blur-md shadow-[0_0_30px_rgba(168,85,247,0.15)] cursor-pointer hover:bg-purple-500/30 hover:scale-105 transition-all">
                                             <div className="p-2 bg-purple-500/20 rounded-full text-purple-400"><BrainCircuit size={24} /></div>
                                             <div className="text-center">
                                                 <div className="font-bold text-purple-400 text-sm">DirectorAI</div>
@@ -1411,7 +1419,17 @@ export default function Admin() {
                                         {/* Research Branch */}
                                         <div className="flex flex-col items-center group">
                                              <div className="h-8 w-px bg-purple-500/30 group-hover:bg-blue-500/50 transition-colors"></div>
-                                             <div className="w-44 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-blue-500/20 transition-colors cursor-pointer">
+                                             <div className="w-44 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-blue-500/20 transition-all cursor-pointer hover:scale-105"
+                                                onClick={() => setSelectedAgent({
+                                                    name: "Research Lead",
+                                                    role: "Info Gathering",
+                                                    model: "Claude 3.5 Sonnet",
+                                                    context: "200k",
+                                                    temp: "0.4",
+                                                    desc: "Manages information retrieval strategies. Delegates scraping and analysis tasks.",
+                                                    tools: ["Search Planner", "Source Validator", "Data Aggregator"]
+                                                })}
+                                             >
                                                 <div className="p-1.5 bg-blue-500/20 rounded-full text-blue-400"><Globe size={16} /></div>
                                                 <div className="text-center">
                                                     <div className="font-bold text-blue-400 text-xs">Research Lead</div>
@@ -1422,13 +1440,33 @@ export default function Admin() {
                                              <div className="flex flex-col gap-4 relative pl-6 border-l border-blue-500/20 ml-6 pb-2">
                                                 <div className="flex items-center gap-3 relative">
                                                     <div className="absolute -left-6 top-1/2 w-6 h-px bg-blue-500/20"></div>
-                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-blue-500/30 transition-colors">
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-blue-500/30 transition-all cursor-pointer hover:bg-white/5"
+                                                        onClick={() => setSelectedAgent({
+                                                            name: "Web Scraper",
+                                                            role: "Data Collection",
+                                                            model: "Haiku (Fast)",
+                                                            context: "32k",
+                                                            temp: "0.1",
+                                                            desc: "High-speed autonomous browser agent. Navigates DOM and extracts text content.",
+                                                            tools: ["Headless Chrome", "DOM Parser", "Proxy Rotator"]
+                                                        })}
+                                                    >
                                                         <Network size={12} className="text-blue-500" /> Web Scraper
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3 relative">
                                                     <div className="absolute -left-6 top-1/2 w-6 h-px bg-blue-500/20"></div>
-                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-blue-500/30 transition-colors">
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-blue-500/30 transition-all cursor-pointer hover:bg-white/5"
+                                                         onClick={() => setSelectedAgent({
+                                                            name: "Data Analyst",
+                                                            role: "Processing",
+                                                            model: "GPT-4o",
+                                                            context: "128k",
+                                                            temp: "0.0",
+                                                            desc: "Processes raw unstructured text into structured JSON schemas. Performs sentiment analysis.",
+                                                            tools: ["Pandas/Numpy", "JSON Formatter", "Regex Engine"]
+                                                        })}
+                                                    >
                                                         <Database size={12} className="text-blue-500" /> Data Analyst
                                                     </div>
                                                 </div>
@@ -1438,7 +1476,17 @@ export default function Admin() {
                                         {/* DevOps Branch */}
                                         <div className="flex flex-col items-center group">
                                              <div className="h-8 w-px bg-purple-500/30 group-hover:bg-orange-500/50 transition-colors"></div>
-                                             <div className="w-44 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-orange-500/20 transition-colors cursor-pointer">
+                                             <div className="w-44 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-orange-500/20 transition-all cursor-pointer hover:scale-105"
+                                                  onClick={() => setSelectedAgent({
+                                                    name: "DevOps Lead",
+                                                    role: "Build & Deploy",
+                                                    model: "Claude 3 Opus",
+                                                    context: "200k",
+                                                    temp: "0.2",
+                                                    desc: "Orchestrates the software development lifecycle. Manages CI/CD pipelines.",
+                                                    tools: ["Git Manager", "Docker Controller", "Kubernetes API"]
+                                                })}
+                                             >
                                                 <div className="p-1.5 bg-orange-500/20 rounded-full text-orange-400"><Hammer size={16} /></div>
                                                 <div className="text-center">
                                                     <div className="font-bold text-orange-400 text-xs">DevOps Lead</div>
@@ -1449,13 +1497,33 @@ export default function Admin() {
                                              <div className="flex flex-col gap-4 relative pl-6 border-l border-orange-500/20 ml-6 pb-2">
                                                 <div className="flex items-center gap-3 relative">
                                                     <div className="absolute -left-6 top-1/2 w-6 h-px bg-orange-500/20"></div>
-                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-orange-500/30 transition-colors">
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-orange-500/30 transition-all cursor-pointer hover:bg-white/5"
+                                                         onClick={() => setSelectedAgent({
+                                                            name: "Builder",
+                                                            role: "Code Generation",
+                                                            model: "DeepSeek Coder 33B",
+                                                            context: "64k",
+                                                            temp: "0.1",
+                                                            desc: "Writes, compiles, and tests code modules based on specifications.",
+                                                            tools: ["File Writer", "Syntax Checker", "Unit Test Runner"]
+                                                        })}
+                                                    >
                                                         <Code size={12} className="text-orange-500" /> Builder
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3 relative">
                                                     <div className="absolute -left-6 top-1/2 w-6 h-px bg-orange-500/20"></div>
-                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-orange-500/30 transition-colors">
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-orange-500/30 transition-all cursor-pointer hover:bg-white/5"
+                                                         onClick={() => setSelectedAgent({
+                                                            name: "Deployer",
+                                                            role: "Release Management",
+                                                            model: "GPT-4-Turbo",
+                                                            context: "128k",
+                                                            temp: "0.0",
+                                                            desc: "Manages staging and production environments. Handles rollbacks.",
+                                                            tools: ["SSH Client", "Vercel API", "Health Monitor"]
+                                                        })}
+                                                    >
                                                         <Server size={12} className="text-orange-500" /> Deployer
                                                     </div>
                                                 </div>
@@ -1465,7 +1533,17 @@ export default function Admin() {
                                         {/* Security Branch */}
                                         <div className="flex flex-col items-center group">
                                              <div className="h-8 w-px bg-purple-500/30 group-hover:bg-red-500/50 transition-colors"></div>
-                                             <div className="w-44 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-red-500/20 transition-colors cursor-pointer">
+                                             <div className="w-44 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-red-500/20 transition-all cursor-pointer hover:scale-105"
+                                                  onClick={() => setSelectedAgent({
+                                                    name: "Security Lead",
+                                                    role: "Audit & Safety",
+                                                    model: "Llama 3 70B (Local)",
+                                                    context: "8k",
+                                                    temp: "0.1",
+                                                    desc: "Ensures system integrity and compliance. Reviews all code and actions.",
+                                                    tools: ["Vulnerability Scanner", "Policy Enforcer", "Audit Logger"]
+                                                })}
+                                             >
                                                 <div className="p-1.5 bg-red-500/20 rounded-full text-red-400"><ShieldCheck size={16} /></div>
                                                 <div className="text-center">
                                                     <div className="font-bold text-red-400 text-xs">Security Lead</div>
@@ -1476,7 +1554,17 @@ export default function Admin() {
                                              <div className="flex flex-col gap-4 relative pl-6 border-l border-red-500/20 ml-6 pb-2">
                                                 <div className="flex items-center gap-3 relative">
                                                     <div className="absolute -left-6 top-1/2 w-6 h-px bg-red-500/20"></div>
-                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-red-500/30 transition-colors">
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-red-500/30 transition-all cursor-pointer hover:bg-white/5"
+                                                         onClick={() => setSelectedAgent({
+                                                            name: "Auditor",
+                                                            role: "Code Review",
+                                                            model: "CodeLlama 34B",
+                                                            context: "16k",
+                                                            temp: "0.0",
+                                                            desc: "Performs static analysis and security auditing on generated artifacts.",
+                                                            tools: ["SonarQube Connector", "OWASP Scanner", "Diff Viewer"]
+                                                        })}
+                                                    >
                                                         <Shield size={12} className="text-red-500" /> Auditor
                                                     </div>
                                                 </div>
@@ -1486,6 +1574,89 @@ export default function Admin() {
                                     </div>
                                 </div>
                              </div>
+
+                             {/* Agent Details Sheet */}
+                             <Sheet open={!!selectedAgent} onOpenChange={(open) => !open && setSelectedAgent(null)}>
+                                <SheetContent className="bg-black/95 border-l border-white/10 backdrop-blur-xl w-[400px] sm:w-[540px]">
+                                    <SheetHeader className="mb-6 border-b border-white/10 pb-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded bg-white/5 flex items-center justify-center border border-white/10">
+                                                <Bot size={20} className="text-primary" />
+                                            </div>
+                                            <div>
+                                                <SheetTitle className="font-mono text-xl text-primary">{selectedAgent?.name}</SheetTitle>
+                                                <SheetDescription className="font-mono text-xs">{selectedAgent?.role}</SheetDescription>
+                                            </div>
+                                        </div>
+                                    </SheetHeader>
+                                    
+                                    <div className="space-y-6">
+                                        <div className="space-y-3">
+                                            <Label className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Core Specifications</Label>
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <div className="p-3 bg-white/5 rounded border border-white/5">
+                                                    <div className="text-[10px] text-muted-foreground mb-1">MODEL ENGINE</div>
+                                                    <div className="text-sm font-bold text-white flex items-center gap-2">
+                                                        <Brain size={12} className="text-blue-400" /> {selectedAgent?.model}
+                                                    </div>
+                                                </div>
+                                                <div className="p-3 bg-white/5 rounded border border-white/5">
+                                                    <div className="text-[10px] text-muted-foreground mb-1">CONTEXT WINDOW</div>
+                                                    <div className="text-sm font-bold text-white flex items-center gap-2">
+                                                        <Layers size={12} className="text-purple-400" /> {selectedAgent?.context}
+                                                    </div>
+                                                </div>
+                                                <div className="p-3 bg-white/5 rounded border border-white/5">
+                                                    <div className="text-[10px] text-muted-foreground mb-1">TEMPERATURE</div>
+                                                    <div className="text-sm font-bold text-white flex items-center gap-2">
+                                                        <Activity size={12} className="text-orange-400" /> {selectedAgent?.temp}
+                                                    </div>
+                                                </div>
+                                                <div className="p-3 bg-white/5 rounded border border-white/5">
+                                                    <div className="text-[10px] text-muted-foreground mb-1">STATUS</div>
+                                                    <div className="text-sm font-bold text-green-400 flex items-center gap-2">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> ONLINE
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <Label className="text-xs font-mono text-muted-foreground uppercase tracking-widest">System Instructions</Label>
+                                            <div className="p-3 bg-black/40 rounded border border-white/10 font-mono text-xs text-gray-400 leading-relaxed italic">
+                                                "{selectedAgent?.desc}"
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <Label className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Enabled Tools</Label>
+                                            <div className="space-y-2">
+                                                {selectedAgent?.tools?.map((tool: string) => (
+                                                    <div key={tool} className="flex items-center justify-between p-2 rounded bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+                                                        <div className="flex items-center gap-3">
+                                                            <Wrench size={14} className="text-primary group-hover:scale-110 transition-transform" />
+                                                            <span className="text-sm text-gray-300 font-mono">{tool}</span>
+                                                        </div>
+                                                        <Switch defaultChecked className="scale-75" />
+                                                    </div>
+                                                ))}
+                                                <Button variant="outline" className="w-full border-dashed border-white/10 text-xs text-muted-foreground h-8 hover:text-white hover:border-white/20">
+                                                    <Plus size={12} className="mr-2" /> ADD TOOL
+                                                </Button>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex gap-3 pt-4 border-t border-white/10">
+                                            <Button className="flex-1 bg-primary text-black font-bold hover:bg-primary/90">
+                                                <Terminal size={14} className="mr-2" /> OPEN CONSOLE
+                                            </Button>
+                                            <Button variant="outline" className="flex-1 border-white/10 hover:bg-white/5">
+                                                <Settings size={14} className="mr-2" /> CONFIGURE
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </SheetContent>
+                            </Sheet>
                           </TabsContent>
 
                           {/* FOUNDRY TAB */}
