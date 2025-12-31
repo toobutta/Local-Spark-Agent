@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +24,13 @@ export default function Admin() {
       description: "Manage personal settings and credentials"
     },
     { 
-      id: "project", 
+      id: "projects", 
+      title: "Project Profiles", 
+      icon: <Briefcase size={18} />,
+      description: "Manage workspaces and project-specific configurations"
+    },
+    { 
+      id: "systems", 
       title: "Systems & Configurations", 
       icon: <Settings size={18} />,
       description: "Manage APIs, integrations, and runtime environment"
@@ -157,7 +163,127 @@ export default function Admin() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="project" className="mt-0 h-full border-none p-0">
+                <TabsContent value="projects" className="mt-0 h-full border-none p-0">
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-2xl font-display font-bold text-blue-400 mb-1">Project Profiles</h2>
+                        <p className="text-muted-foreground">Manage and switch between different project workspaces.</p>
+                      </div>
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-xs font-mono gap-2">
+                        <Plus size={14} /> NEW PROJECT
+                      </Button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <Card className="bg-blue-500/10 border-blue-500/50 backdrop-blur-sm relative overflow-hidden group cursor-pointer hover:bg-blue-500/20 transition-all">
+                        <div className="absolute top-0 right-0 p-2">
+                          <Badge className="bg-blue-500 hover:bg-blue-600 text-white font-mono text-[10px]">ACTIVE</Badge>
+                        </div>
+                        <CardHeader>
+                          <CardTitle className="font-mono text-lg flex items-center gap-2">
+                            <BrainCircuit size={18} className="text-blue-400" /> Genesis
+                          </CardTitle>
+                          <CardDescription>DGX/AIML Research Core</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="space-y-2 text-xs font-mono text-muted-foreground">
+                            <div className="flex justify-between"><span>Type:</span> <span className="text-foreground">AI Research</span></div>
+                            <div className="flex justify-between"><span>Modules:</span> <span className="text-foreground">SparkPlug, Foundry</span></div>
+                            <div className="flex justify-between"><span>Created:</span> <span className="text-foreground">2024-12-01</span></div>
+                          </div>
+                          <Separator className="bg-blue-500/20" />
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" className="w-full text-xs h-7 border-blue-500/30 hover:bg-blue-500/20 hover:text-blue-400">CONFIGURE</Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="bg-card/30 border-border/50 backdrop-blur-sm relative overflow-hidden group cursor-pointer hover:border-primary/50 transition-all">
+                        <CardHeader>
+                          <CardTitle className="font-mono text-lg flex items-center gap-2">
+                            <Globe size={18} className="text-orange-400" /> Helios Web
+                          </CardTitle>
+                          <CardDescription>Full-Stack Web Application</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="space-y-2 text-xs font-mono text-muted-foreground">
+                            <div className="flex justify-between"><span>Type:</span> <span className="text-foreground">Web Dev</span></div>
+                            <div className="flex justify-between"><span>Modules:</span> <span className="text-foreground">React, Node.js</span></div>
+                            <div className="flex justify-between"><span>Created:</span> <span className="text-foreground">2025-01-15</span></div>
+                          </div>
+                          <Separator className="bg-border/30" />
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" className="w-full text-xs h-7">ACTIVATE</Button>
+                            <Button size="sm" variant="outline" className="w-full text-xs h-7">SETTINGS</Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="bg-card/10 border-dashed border-border flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-card/20 hover:border-primary/30 transition-all group">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                          <Plus size={24} className="text-primary" />
+                        </div>
+                        <h3 className="font-mono font-bold text-sm">Create Profile</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Start a new workspace</p>
+                      </Card>
+                    </div>
+
+                    <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                      <CardHeader>
+                        <CardTitle className="font-mono text-lg">Profile Customization</CardTitle>
+                        <CardDescription>Override global defaults for the active project.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div className="space-y-2">
+                              <Label>Interface Theme</Label>
+                              <div className="grid grid-cols-3 gap-2">
+                                <div className="h-8 rounded bg-cyan-500/20 border border-cyan-500/50 cursor-pointer" title="Cyberpunk (Default)" />
+                                <div className="h-8 rounded bg-orange-500/20 border border-orange-500/20 cursor-pointer hover:border-orange-500/50" title="Sunset" />
+                                <div className="h-8 rounded bg-purple-500/20 border border-purple-500/20 cursor-pointer hover:border-purple-500/50" title="Void" />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Enabled Modules</Label>
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
+                                  <span className="text-xs font-mono">Agent Foundry</span>
+                                  <Switch defaultChecked />
+                                </div>
+                                <div className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
+                                  <span className="text-xs font-mono">SparkPlug (DGX)</span>
+                                  <Switch defaultChecked />
+                                </div>
+                                <div className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
+                                  <span className="text-xs font-mono">Web Preview</span>
+                                  <Switch />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label>Project Environment</Label>
+                            <div className="h-full bg-black/40 rounded border border-white/10 p-3 font-mono text-xs text-muted-foreground">
+                              # Project Specific ENV
+                              <br/>
+                              PROJECT_TYPE="research"
+                              <br/>
+                              DGX_ALLOCATION="8x"
+                              <br/>
+                              <br/>
+                              <span className="text-green-400"># Overrides applied</span>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="systems" className="mt-0 h-full border-none p-0">
                   <div className="space-y-6">
                     <div>
                       <h2 className="text-2xl font-display font-bold text-secondary mb-1">Systems & Configurations</h2>
