@@ -41,7 +41,7 @@ export function MatrixLoader({
     let frameId: number;
 
     const draw = () => {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Increased fade for slower trail
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "#0F0"; // Green text
@@ -51,10 +51,14 @@ export function MatrixLoader({
         const text = chars[Math.floor(Math.random() * chars.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.99) { // Reduced drop density
           drops[i] = 0;
         }
-        drops[i]++;
+        
+        // Slower movement - only update every other frame or use a fractional increment
+        if (Math.random() > 0.5) { 
+          drops[i]++;
+        }
       }
       
       frameId = requestAnimationFrame(draw);
