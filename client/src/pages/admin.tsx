@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function Admin() {
   const [_, setLocation] = useLocation();
@@ -170,9 +171,49 @@ export default function Admin() {
                         <h2 className="text-2xl font-display font-bold text-blue-400 mb-1">Project Profiles</h2>
                         <p className="text-muted-foreground">Manage and switch between different project workspaces.</p>
                       </div>
-                      <Button className="bg-blue-600 hover:bg-blue-700 text-xs font-mono gap-2">
-                        <Plus size={14} /> NEW PROJECT
-                      </Button>
+                      
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className="bg-blue-600 hover:bg-blue-700 text-xs font-mono gap-2">
+                            <Plus size={14} /> NEW PROJECT
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="bg-black/90 border-blue-500/20 text-white backdrop-blur-xl">
+                          <DialogHeader>
+                            <DialogTitle className="font-mono text-xl text-blue-400 flex items-center gap-2">
+                              <Box size={20} /> INITIALIZE PROJECT
+                            </DialogTitle>
+                            <DialogDescription className="text-gray-400">
+                              Configure a new workspace environment.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4 py-4">
+                            <div className="space-y-2">
+                              <Label className="text-xs font-mono text-blue-300">PROJECT CODENAME</Label>
+                              <Input placeholder="e.g. OMEGA-PROTOCOL" className="bg-blue-900/10 border-blue-500/30 font-mono text-white placeholder:text-blue-500/30" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-xs font-mono text-blue-300">WORKLOAD TYPE</Label>
+                              <div className="grid grid-cols-2 gap-3">
+                                <div className="p-3 rounded border border-blue-500/50 bg-blue-500/10 cursor-pointer hover:bg-blue-500/20 transition-colors">
+                                  <div className="font-bold text-xs mb-1">AI / ML RESEARCH</div>
+                                  <div className="text-[10px] text-gray-400">Includes DGX SparkPlug & Foundry</div>
+                                </div>
+                                <div className="p-3 rounded border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors opacity-60">
+                                  <div className="font-bold text-xs mb-1">WEB APPLICATION</div>
+                                  <div className="text-[10px] text-gray-400">Standard Full-Stack Env</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <DialogFooter>
+                            <Button variant="outline" className="border-white/10 hover:bg-white/5 text-gray-400">CANCEL</Button>
+                            <Button className="bg-blue-600 hover:bg-blue-500 text-white font-mono">
+                              <Sparkles size={14} className="mr-2" /> INITIALIZE
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
