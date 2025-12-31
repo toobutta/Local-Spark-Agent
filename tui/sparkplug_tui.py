@@ -19,6 +19,12 @@ class SparkPlugTUI(App):
             HeaderWidget(),
             Sidebar(),
             SystemsContent(),
+            # Warp-like Input Bar
+            Container(
+                Static("➜", id="prompt-icon"),
+                Static("Type a command...", id="input-placeholder"),
+                id="command-bar"
+            ),
             FooterWidget(),
             id="app-grid"
         )

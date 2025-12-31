@@ -387,22 +387,30 @@ export default function Admin() {
                               </DialogTitle>
                             </DialogHeader>
                             <div className="space-y-4 py-4">
-                              <div className="space-y-2">
-                                <Label className="text-[10px] text-muted-foreground uppercase tracking-widest">PowerShell / Command Line</Label>
-                                <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs flex items-center justify-between group">
-                                  <code className="text-primary">pip install sparkplug-dgx</code>
-                                  <button className="opacity-0 group-hover:opacity-100 transition-opacity"><RefreshCw size={12}/></button>
+                              <div className="p-4 bg-black/40 border border-border/50 rounded-lg">
+                                <Label className="text-xs text-muted-foreground uppercase tracking-widest mb-2 block">Option 1: Python Package (Recommended)</Label>
+                                <div className="space-y-3">
+                                  <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs text-primary">
+                                    pip install -r tui/requirements.txt
+                                  </div>
+                                  <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs text-primary">
+                                    python tui/sparkplug_tui.py
+                                  </div>
+                                  <p className="text-xs text-muted-foreground">
+                                    Run the source code directly. Requires Python 3.8+.
+                                  </p>
                                 </div>
                               </div>
-                              <div className="p-3 bg-primary/5 border border-primary/20 rounded-md">
-                                <p className="text-xs text-muted-foreground leading-relaxed">
-                                  SparkPlug is a high-performance TUI designed for direct terminal integration. 
-                                  Supports <span className="text-white font-bold">PowerShell</span>, <span className="text-white font-bold">Bash</span>, and <span className="text-white font-bold">Warp</span>.
+                              
+                              <div className="p-4 bg-black/40 border border-border/50 rounded-lg opacity-50 cursor-not-allowed">
+                                <Label className="text-xs text-muted-foreground uppercase tracking-widest mb-2 block">Option 2: Native Binary (Coming Soon)</Label>
+                                <Button className="w-full bg-primary/20 text-primary font-bold border border-primary/20" disabled>
+                                  DOWNLOAD .EXE (WINDOWS)
+                                </Button>
+                                <p className="text-[10px] text-muted-foreground mt-2 text-center">
+                                  Native compilation pipeline is currently building...
                                 </p>
                               </div>
-                              <Button className="w-full bg-primary text-black font-bold">
-                                DOWNLOAD .EXE / .DMG (NATIVE)
-                              </Button>
                             </div>
                           </DialogContent>
                         </Dialog>

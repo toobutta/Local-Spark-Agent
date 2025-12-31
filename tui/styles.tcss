@@ -14,10 +14,29 @@ Screen {
 
 #app-grid {
     layout: grid;
-    grid-size: 2 3; /* Sidebar, Content */
+    grid-size: 2 4; /* Sidebar, Content */
     grid-columns: 30 1fr;
-    grid-rows: 3 1fr 3; /* Header, Main, Footer */
+    grid-rows: 3 1fr 3 3; /* Header, Main, Input, Footer */
     height: 100%;
+}
+
+#command-bar {
+    column-span: 1; /* Only in main content area */
+    background: #161b22;
+    border-top: ascii $gray;
+    layout: horizontal;
+    align-vertical: middle;
+    padding: 0 1;
+}
+
+#prompt-icon {
+    color: $green;
+    margin-right: 1;
+    text-style: bold;
+}
+
+#input-placeholder {
+    color: $gray;
 }
 
 HeaderWidget {
@@ -133,6 +152,72 @@ Label {
 }
 
 /* Systems Tab */
+.dgx-panel {
+    border: double $teal;
+    background: #001a1a;
+    padding: 1;
+    margin-bottom: 1;
+}
+
+.dgx-header {
+    color: $teal;
+    text-style: bold;
+    border-bottom: ascii $teal;
+    padding-bottom: 1;
+    margin-bottom: 1;
+}
+
+.dgx-grid {
+    layout: grid;
+    grid-size: 2 1;
+    grid-gutter: 2;
+    margin-bottom: 1;
+}
+
+.dgx-info-box {
+    border: ascii $gray;
+    padding: 0 1;
+}
+
+.dgx-label {
+    color: $gray;
+    text-style: bold;
+}
+
+.dgx-value {
+    color: $white;
+}
+
+.dgx-value.active {
+    color: $teal;
+    text-style: bold;
+}
+
+.dgx-actions {
+    height: 3;
+    align: center middle;
+    margin-bottom: 1;
+}
+
+.ssh-status {
+    color: $green;
+    margin-right: 2;
+}
+
+.manage-keys-btn {
+    border: none;
+    background: $teal;
+    color: $charcoal;
+}
+
+.allocation-label {
+    color: $teal;
+}
+
+.allocation-bar {
+    color: $teal;
+}
+
 #model-config-panel {
     border: double $amber;
     margin-bottom: 1;

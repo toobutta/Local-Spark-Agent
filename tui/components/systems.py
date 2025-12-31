@@ -3,6 +3,28 @@ from textual.widget import Widget
 from textual.widgets import Static, Button, TabbedContent, TabPane, Input, Switch, Label, Tree
 from textual.containers import Horizontal, Vertical, Grid
 
+class DGXConfigPanel(Widget):
+    def compose(self) -> ComposeResult:
+        with Vertical(classes="dgx-panel"):
+            yield Static("DGX SUPERCHIP [NVIDIA GB200]", classes="dgx-header")
+            
+            with Grid(classes="dgx-grid"):
+                with Vertical(classes="dgx-info-box"):
+                    yield Label("NETWORK IDENTITY", classes="dgx-label")
+                    yield Static("dgx-h100-node-01", classes="dgx-value")
+                
+                with Vertical(classes="dgx-info-box"):
+                    yield Label("ALLOCATION", classes="dgx-label")
+                    yield Static("4x H100 (ACTIVE)", classes="dgx-value active")
+
+            with Horizontal(classes="dgx-actions"):
+                yield Static("SSH ACCESS: CONFIGURED", classes="ssh-status")
+                yield Button("MANAGE KEYS", variant="primary", classes="manage-keys-btn")
+            
+            # Allocation Slider Simulation
+            yield Label("COMPUTE ALLOCATION: 4x H100 GPU", classes="allocation-label")
+            yield Static("████████░░░░░░░░", classes="allocation-bar")
+
 class ModelConfigPanel(Widget):
     def compose(self) -> ComposeResult:
         with Vertical(id="model-config-panel"):
@@ -90,6 +112,8 @@ class BuildPipelinePanel(Widget):
 class SystemsContent(Widget):
     def compose(self) -> ComposeResult:
         with Vertical():
+            yield Static("SYSTEMS SETUPS", classes="section-header")
+            yield DGXConfigPanel()
             yield ModelConfigPanel()
             yield ToolsGrid()
             yield Horizontal(
