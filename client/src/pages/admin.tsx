@@ -1392,7 +1392,7 @@ export default function Admin() {
                 <TabsContent value="customization" className="mt-0 h-full border-none p-0">
                   <div className="space-y-6">
                     <div>
-                      <h2 className="text-2xl font-display font-bold text-pink-500 mb-1">Customizations</h2>
+                      <h2 className="text-2xl font-display font-bold mb-1 text-[#ed8739] text-left">Customizations</h2>
                       <p className="text-muted-foreground">Personalize your terminal experience.</p>
                     </div>
 
