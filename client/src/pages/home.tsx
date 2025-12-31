@@ -368,7 +368,6 @@ export default function Home() {
       {/* CRT Scanline Overlay */}
       <div className="scanline" />
       <div className="pointer-events-none fixed inset-0 z-50 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
-
       {/* Main Terminal Area */}
       <div className="flex-1 flex flex-col h-screen relative z-10 border-r border-border/50">
         {/* Header */}
@@ -376,7 +375,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-primary">
               <Terminal size={18} />
-              <h1 className="font-display font-bold tracking-widest text-lg">NEXUS CLI</h1>
+              <h1 className="font-display font-bold tracking-widest text-lg">SparkPlug</h1>
             </div>
             
             <div className="h-8 w-px bg-border/30 mx-2 hidden md:block" />
@@ -550,7 +549,6 @@ export default function Home() {
           </Sheet>
         </div>
       </div>
-
       {/* Sidebar / Status Panel */}
       <div className="w-full md:w-80 bg-card/10 border-l border-border/50 h-screen flex flex-col p-4 gap-6 overflow-y-auto relative z-10 backdrop-blur-sm">
         
