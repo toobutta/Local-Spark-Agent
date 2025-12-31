@@ -451,6 +451,20 @@ export default function Admin() {
                                   </div>
                                   <p className="text-[10px] text-muted-foreground">Required for Claude 3.5 Sonnet & Opus access.</p>
                                 </div>
+                                <div className="space-y-2 pt-2 border-t border-white/10">
+                                  <div className="flex items-center justify-between">
+                                    <Label className="text-xs text-blue-300">GitHub Proxy (Claude Code)</Label>
+                                    <Badge variant="outline" className="text-[10px] border-blue-500/30 text-blue-400 bg-blue-500/10">BETA</Badge>
+                                  </div>
+                                  <div className="p-3 bg-blue-900/10 border border-blue-500/20 rounded-md space-y-3">
+                                    <p className="text-[10px] text-muted-foreground">
+                                      Authorize via GitHub to use your Claude Code subscription quota.
+                                    </p>
+                                    <Button className="w-full bg-[#24292f] hover:bg-[#24292f]/80 text-white font-bold h-9 text-xs border border-white/10">
+                                      <Github size={14} className="mr-2" /> CONNECT GITHUB ACCOUNT
+                                    </Button>
+                                  </div>
+                                </div>
                               </TabsContent>
 
                               <TabsContent value="openai" className="space-y-4 mt-4">
