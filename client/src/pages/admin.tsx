@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot, Factory, ShieldCheck, Check } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -371,26 +371,95 @@ export default function Admin() {
                             <CardTitle className="font-mono text-lg flex items-center gap-2">
                               <BrainCircuit size={16} className="text-primary" /> Model Configuration
                             </CardTitle>
-                            <CardDescription>LLM provider settings and endpoints.</CardDescription>
+                            <CardDescription>Configure AI model providers and API access.</CardDescription>
                           </CardHeader>
-                          <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                              <Label>Model Provider</Label>
-                              <div className="flex gap-2">
-                                <Badge className="bg-primary/20 text-primary border-primary/50 cursor-pointer">OpenAI</Badge>
-                                <Badge variant="outline" className="cursor-pointer hover:bg-white/5">Anthropic</Badge>
-                                <Badge variant="outline" className="cursor-pointer hover:bg-white/5">Local (Ollama)</Badge>
-                              </div>
+                          <CardContent className="space-y-6">
+                            {/* Proxy OAuth / BYOK Section */}
+                            <div className="p-4 rounded border border-blue-500/20 bg-blue-500/5 space-y-3">
+                               <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                     <ShieldCheck size={16} className="text-blue-400" />
+                                     <span className="font-bold text-sm text-blue-100">Proxy OAuth / BYOK</span>
+                                  </div>
+                                  <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px]">SECURE VAULT</Badge>
+                               </div>
+                               <p className="text-xs text-muted-foreground">
+                                  Securely connect your own enterprise subscriptions or API keys. Credentials are encrypted and stored locally.
+                               </p>
                             </div>
+
+                            <Tabs defaultValue="anthropic" className="w-full">
+                              <TabsList className="grid grid-cols-4 bg-black/40 h-auto p-1">
+                                <TabsTrigger value="anthropic" className="text-xs font-mono py-2">Anthropic</TabsTrigger>
+                                <TabsTrigger value="openai" className="text-xs font-mono py-2">OpenAI</TabsTrigger>
+                                <TabsTrigger value="gemini" className="text-xs font-mono py-2">Gemini</TabsTrigger>
+                                <TabsTrigger value="factory" className="text-xs font-mono py-2">Factory</TabsTrigger>
+                              </TabsList>
+                              
+                              <TabsContent value="anthropic" className="space-y-4 mt-4">
+                                <div className="space-y-2">
+                                  <Label>Anthropic API Key</Label>
+                                  <div className="flex gap-2">
+                                    <Input type="password" placeholder="sk-ant-..." className="bg-black/20 border-border/50 font-mono flex-1" />
+                                    <Button className="bg-primary/20 text-primary border border-primary/50 hover:bg-primary/30">Connect</Button>
+                                  </div>
+                                  <p className="text-[10px] text-muted-foreground">Required for Claude 3.5 Sonnet & Opus access.</p>
+                                </div>
+                              </TabsContent>
+
+                              <TabsContent value="openai" className="space-y-4 mt-4">
+                                <div className="space-y-2">
+                                  <Label>OpenAI / Codex Key</Label>
+                                  <div className="flex gap-2">
+                                    <Input type="password" value="sk-........................" readOnly className="bg-black/20 border-border/50 font-mono flex-1" />
+                                    <Button variant="outline" className="border-green-500/30 text-green-400 hover:bg-green-500/10 gap-2">
+                                       <Check size={14} /> Connected
+                                    </Button>
+                                  </div>
+                                </div>
+                              </TabsContent>
+
+                              <TabsContent value="gemini" className="space-y-4 mt-4">
+                                <div className="space-y-2">
+                                  <Label>Google AI Studio Key</Label>
+                                  <div className="flex gap-2">
+                                    <Input type="password" placeholder="AIzaSy..." className="bg-black/20 border-border/50 font-mono flex-1" />
+                                    <Button className="bg-primary/20 text-primary border border-primary/50 hover:bg-primary/30">Connect</Button>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2 p-2 rounded bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 text-xs">
+                                   <Activity size={14} />
+                                   <span>Enterprise: Vertex AI Project ID required for production workloads.</span>
+                                </div>
+                              </TabsContent>
+
+                              <TabsContent value="factory" className="space-y-4 mt-4">
+                                <div className="space-y-2">
+                                  <Label>Factory Droid Subscription</Label>
+                                  <div className="flex flex-col gap-3">
+                                    <Button className="w-full bg-[#ff4f00]/20 text-[#ff4f00] border border-[#ff4f00]/50 hover:bg-[#ff4f00]/30 h-10 font-bold">
+                                       <Factory size={16} className="mr-2" /> AUTHENTICATE WITH FACTORY
+                                    </Button>
+                                    <div className="text-center text-[10px] text-muted-foreground">- OR -</div>
+                                    <Input type="password" placeholder="fd_live_..." className="bg-black/20 border-border/50 font-mono" />
+                                  </div>
+                                </div>
+                              </TabsContent>
+                            </Tabs>
+
+                            <Separator className="bg-white/10" />
+
                             <div className="space-y-2">
-                              <Label>Base URL</Label>
-                              <Input defaultValue="https://api.openai.com/v1" className="bg-black/20 border-border/50 font-mono" />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>API Key</Label>
-                              <div className="flex gap-2">
-                                <Input type="password" value="sk-........................" readOnly className="bg-black/20 border-border/50 font-mono flex-1" />
-                                <Button variant="outline" className="border-primary/20 hover:bg-primary/10 text-primary">Edit</Button>
+                              <Label>Local Inference Override</Label>
+                              <div className="flex items-center justify-between p-3 rounded bg-black/20 border border-white/5">
+                                <div className="flex items-center gap-3">
+                                  <Server size={16} className="text-orange-500" />
+                                  <div>
+                                    <div className="font-bold text-sm">Ollama / LocalAI</div>
+                                    <div className="text-[10px] text-muted-foreground">http://localhost:11434</div>
+                                  </div>
+                                </div>
+                                <Switch />
                               </div>
                             </div>
                           </CardContent>
