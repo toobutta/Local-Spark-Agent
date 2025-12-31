@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Admin() {
   const [_, setLocation] = useLocation();
@@ -74,11 +75,33 @@ export default function Admin() {
       <header className="h-16 border-b border-border/50 bg-card/20 flex items-center justify-between px-6 backdrop-blur-md relative z-10">
         <div className="flex items-center gap-3 text-primary cursor-pointer hover:opacity-80 transition-opacity" onClick={() => setLocation("/")}>
           <Shield size={20} />
-          <h1 className="font-display font-bold tracking-widest text-xl">NEXUS ADMIN</h1>
+          <h1 className="font-display font-bold tracking-widest text-xl">SPARKPLUG ADMIN</h1>
         </div>
-        <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-black/40 px-3 py-1.5 rounded border border-white/5">
-          <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-          ADMIN MODE
+        
+        <div className="flex items-center gap-6">
+          <div className="text-xs font-mono text-muted-foreground flex items-center gap-2">
+            <span>PROJECT =</span>
+            <span className="text-primary font-bold flex items-center gap-2">
+              <Box size={14} /> SparkPlug DGX
+            </span>
+          </div>
+
+          <Select defaultValue="main">
+            <SelectTrigger className="w-[200px] h-8 text-xs font-mono bg-black/40 border-white/10 text-muted-foreground">
+               <SelectValue placeholder="Select Sub-Project" />
+            </SelectTrigger>
+            <SelectContent className="bg-black/90 border-white/10 backdrop-blur-xl">
+               <SelectItem value="main">Main Cluster (Default)</SelectItem>
+               <SelectItem value="research">Research Node Alpha</SelectItem>
+               <SelectItem value="web">Web Services Delta</SelectItem>
+               <SelectItem value="data">Data Lake Omega</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-black/40 px-3 py-1.5 rounded border border-white/5">
+            <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+            ADMIN MODE
+          </div>
         </div>
       </header>
 

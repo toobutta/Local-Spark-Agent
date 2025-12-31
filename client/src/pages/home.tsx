@@ -49,15 +49,15 @@ export default function Home() {
       content: (
         <div className="font-mono text-xs leading-tight">
           <span className="text-green-500">
-            ███╗   ██╗███████╗██╗  ██╗██╗   ██╗███████╗<br/>
-            ████╗  ██║██╔════╝╚██╗██╔╝██║   ██║██╔════╝<br/>
-            ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗<br/>
-            ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║<br/>
-            ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║<br/>
-            ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝<br/>
+            ███████╗██████╗  █████╗ ██████╗ ██╗  ██╗██████╗ ██╗     ██╗   ██╗ ██████╗ <br/>
+            ██╔════╝██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝██╔══██╗██║     ██║   ██║██╔════╝ <br/>
+            ███████╗██████╔╝███████║██████╔╝█████╔╝ ██████╔╝██║     ██║   ██║██║  ███╗<br/>
+            ╚════██║██╔═══╝ ██╔══██║██╔══██╗██╔═██╗ ██╔═══╝ ██║     ██║   ██║██║   ██║<br/>
+            ███████║██║     ██║  ██║██║  ██║██║  ██╗██║     ███████╗╚██████╔╝╚██████╔╝<br/>
+            ╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ <br/>
           </span>
           <br/>
-          <span className="text-blue-400">System v2.4.0</span> <span className="text-muted-foreground">|</span> <span className="text-yellow-500">READY</span>
+          <span className="text-blue-400">SparkPlug DGX v1.0</span> <span className="text-muted-foreground">|</span> <span className="text-yellow-500">READY</span>
         </div>
       ),
       timestamp: new Date()
