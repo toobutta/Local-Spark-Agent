@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { TerminalPrompt } from "@/components/terminal/TerminalPrompt";
 import { LegoLoader } from "@/components/terminal/LegoLoader";
 import { AICore } from "@/components/terminal/AICore";
@@ -69,6 +69,7 @@ export default function Home() {
   const [thoughtLogs, setThoughtLogs] = useState<ThoughtLog[]>([]);
   const [selectedCoreView, setSelectedCoreView] = useState("core");
   const outputRef = useRef<HTMLDivElement>(null);
+  const [_, setLocation] = useLocation();
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -115,11 +116,84 @@ export default function Home() {
               <span className="text-yellow-500">connect</span>    <span className="text-muted-foreground">Link to external compute</span>
               <span className="text-yellow-500">research</span>   <span className="text-muted-foreground">Initiate neural search</span>
               <span className="text-yellow-500">status</span>     <span className="text-muted-foreground">System diagnostics</span>
+              <span className="text-yellow-500">agents</span>     <span className="text-muted-foreground">List active agents</span>
+              <span className="text-yellow-500">mcp</span>        <span className="text-muted-foreground">Show MCP connections</span>
+              <span className="text-yellow-500">market</span>     <span className="text-muted-foreground">Browse plugins</span>
+              <span className="text-yellow-500">settings</span>   <span className="text-muted-foreground">Open config panel</span>
               <span className="text-yellow-500">clear</span>      <span className="text-muted-foreground">Clear terminal output</span>
             </div>
             <div className="mt-2 text-xs text-muted-foreground bg-white/5 p-2 rounded">
-              <span className="text-blue-400">TIP:</span> Use <span className="text-white">deploy agent &lt;name&gt;</span> to assign specific roles.
+              <span className="text-blue-400">TIP:</span> You can also use <span className="text-white">/</span> prefix for commands (e.g. <span className="text-white">/settings</span>)
             </div>
+          </div>
+        ));
+      } else if (command === "settings" || command === "/settings") {
+        addLog("system", "REDIRECTING TO SYSTEM CONFIGURATION...");
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setLocation("/admin");
+      } else if (command === "agents" || command === "/agents") {
+        addLog("output", (
+          <div className="space-y-2 font-mono text-xs">
+             <div className="text-blue-400 font-bold border-b border-blue-500/30 pb-1">ACTIVE AGENT SWARM</div>
+             {activeAgents.length === 0 ? (
+               <div className="text-muted-foreground italic">No agents deployed. Use 'deploy agent' to start one.</div>
+             ) : (
+               activeAgents.map(agent => (
+                 <div key={agent.id} className="flex items-center gap-3 bg-white/5 p-2 rounded border border-white/5">
+                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                   <span className="font-bold text-white">{agent.name}</span>
+                   <span className="text-muted-foreground">[{agent.role}]</span>
+                   <span className="ml-auto text-green-400">{agent.status}</span>
+                 </div>
+               ))
+             )}
+             <div className="text-[10px] text-muted-foreground mt-2">Total active nodes: {activeAgents.length}</div>
+          </div>
+        ));
+      } else if (command === "mcp" || command === "/mcp") {
+        addLog("output", (
+          <div className="space-y-2 font-mono text-xs">
+             <div className="text-purple-400 font-bold border-b border-purple-500/30 pb-1">MODEL CONTEXT PROTOCOL</div>
+             <div className="grid grid-cols-2 gap-2">
+                {[
+                  { id: "github", status: "offline", latency: "-" },
+                  { id: "postgres", status: "online", latency: "12ms" },
+                  { id: "filesystem", status: "online", latency: "1ms" },
+                  { id: "brave-search", status: "online", latency: "145ms" },
+                ].map(mcp => (
+                  <div key={mcp.id} className="bg-white/5 p-2 rounded border border-white/5 flex justify-between items-center">
+                    <span className="text-white">{mcp.id}</span>
+                    <span className={mcp.status === 'online' ? "text-green-400" : "text-red-400"}>{mcp.status.toUpperCase()}</span>
+                  </div>
+                ))}
+             </div>
+          </div>
+        ));
+      } else if (command === "market" || command === "/market" || command === "plugins" || command === "/plugins") {
+        addLog("output", (
+          <div className="space-y-2 font-mono text-xs">
+             <div className="text-orange-400 font-bold border-b border-orange-500/30 pb-1">PLUGIN MARKETPLACE</div>
+             <div className="space-y-1">
+                <div className="flex justify-between items-center p-2 hover:bg-white/5 cursor-pointer rounded">
+                   <span className="text-white font-bold">Research Assistant Pro</span>
+                   <span className="text-green-400">INSTALLED</span>
+                </div>
+                <div className="flex justify-between items-center p-2 hover:bg-white/5 cursor-pointer rounded">
+                   <span className="text-white font-bold">Python Code Interpreter</span>
+                   <span className="text-green-400">INSTALLED</span>
+                </div>
+                <div className="flex justify-between items-center p-2 hover:bg-white/5 cursor-pointer rounded">
+                   <span className="text-muted-foreground">Stripe Payments</span>
+                   <span className="text-blue-400 hover:underline">INSTALL</span>
+                </div>
+                <div className="flex justify-between items-center p-2 hover:bg-white/5 cursor-pointer rounded">
+                   <span className="text-muted-foreground">Slack Integration</span>
+                   <span className="text-blue-400 hover:underline">INSTALL</span>
+                </div>
+             </div>
+             <div className="text-[10px] text-muted-foreground mt-2 border-t border-white/5 pt-1">
+               Use <span className="text-white">install &lt;plugin&gt;</span> to add new capabilities.
+             </div>
           </div>
         ));
       } else if (command.startsWith("research")) {
