@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,9 +25,9 @@ export default function Admin() {
     },
     { 
       id: "project", 
-      title: "Project Settings", 
+      title: "Systems & Configurations", 
       icon: <Settings size={18} />,
-      description: "Configure environment variables and build pipelines"
+      description: "Manage APIs, integrations, and runtime environment"
     },
     { 
       id: "agents", 
@@ -160,52 +160,143 @@ export default function Admin() {
                 <TabsContent value="project" className="mt-0 h-full border-none p-0">
                   <div className="space-y-6">
                     <div>
-                      <h2 className="text-2xl font-display font-bold text-secondary mb-1">Project Settings</h2>
-                      <p className="text-muted-foreground">Configure global variables and build environments.</p>
+                      <h2 className="text-2xl font-display font-bold text-secondary mb-1">Systems & Configurations</h2>
+                      <p className="text-muted-foreground">Configure global variables, integrations, and runtime environments.</p>
                     </div>
 
-                    <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
-                      <CardHeader>
-                        <CardTitle className="font-mono text-lg">Environment Variables</CardTitle>
-                        <CardDescription>Manage keys and secrets for the Nexus runtime.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>API_KEY_OPENAI</Label>
-                          <div className="flex gap-2">
-                            <Input type="password" value="sk-........................" readOnly className="bg-black/20 border-border/50 font-mono flex-1" />
-                            <Button variant="outline" className="border-primary/20 hover:bg-primary/10 text-primary">Reveal</Button>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <Label>DGX_CLUSTER_ID</Label>
-                          <Input defaultValue="DGX-A100-SPARK-09" className="bg-black/20 border-border/50 font-mono" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
-                      <CardHeader>
-                        <CardTitle className="font-mono text-lg">Build Pipeline</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <div className="space-y-0.5">
-                            <Label>Auto-Deploy Agents</Label>
-                            <p className="text-xs text-muted-foreground">Automatically deploy agents after successful build</p>
-                          </div>
-                          <Switch />
-                        </div>
-                        <Separator className="bg-border/30" />
-                        <div className="flex items-center justify-between">
-                          <div className="space-y-0.5">
-                            <Label>Verbose Logging</Label>
-                            <p className="text-xs text-muted-foreground">Enable detailed build logs in terminal</p>
-                          </div>
-                          <Switch defaultChecked />
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <div className="space-y-6">
+                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                          <CardHeader>
+                            <CardTitle className="font-mono text-lg flex items-center gap-2">
+                              <BrainCircuit size={16} className="text-primary" /> Model Configuration
+                            </CardTitle>
+                            <CardDescription>LLM provider settings and endpoints.</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                              <Label>Model Provider</Label>
+                              <div className="flex gap-2">
+                                <Badge className="bg-primary/20 text-primary border-primary/50 cursor-pointer">OpenAI</Badge>
+                                <Badge variant="outline" className="cursor-pointer hover:bg-white/5">Anthropic</Badge>
+                                <Badge variant="outline" className="cursor-pointer hover:bg-white/5">Local (Ollama)</Badge>
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Base URL</Label>
+                              <Input defaultValue="https://api.openai.com/v1" className="bg-black/20 border-border/50 font-mono" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>API Key</Label>
+                              <div className="flex gap-2">
+                                <Input type="password" value="sk-........................" readOnly className="bg-black/20 border-border/50 font-mono flex-1" />
+                                <Button variant="outline" className="border-primary/20 hover:bg-primary/10 text-primary">Edit</Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                          <CardHeader>
+                            <CardTitle className="font-mono text-lg flex items-center gap-2">
+                              <Server size={16} className="text-orange-500" /> MCP Integrations
+                            </CardTitle>
+                            <CardDescription>Model Context Protocol servers.</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-3">
+                            {[
+                              { name: "PostgreSQL Connector", status: "Active", type: "Database" },
+                              { name: "Filesystem Watcher", status: "Active", type: "System" },
+                              { name: "GitHub Repository", status: "Inactive", type: "VCS" }
+                            ].map((mcp) => (
+                              <div key={mcp.name} className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
+                                <div className="flex items-center gap-3">
+                                  <div className={`w-2 h-2 rounded-full ${mcp.status === 'Active' ? 'bg-green-500 shadow-[0_0_5px_#22c55e]' : 'bg-muted'}`} />
+                                  <div>
+                                    <div className="font-bold text-xs">{mcp.name}</div>
+                                    <div className="text-[10px] text-muted-foreground">{mcp.type}</div>
+                                  </div>
+                                </div>
+                                <Button size="sm" variant="ghost" className="h-6 text-[10px]">CONFIG</Button>
+                              </div>
+                            ))}
+                            <Button variant="outline" className="w-full border-dashed border-border text-muted-foreground hover:text-primary hover:border-primary/50 h-8 text-xs">
+                              + ADD MCP SERVER
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      <div className="space-y-6">
+                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                          <CardHeader>
+                            <CardTitle className="font-mono text-lg flex items-center gap-2">
+                              <Plug size={16} className="text-purple-500" /> External Tools & APIs
+                            </CardTitle>
+                            <CardDescription>Connected services and toolkits.</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="space-y-3">
+                              <div className="flex items-center justify-between p-3 rounded bg-card/50 border border-border">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-blue-400"><Globe size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">Brave Search API</div>
+                                    <div className="text-[10px] text-green-400">Connected</div>
+                                  </div>
+                                </div>
+                                <Switch defaultChecked />
+                              </div>
+                              
+                              <div className="flex items-center justify-between p-3 rounded bg-card/50 border border-border">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-yellow-400"><Database size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">Pinecone Vector DB</div>
+                                    <div className="text-[10px] text-green-400">Connected</div>
+                                  </div>
+                                </div>
+                                <Switch defaultChecked />
+                              </div>
+
+                              <div className="flex items-center justify-between p-3 rounded bg-card/50 border border-border opacity-60">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded bg-black/40 text-pink-400"><Box size={16} /></div>
+                                  <div>
+                                    <div className="font-bold text-sm">Slack Webhooks</div>
+                                    <div className="text-[10px] text-muted-foreground">Not Configured</div>
+                                  </div>
+                                </div>
+                                <Switch />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                          <CardHeader>
+                            <CardTitle className="font-mono text-lg">Build Pipeline</CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <div className="space-y-0.5">
+                                <Label>Auto-Deploy Agents</Label>
+                                <p className="text-xs text-muted-foreground">Automatically deploy agents after successful build</p>
+                              </div>
+                              <Switch />
+                            </div>
+                            <Separator className="bg-border/30" />
+                            <div className="flex items-center justify-between">
+                              <div className="space-y-0.5">
+                                <Label>Verbose Logging</Label>
+                                <p className="text-xs text-muted-foreground">Enable detailed build logs in terminal</p>
+                              </div>
+                              <Switch defaultChecked />
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
                   </div>
                 </TabsContent>
 
