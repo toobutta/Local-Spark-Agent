@@ -135,8 +135,8 @@ export default function Admin() {
               </h2>
             </div>
             
-            <TabsList className="flex flex-col h-full bg-transparent p-0 justify-between">
-              <AnimatePresence>
+            <TabsList className="flex flex-col h-auto bg-transparent gap-2 p-0">
+              <AnimatePresence initial={false}>
                 {menuItems.map((item) => (
                   <motion.div 
                     layout
