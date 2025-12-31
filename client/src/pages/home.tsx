@@ -118,7 +118,8 @@ export default function Home() {
               <span className="text-yellow-500">status</span>     <span className="text-muted-foreground">System diagnostics</span>
               <span className="text-yellow-500">agents</span>     <span className="text-muted-foreground">List active agents</span>
               <span className="text-yellow-500">mcp</span>        <span className="text-muted-foreground">Show MCP connections</span>
-              <span className="text-yellow-500">market</span>     <span className="text-muted-foreground">Browse plugins</span>
+              <span className="text-yellow-500">marketplace</span> <span className="text-muted-foreground">Browse plugins</span>
+              <span className="text-yellow-500">plugins</span>    <span className="text-muted-foreground">Manage extensions</span>
               <span className="text-yellow-500">settings</span>   <span className="text-muted-foreground">Open config panel</span>
               <span className="text-yellow-500">clear</span>      <span className="text-muted-foreground">Clear terminal output</span>
             </div>
@@ -169,7 +170,7 @@ export default function Home() {
              </div>
           </div>
         ));
-      } else if (command === "market" || command === "/market" || command === "plugins" || command === "/plugins") {
+      } else if (command === "marketplace" || command === "/marketplace" || command === "plugins" || command === "/plugins") {
         addLog("output", (
           <div className="space-y-2 font-mono text-xs">
              <div className="text-orange-400 font-bold border-b border-orange-500/30 pb-1">PLUGIN MARKETPLACE</div>

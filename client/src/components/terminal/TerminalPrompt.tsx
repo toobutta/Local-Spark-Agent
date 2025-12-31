@@ -17,9 +17,9 @@ const SUGGESTIONS = [
   { cmd: "clear", desc: "Clear terminal output" },
   { cmd: "/agents", desc: "List active agents" },
   { cmd: "/mcp", desc: "Show MCP connections" },
-  { cmd: "/market", desc: "Browse plugin marketplace" },
+  { cmd: "/marketplace", desc: "Browse plugin marketplace" },
   { cmd: "/settings", desc: "Open system configuration" },
-  { cmd: "/plugins", desc: "Browse plugin marketplace" },
+  { cmd: "/plugins", desc: "Manage installed plugins" },
 ];
 
 export function TerminalPrompt({ onCommand, disabled }: TerminalPromptProps) {
