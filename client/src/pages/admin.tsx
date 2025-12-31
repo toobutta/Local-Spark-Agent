@@ -500,7 +500,90 @@ export default function Admin() {
                           </div>
                           <Separator className="bg-blue-500/20" />
                           <div className="flex gap-2">
-                            <Button size="sm" variant="outline" className="w-full text-xs h-7 border-blue-500/30 hover:bg-blue-500/20 hover:text-blue-400">CONFIGURE</Button>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button size="sm" variant="outline" className="w-full text-xs h-7 border-blue-500/30 hover:bg-blue-500/20 hover:text-blue-400">CONFIGURE</Button>
+                              </DialogTrigger>
+                              <DialogContent className="bg-black/95 border-blue-500/20 text-white backdrop-blur-xl max-w-lg">
+                                <DialogHeader>
+                                  <DialogTitle className="font-mono text-xl text-blue-400 flex items-center gap-2">
+                                    <Cpu size={20} /> DGX CONFIGURATION
+                                  </DialogTitle>
+                                  <DialogDescription className="text-gray-400">
+                                    Manage NVIDIA DGX Superchip compute allocation and network access.
+                                  </DialogDescription>
+                                </DialogHeader>
+                                <div className="space-y-6 py-4">
+                                  {/* Network Identification */}
+                                  <div className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                      <Label className="text-xs font-mono text-blue-300">NETWORK IDENTITY</Label>
+                                      <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20 text-[10px]">CONNECTED</Badge>
+                                    </div>
+                                    <div className="p-3 bg-blue-950/20 border border-blue-500/20 rounded font-mono text-xs space-y-2">
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Hostname:</span>
+                                        <span className="text-white">dgx-h100-node-01</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">IP Address:</span>
+                                        <span className="text-white">192.168.1.42</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">MAC:</span>
+                                        <span className="text-white">00:1A:2B:3C:4D:5E</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* SSH Key Management */}
+                                  <div className="space-y-3">
+                                    <Label className="text-xs font-mono text-blue-300">SECURE ACCESS (SSH)</Label>
+                                    <div className="p-4 bg-black/40 border border-white/10 rounded-md space-y-4">
+                                      <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                          <div className="p-2 bg-blue-500/10 rounded text-blue-400"><Terminal size={16} /></div>
+                                          <div>
+                                            <div className="text-xs font-bold text-white">Root Access Key</div>
+                                            <div className="text-[10px] text-muted-foreground">Created: Just now</div>
+                                          </div>
+                                        </div>
+                                        <Button size="sm" variant="ghost" className="h-6 text-[10px] text-red-400 hover:text-red-300 hover:bg-red-500/10">REVOKE</Button>
+                                      </div>
+                                      
+                                      <div className="relative group">
+                                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                          <Button size="icon" variant="ghost" className="h-6 w-6 text-muted-foreground hover:text-white"><Share2 size={12} /></Button>
+                                        </div>
+                                        <pre className="bg-black p-3 rounded border border-white/5 text-[10px] text-gray-400 font-mono overflow-x-auto whitespace-pre-wrap break-all">
+                                          ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDf4...H7f9s+K3l8sJ2dF5gH1jK9lM0nO2pP3qR4sT5u...sparkplug-dgx-admin
+                                        </pre>
+                                      </div>
+                                      
+                                      <Button className="w-full bg-blue-600/20 text-blue-400 border border-blue-500/50 hover:bg-blue-600/30 text-xs h-8">
+                                        <RefreshCw size={12} className="mr-2" /> ROTATE KEYS
+                                      </Button>
+                                    </div>
+                                  </div>
+
+                                  {/* Allocation Slider */}
+                                  <div className="space-y-4">
+                                     <div className="flex items-center justify-between">
+                                        <Label className="text-xs font-mono text-blue-300">COMPUTE ALLOCATION</Label>
+                                        <span className="text-xs font-mono text-white">4x H100 GPU</span>
+                                     </div>
+                                     <div className="h-2 bg-black/40 rounded-full overflow-hidden flex">
+                                        <div className="h-full bg-blue-500 w-1/2" />
+                                        <div className="h-full bg-white/5 w-1/2" />
+                                     </div>
+                                     <div className="flex justify-between text-[10px] text-muted-foreground font-mono">
+                                        <span>0x</span>
+                                        <span>8x (MAX)</span>
+                                     </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
                           </div>
                         </CardContent>
                       </Card>
