@@ -596,6 +596,10 @@ export default function Admin() {
                                 <Switch />
                               </div>
                             </div>
+
+                            <Button variant="outline" className="w-full border-dashed border-border text-muted-foreground hover:text-primary hover:border-primary/50 h-10 text-xs mt-4">
+                              <Plus size={14} className="mr-2" /> ADD CUSTOM TOOL / API
+                            </Button>
                           </CardContent>
                         </Card>
 
