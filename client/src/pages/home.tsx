@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "wouter";
 import { TerminalPrompt } from "@/components/terminal/TerminalPrompt";
 import { LegoLoader } from "@/components/terminal/LegoLoader";
 import { AICore } from "@/components/terminal/AICore";
@@ -157,12 +158,14 @@ export default function Home() {
               <span className="font-mono text-[10px] opacity-70">v2.4.0</span>
             </div>
             
-            <button 
-              className="p-2 hover:bg-primary/10 hover:text-primary rounded-md transition-all duration-300 border border-white/5 hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,255,255,0.2)] group"
-              title="Configurations"
-            >
-              <Settings size={18} className="group-hover:rotate-90 transition-transform duration-500" />
-            </button>
+            <Link href="/admin">
+              <button 
+                className="p-2 hover:bg-primary/10 hover:text-primary rounded-md transition-all duration-300 border border-white/5 hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,255,255,0.2)] group"
+                title="Configurations"
+              >
+                <Settings size={18} className="group-hover:rotate-90 transition-transform duration-500" />
+              </button>
+            </Link>
           </div>
         </header>
 
