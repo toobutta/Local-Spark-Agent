@@ -829,6 +829,10 @@ export default function Admin() {
                           </CardHeader>
                           <CardContent className="space-y-6">
                             {/* Proxy OAuth / BYOK Section */}
+                            <div className="p-4 rounded border border-blue-500/20 bg-blue-500/5 space-y-3">
+                               <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                     <ShieldCheck size={16} className="text-blue-400" />
                                      <span className="font-bold text-sm text-blue-100">Proxy OAuth / BYOK</span>
                                   </div>
                                   <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px]">SECURE VAULT</Badge>
