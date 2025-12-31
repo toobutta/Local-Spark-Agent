@@ -7,7 +7,7 @@ import { AgentGraph } from "@/components/terminal/AgentGraph";
 import { MatrixLoader } from "@/components/terminal/MatrixLoader";
 import { ActiveAgentsFeed } from "@/components/terminal/ActiveAgentsFeed";
 import { SphereSpinner } from "@/components/terminal/SphereSpinner";
-import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode } from "lucide-react";
+import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode, Code, Database, Braces } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -307,6 +307,7 @@ export default function Home() {
                 <SelectItem value="core">System Core</SelectItem>
                 <SelectItem value="spark">SparkPlug (DGX)</SelectItem>
                 <SelectItem value="ml">AI/ML Work</SelectItem>
+                <SelectItem value="custom">Custom View</SelectItem>
               </SelectContent>
             </Select>
            </div>
@@ -404,6 +405,53 @@ export default function Home() {
                          <span className="flex items-center gap-1"><FileCode size={8}/> 12ms</span>
                       </div>
                     </div>
+                  </div>
+                </motion.div>
+              )}
+              {selectedCoreView === "custom" && (
+                <motion.div 
+                  key="custom"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-3 p-3 rounded bg-black/20 border border-blue-500/10 h-full flex flex-col"
+                >
+                  <div className="flex items-center justify-between border-b border-blue-500/20 pb-2 mb-2">
+                     <span className="text-blue-400 font-bold text-xs flex items-center gap-2">
+                       <Braces size={12} /> CUSTOM CONFIG
+                     </span>
+                     <Badge variant="outline" className="text-[10px] h-4 border-blue-500/40 text-blue-400 bg-blue-500/5">JSON</Badge>
+                  </div>
+                  
+                  <div className="flex-1 overflow-hidden relative group">
+                    <div className="absolute inset-0 bg-black/40 rounded border border-white/5 p-2 font-mono text-[10px] text-muted-foreground overflow-auto">
+                      <span className="text-pink-400">{"{"}</span><br/>
+                      &nbsp;&nbsp;<span className="text-blue-300">"custom_mcp"</span>: <span className="text-pink-400">{"["}</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">{"{"}</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">"id"</span>: <span className="text-green-300">"weather-api"</span>,<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">"status"</span>: <span className="text-green-300">"active"</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">{"}"}</span>,<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">{"{"}</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">"id"</span>: <span className="text-green-300">"trading-bot"</span>,<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">"status"</span>: <span className="text-yellow-300">"idle"</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">{"}"}</span><br/>
+                      &nbsp;&nbsp;<span className="text-pink-400">{"]"}</span><br/>
+                      <span className="text-pink-400">{"}"}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 mt-auto">
+                     <div className="text-[10px] font-bold text-muted-foreground flex items-center gap-1">
+                       <Database size={10} /> LINKED RESOURCES
+                     </div>
+                     <div className="grid grid-cols-2 gap-2">
+                         <div className="flex items-center gap-1 text-[9px] font-mono text-blue-400/70 bg-blue-500/5 p-1 rounded">
+                           <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div> Weather
+                         </div>
+                         <div className="flex items-center gap-1 text-[9px] font-mono text-blue-400/70 bg-blue-500/5 p-1 rounded">
+                           <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div> Trading
+                         </div>
+                     </div>
                   </div>
                 </motion.div>
               )}
