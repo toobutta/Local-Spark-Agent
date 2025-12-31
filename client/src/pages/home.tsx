@@ -360,7 +360,15 @@ export default function Home() {
   };
 
   if (loading) {
-    return <MatrixLoader onComplete={() => setLoading(false)} />;
+    return (
+      <MatrixLoader 
+        onComplete={() => setLoading(false)} 
+        onProjectSelect={(project) => {
+          setLoading(false);
+          addLog("system", `LOADED PROJECT: ${project.toUpperCase()}`);
+        }}
+      />
+    );
   }
 
   return (
