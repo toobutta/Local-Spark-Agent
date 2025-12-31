@@ -126,6 +126,7 @@ export default function Home() {
               <span className="text-yellow-500">browser</span>     <span className="text-muted-foreground">Open dev preview</span>
               <span className="text-yellow-500">ollama</span>      <span className="text-muted-foreground">Manage local models</span>
               <span className="text-yellow-500">settings</span>   <span className="text-muted-foreground">Open config panel</span>
+              <span className="text-yellow-500">claude</span>     <span className="text-muted-foreground">Local Claude Code bridge</span>
               <span className="text-yellow-500">clear</span>      <span className="text-muted-foreground">Clear terminal output</span>
             </div>
             <div className="mt-2 text-xs text-muted-foreground bg-white/5 p-2 rounded">
@@ -211,6 +212,34 @@ export default function Home() {
         addLog("system", "REDIRECTING TO SYSTEM CONFIGURATION...");
         await new Promise(resolve => setTimeout(resolve, 800));
         setLocation("/admin");
+      } else if (command === "claude" || command === "/claude") {
+         addLog("system", "CHECKING LOCAL CLAUDE BRIDGE...");
+         await new Promise(resolve => setTimeout(resolve, 1000));
+         addLog("output", (
+           <div className="flex flex-col gap-2 font-mono text-xs border border-orange-500/20 p-3 rounded bg-black/20">
+             <div className="flex justify-between items-center border-b border-orange-500/10 pb-2 mb-1">
+               <span className="font-bold text-orange-400 flex items-center gap-2">
+                 <Terminal size={14} /> CLAUDE CODE CLI
+               </span>
+               <div className="flex items-center gap-2">
+                 <span className="px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 text-[10px] border border-orange-500/20">BRIDGE ACTIVE</span>
+                 <span className="text-muted-foreground">pid:8291</span>
+               </div>
+             </div>
+             
+             <div className="p-2 bg-orange-900/5 rounded border border-orange-500/10">
+               <div className="text-[10px] text-muted-foreground mb-1">SESSION AUTH</div>
+               <div className="text-orange-100 font-bold flex items-center gap-2">
+                 <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_5px_#f97316]" />
+                 anthropic/claude-3-5-sonnet-20240620
+               </div>
+             </div>
+             
+             <div className="text-[10px] text-muted-foreground mt-1">
+               <span className="text-orange-400">Ready.</span> All commands prefaced with <span className="text-white">@claude</span> will be piped to local CLI.
+             </div>
+           </div>
+         ));
       } else if (command === "agents" || command === "/agents") {
         addLog("output", (
           <div className="space-y-2 font-mono text-xs">

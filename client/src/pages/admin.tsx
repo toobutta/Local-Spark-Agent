@@ -449,20 +449,33 @@ export default function Admin() {
                                     <Input type="password" placeholder="sk-ant-..." className="bg-black/20 border-border/50 font-mono flex-1" />
                                     <Button className="bg-primary/20 text-primary border border-primary/50 hover:bg-primary/30">Connect</Button>
                                   </div>
-                                  <p className="text-[10px] text-muted-foreground">Required for Claude 3.5 Sonnet & Opus access.</p>
+                                  <p className="text-[10px] text-muted-foreground">Direct API access for Claude 3.5 Sonnet & Opus.</p>
                                 </div>
                                 <div className="space-y-2 pt-2 border-t border-white/10">
                                   <div className="flex items-center justify-between">
-                                    <Label className="text-xs text-blue-300">GitHub Proxy (Claude Code)</Label>
-                                    <Badge variant="outline" className="text-[10px] border-blue-500/30 text-blue-400 bg-blue-500/10">BETA</Badge>
+                                    <Label className="text-xs text-orange-300">Claude Code CLI Bridge</Label>
+                                    <Badge variant="outline" className="text-[10px] border-orange-500/30 text-orange-400 bg-orange-500/10">LOCAL BRIDGE</Badge>
                                   </div>
-                                  <div className="p-3 bg-blue-900/10 border border-blue-500/20 rounded-md space-y-3">
+                                  <div className="p-3 bg-orange-900/10 border border-orange-500/20 rounded-md space-y-3">
                                     <p className="text-[10px] text-muted-foreground">
-                                      Authorize via GitHub to use your Claude Code subscription quota.
+                                      Pipe prompts through your local <code className="text-white">claude</code> CLI installation. Uses your existing authenticated session.
                                     </p>
-                                    <Button className="w-full bg-[#24292f] hover:bg-[#24292f]/80 text-white font-bold h-9 text-xs border border-white/10">
-                                      <Github size={14} className="mr-2" /> CONNECT GITHUB ACCOUNT
-                                    </Button>
+                                    <div className="grid grid-cols-[1fr_auto] gap-2 items-end">
+                                      <div className="space-y-1">
+                                        <Label className="text-[10px] text-muted-foreground">CLI BINARY PATH</Label>
+                                        <Input defaultValue="claude" className="bg-black/40 border-orange-500/30 font-mono h-8 text-xs text-orange-200" />
+                                      </div>
+                                      <div className="space-y-1">
+                                         <Label className="text-[10px] text-muted-foreground opacity-0">Action</Label>
+                                         <Button size="sm" variant="outline" className="h-8 border-orange-500/30 text-orange-400 hover:bg-orange-500/10 text-xs">
+                                           <Terminal size={12} className="mr-2" /> VERIFY PATH
+                                         </Button>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                       <Switch id="claude-bridge" />
+                                       <Label htmlFor="claude-bridge" className="text-xs text-gray-300">Enable CLI Passthrough</Label>
+                                    </div>
                                   </div>
                                 </div>
                               </TabsContent>
