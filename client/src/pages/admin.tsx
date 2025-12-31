@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3 } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -539,40 +539,111 @@ export default function Admin() {
                       <p className="text-muted-foreground">Monitor and orchestrate your autonomous workforce.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {["CODER-ALPHA", "SECURITY-PRIME", "DATA-SENTRY"].map((agent) => (
-                        <Card key={agent} className="bg-card/30 border-border/50 backdrop-blur-sm overflow-hidden relative">
-                          <div className="absolute top-0 right-0 p-2">
-                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                          </div>
-                          <CardHeader className="pb-2">
-                            <CardTitle className="font-mono text-md">{agent}</CardTitle>
-                            <CardDescription className="text-xs">Uptime: 42h 12m</CardDescription>
+                    <div className="grid grid-cols-1 gap-6">
+                      {[{
+                        id: "CODER-ALPHA",
+                        role: "Lead Architect",
+                        status: "active",
+                        uptime: "42h 12m",
+                        subAgents: [
+                           { id: "CODE-GEN-01", role: "Frontend Implementation", status: "active", uptime: "2h 45m" },
+                           { id: "TEST-BOT-X", role: "Unit Testing", status: "idle", uptime: "12h 10m" }
+                        ]
+                      }, {
+                        id: "SECURITY-PRIME",
+                        role: "Systems Overwatch",
+                        status: "active",
+                        uptime: "156h 30m",
+                        subAgents: [
+                           { id: "AUDIT-LOG-V2", role: "Log Analysis", status: "active", uptime: "156h 30m" }
+                        ]
+                      }, {
+                        id: "DATA-SENTRY",
+                        role: "Knowledge Manager",
+                        status: "active",
+                        uptime: "8h 15m",
+                        subAgents: []
+                      }].map((agent) => (
+                        <Card key={agent.id} className="bg-card/30 border-border/50 backdrop-blur-sm overflow-hidden relative">
+                          <CardHeader className="pb-2 border-b border-white/5 bg-white/5">
+                             <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                   <div className="w-10 h-10 rounded bg-primary/20 flex items-center justify-center border border-primary/30">
+                                      <Bot size={20} className="text-primary" />
+                                   </div>
+                                   <div>
+                                      <CardTitle className="font-mono text-md flex items-center gap-2">
+                                         {agent.id}
+                                         <Badge variant="outline" className="text-[10px] h-5 border-green-500/30 text-green-400 bg-green-500/10">ONLINE</Badge>
+                                      </CardTitle>
+                                      <CardDescription className="text-xs">{agent.role}</CardDescription>
+                                   </div>
+                                </div>
+                                <div className="text-right">
+                                   <div className="text-[10px] text-muted-foreground font-mono">UPTIME</div>
+                                   <div className="text-xs font-bold text-white font-mono">{agent.uptime}</div>
+                                </div>
+                             </div>
                           </CardHeader>
-                          <CardContent>
+                          <CardContent className="pt-4 space-y-4">
+                            {/* Main Agent Stats */}
                             <div className="space-y-2 text-xs font-mono">
                               <div className="flex justify-between">
-                                <span>Task Queue</span>
-                                <span className="text-primary">Idle</span>
+                                <span>Compute Load</span>
+                                <span className="text-primary">32%</span>
                               </div>
                               <div className="w-full bg-black/40 h-1.5 rounded-full overflow-hidden">
-                                <div className="bg-green-500/50 h-full w-[20%]" />
+                                <div className="bg-primary/50 h-full w-[32%]" />
                               </div>
                             </div>
-                            <div className="mt-4 flex gap-2">
-                              <Button size="sm" variant="outline" className="h-7 text-xs border-destructive/50 text-destructive hover:bg-destructive/10">TERMINATE</Button>
-                              <Button size="sm" variant="outline" className="h-7 text-xs border-primary/50 text-primary hover:bg-primary/10">LOGS</Button>
+                            
+                            {/* Sub Agents Hierarchy */}
+                            <div className="space-y-3 pl-4 border-l border-white/10 ml-4 relative">
+                               <div className="absolute -left-[17px] top-0 bottom-0 w-px bg-white/10" />
+                               
+                               <div className="text-[10px] font-bold text-muted-foreground flex items-center gap-2">
+                                  <GitBranch size={12} className="rotate-90" /> SUB-AGENTS ({agent.subAgents.length})
+                               </div>
+
+                               {agent.subAgents.length > 0 ? (
+                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {agent.subAgents.map(sub => (
+                                       <div key={sub.id} className="bg-black/20 border border-white/5 rounded p-2 flex items-center justify-between">
+                                          <div className="flex items-center gap-2">
+                                             <div className={`w-1.5 h-1.5 rounded-full ${sub.status === 'active' ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`} />
+                                             <div>
+                                                <div className="font-bold text-xs text-white">{sub.id}</div>
+                                                <div className="text-[10px] text-muted-foreground">{sub.role}</div>
+                                             </div>
+                                          </div>
+                                          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-white/10 rounded-full">
+                                             <Settings size={12} className="text-muted-foreground" />
+                                          </Button>
+                                       </div>
+                                    ))}
+                                 </div>
+                               ) : (
+                                  <div className="text-[10px] text-muted-foreground italic p-2 border border-dashed border-white/10 rounded bg-white/5">
+                                     No sub-agents deployed.
+                                  </div>
+                               )}
+                            </div>
+
+                            <Separator className="bg-white/5" />
+                            <div className="flex gap-2 justify-end">
+                              <Button size="sm" variant="outline" className="h-7 text-xs border-white/10 hover:bg-white/5 text-muted-foreground">VIEW LOGS</Button>
+                              <Button size="sm" variant="outline" className="h-7 text-xs border-primary/50 text-primary hover:bg-primary/10">MANAGE FLEET</Button>
                             </div>
                           </CardContent>
                         </Card>
                       ))}
                       
-                      <Card className="bg-card/10 border-dashed border-border flex items-center justify-center min-h-[160px] cursor-pointer hover:bg-card/20 hover:border-primary/30 transition-all group">
-                        <div className="text-center space-y-2">
-                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mx-auto text-primary group-hover:scale-110 transition-transform">
-                            <Users size={20} />
+                      <Card className="bg-card/10 border-dashed border-border flex items-center justify-center min-h-[100px] cursor-pointer hover:bg-card/20 hover:border-primary/30 transition-all group">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                            <Plus size={16} />
                           </div>
-                          <p className="font-mono text-sm text-muted-foreground group-hover:text-primary">DEPLOY NEW AGENT</p>
+                          <p className="font-mono text-sm text-muted-foreground group-hover:text-primary">DEPLOY NEW AGENT CLUSTER</p>
                         </div>
                       </Card>
                     </div>
