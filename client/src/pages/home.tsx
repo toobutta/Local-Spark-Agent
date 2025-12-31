@@ -7,9 +7,12 @@ import { AgentGraph } from "@/components/terminal/AgentGraph";
 import { MatrixLoader } from "@/components/terminal/MatrixLoader";
 import { ActiveAgentsFeed } from "@/components/terminal/ActiveAgentsFeed";
 import { SphereSpinner } from "@/components/terminal/SphereSpinner";
-import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode, Code, Database, Braces, FileText, Download, Upload, RefreshCw, ChevronRight } from "lucide-react";
+import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode, Code, Database, Braces, FileText, Download, Upload, RefreshCw, ChevronRight, ListTodo, Plus, Check, Clock } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Progress } from "@/components/ui/progress";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Checkbox } from "@/components/ui/checkbox";
 import { motion, AnimatePresence } from "framer-motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -287,6 +290,83 @@ export default function Home() {
 
         {/* Input Area */}
         <TerminalPrompt onCommand={handleCommand} disabled={isProcessing} />
+
+        {/* Footer Stats & Tools */}
+        <div className="h-10 border-t border-white/10 bg-black/40 flex items-center justify-between px-4 text-[10px]">
+          <div className="flex items-center gap-4 flex-1">
+             <div className="flex items-center gap-2 w-48">
+               <span className="text-muted-foreground whitespace-nowrap">TOKEN USAGE</span>
+               <div className="flex-1 space-y-1">
+                 <Progress value={45} className="h-1.5 bg-white/10" />
+               </div>
+               <span className="text-primary font-mono">4.2K</span>
+             </div>
+             <div className="h-4 w-px bg-white/10" />
+             <div className="flex items-center gap-2 text-muted-foreground">
+               <span>SESSION COST:</span>
+               <span className="text-green-400">$0.042</span>
+             </div>
+          </div>
+
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="flex items-center gap-2 hover:bg-white/5 px-3 py-1.5 rounded transition-colors text-muted-foreground hover:text-white border border-transparent hover:border-white/10">
+                <ListTodo size={14} />
+                <span>TASKS</span>
+                <Badge variant="secondary" className="h-4 px-1 text-[9px] bg-primary/20 text-primary border-primary/20">3</Badge>
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-black/95 border-l border-white/10 backdrop-blur-xl w-80 p-0 text-white">
+              <SheetHeader className="p-4 border-b border-white/10 bg-white/5">
+                <SheetTitle className="text-sm font-bold flex items-center gap-2 text-white">
+                  <ListTodo size={16} className="text-primary" /> MISSION OBJECTIVES
+                </SheetTitle>
+              </SheetHeader>
+              <div className="p-4 space-y-4">
+                 <div className="space-y-2">
+                   <div className="text-[10px] font-bold text-muted-foreground mb-2">CURRENT PRIORITY</div>
+                   
+                   <div className="bg-primary/10 border border-primary/20 rounded p-3 space-y-2">
+                     <div className="flex items-start gap-2">
+                       <Checkbox id="task-1" className="mt-0.5 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:text-black" />
+                       <div className="space-y-1">
+                         <label htmlFor="task-1" className="text-xs font-bold leading-none text-white">Calibrate Neural Weights</label>
+                         <p className="text-[10px] text-muted-foreground">Run optimization cycle on DGX cluster for Llama-3 endpoints.</p>
+                       </div>
+                     </div>
+                     <div className="flex items-center gap-1 text-[9px] text-primary/70 bg-primary/5 px-2 py-1 rounded w-fit">
+                       <Clock size={10} /> IN PROGRESS
+                     </div>
+                   </div>
+                 </div>
+
+                 <div className="space-y-2">
+                   <div className="text-[10px] font-bold text-muted-foreground mb-2">BACKLOG</div>
+                   
+                   {[
+                     { id: "task-2", text: "Integrate Vector DB", desc: "Connect Pinecone to RAG pipeline", status: "PENDING" },
+                     { id: "task-3", text: "Update API Keys", desc: "Rotate OpenAI secrets in admin panel", status: "PENDING" },
+                     { id: "task-4", text: "Refactor Agent Logic", desc: "Optimize token usage for chat agent", status: "DONE" }
+                   ].map((task) => (
+                     <div key={task.id} className={`bg-white/5 border border-white/10 rounded p-3 space-y-2 ${task.status === 'DONE' ? 'opacity-50' : ''}`}>
+                       <div className="flex items-start gap-2">
+                         <Checkbox id={task.id} defaultChecked={task.status === 'DONE'} className="mt-0.5 border-white/20 data-[state=checked]:bg-white/50 data-[state=checked]:border-transparent" />
+                         <div className="space-y-1">
+                           <label htmlFor={task.id} className={`text-xs font-bold leading-none ${task.status === 'DONE' ? 'line-through text-muted-foreground' : 'text-white'}`}>{task.text}</label>
+                           <p className="text-[10px] text-muted-foreground">{task.desc}</p>
+                         </div>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+
+                 <button className="w-full flex items-center justify-center gap-2 py-2 rounded border border-dashed border-white/20 hover:bg-white/5 text-xs text-muted-foreground hover:text-white transition-colors">
+                   <Plus size={14} /> ADD NEW TASK
+                 </button>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
 
       {/* Sidebar / Status Panel */}
