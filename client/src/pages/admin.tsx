@@ -680,9 +680,14 @@ export default function Admin() {
                     </div>
 
                     <div className="space-y-4">
-                       <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                          <Server size={16} /> Systems Setups
-                       </h3>
+                       <div className="flex items-center justify-between">
+                          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                             <Server size={16} /> Systems Setups
+                          </h3>
+                          <Button size="sm" variant="ghost" className="h-6 text-[10px] text-muted-foreground hover:text-primary gap-2">
+                             <Edit3 size={12} /> EDIT SPECS
+                          </Button>
+                       </div>
                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {/* DGX Config Card */}
                             <Card className="bg-card/30 border-border/50 backdrop-blur-sm relative overflow-hidden group">
