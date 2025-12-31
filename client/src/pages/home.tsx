@@ -391,6 +391,19 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded bg-black/40 border ${dgxConnected ? 'border-green-500/30' : 'border-destructive/30'} transition-colors`}>
+              <div className="flex items-center gap-1.5">
+                {dgxConnected ? (
+                  <ShieldCheck size={12} className="text-green-500" />
+                ) : (
+                  <div className="w-1.5 h-1.5 rounded-full bg-destructive" />
+                )}
+                <span className={`font-bold tracking-wider text-[10px] ${dgxConnected ? 'text-green-500' : 'text-muted-foreground'}`}>
+                  {dgxConnected ? "DGX ONLINE" : "DGX OFFLINE"}
+                </span>
+              </div>
+            </div>
+
             <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-black/40 border border-white/5">
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_5px_#22c55e]" />
@@ -778,22 +791,6 @@ export default function Home() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Connections */}
-        <div className="space-y-3">
-          <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
-            <Network size={14} /> CONNECTIONS
-          </h2>
-          <div className={`p-3 rounded border ${dgxConnected ? 'border-green-500/30 bg-green-500/5' : 'border-destructive/30 bg-destructive/5'} transition-all`}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-bold text-sm">NVIDIA DGX SPARK</span>
-              {dgxConnected ? <ShieldCheck size={14} className="text-green-500" /> : <div className="w-2 h-2 rounded-full bg-destructive" />}
-            </div>
-            <div className="text-[10px] text-muted-foreground">
-              {dgxConnected ? "UPLINK SECURE • 400GB/s" : "DISCONNECTED"}
-            </div>
           </div>
         </div>
 
