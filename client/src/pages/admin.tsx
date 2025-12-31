@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot, Factory, ShieldCheck, Check, ArrowRight, ArrowLeft, CheckCircle, Code, Download, RefreshCw, Terminal } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3, GitBranch, Bot, Factory, ShieldCheck, Check, ArrowRight, ArrowLeft, CheckCircle, Code, Download, RefreshCw, Terminal, Brain } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,6 +29,12 @@ export default function Admin() {
       title: "User Profile", 
       icon: <User size={18} />,
       description: "Manage personal settings and credentials"
+    },
+    { 
+      id: "models", 
+      title: "Model Management", 
+      icon: <BrainCircuit size={18} />,
+      description: "Configure inference providers and models"
     },
     { 
       id: "projects", 
@@ -152,6 +158,152 @@ export default function Admin() {
                 transition={{ duration: 0.2 }}
                 className="h-full"
               >
+                <TabsContent value="models" className="mt-0 h-full border-none p-0">
+                  <div className="space-y-6">
+                    <div>
+                      <h2 className="text-2xl font-display font-bold text-primary mb-1">Model Management</h2>
+                      <p className="text-muted-foreground">Configure global inference providers and local models.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Models.dev */}
+                      <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                        <CardHeader>
+                          <CardTitle className="font-mono text-lg flex items-center gap-2">
+                            <Brain size={18} className="text-purple-400" /> Models.dev
+                          </CardTitle>
+                          <CardDescription>Hosted Inference API</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="p-3 bg-purple-900/10 border border-purple-500/20 rounded-md">
+                            <p className="text-xs text-muted-foreground mb-3">
+                              Access a wide range of open-source models via high-performance API.
+                            </p>
+                            <div className="space-y-2">
+                              <Label className="text-xs text-purple-300">API KEY</Label>
+                              <div className="flex gap-2">
+                                <Input type="password" placeholder="mdev_..." className="bg-black/40 border-purple-500/30 font-mono text-xs flex-1" />
+                                <Button size="sm" className="bg-purple-600/20 text-purple-400 border border-purple-500/50 hover:bg-purple-600/30">
+                                  Connect
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-xs font-mono text-muted-foreground">AVAILABLE MODELS</Label>
+                            <div className="grid grid-cols-1 gap-1 max-h-40 overflow-y-auto pr-1">
+                              {['Nous-Hermes-2-Mixtral-8x7B-DPO', 'OpenChat-3.5-0106', 'DeepSeek-Coder-33B-Instruct'].map(m => (
+                                <div key={m} className="flex justify-between items-center px-2 py-1.5 bg-white/5 rounded hover:bg-white/10 cursor-pointer group">
+                                  <span className="text-xs font-mono text-gray-300 truncate max-w-[200px]">{m}</span>
+                                  <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground group-hover:text-white group-hover:border-purple-500/50">SELECT</Badge>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Hugging Face */}
+                      <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                        <CardHeader>
+                          <CardTitle className="font-mono text-lg flex items-center gap-2">
+                            <Bot size={18} className="text-yellow-400" /> Hugging Face
+                          </CardTitle>
+                          <CardDescription>Inference Endpoints & Hub</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                           <div className="p-3 bg-yellow-900/10 border border-yellow-500/20 rounded-md">
+                            <div className="flex items-center justify-between mb-2">
+                               <Label className="text-xs text-yellow-300">ACCESS TOKEN</Label>
+                               <Switch />
+                            </div>
+                            <Input type="password" placeholder="hf_..." className="bg-black/40 border-yellow-500/30 font-mono text-xs" />
+                          </div>
+                          
+                          <div className="space-y-2">
+                             <Label className="text-xs font-mono text-muted-foreground">FEATURED REPOSITORIES</Label>
+                             <div className="space-y-2">
+                                <div className="p-2 border border-white/10 rounded bg-black/20 flex items-center gap-3">
+                                   <div className="w-8 h-8 rounded bg-white/10 flex items-center justify-center font-bold text-xs">M</div>
+                                   <div className="flex-1">
+                                      <div className="text-xs font-bold text-white">mistralai/Mistral-7B-v0.1</div>
+                                      <div className="text-[10px] text-muted-foreground">Text Generation • 65k downloads</div>
+                                   </div>
+                                   <Button size="sm" variant="ghost" className="h-6 w-6 p-0"><Download size={12} /></Button>
+                                </div>
+                                <div className="p-2 border border-white/10 rounded bg-black/20 flex items-center gap-3">
+                                   <div className="w-8 h-8 rounded bg-white/10 flex items-center justify-center font-bold text-xs">L</div>
+                                   <div className="flex-1">
+                                      <div className="text-xs font-bold text-white">meta-llama/Llama-2-7b</div>
+                                      <div className="text-[10px] text-muted-foreground">Text Generation • 1.2M downloads</div>
+                                   </div>
+                                   <Button size="sm" variant="ghost" className="h-6 w-6 p-0"><Download size={12} /></Button>
+                                </div>
+                             </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Ollama */}
+                      <Card className="bg-card/30 border-border/50 backdrop-blur-sm md:col-span-2">
+                        <CardHeader>
+                          <CardTitle className="font-mono text-lg flex items-center gap-2">
+                            <Server size={18} className="text-orange-400" /> Ollama (Local)
+                          </CardTitle>
+                          <CardDescription>Manage local LLM inference via Ollama.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="flex items-center justify-between p-4 rounded bg-black/40 border border-white/10">
+                             <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 rounded bg-orange-500/20 flex items-center justify-center text-orange-500">
+                                   <Activity size={20} />
+                                </div>
+                                <div>
+                                   <div className="font-bold text-sm text-white">Service Status</div>
+                                   <div className="text-xs text-green-400 flex items-center gap-1.5">
+                                      <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                      Running on localhost:11434
+                                   </div>
+                                </div>
+                             </div>
+                             <div className="text-right text-xs font-mono text-muted-foreground">
+                                <div>v0.1.28</div>
+                                <div>CPU Mode</div>
+                             </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div className="space-y-2">
+                                <Label className="text-xs font-mono text-orange-300">PULL MODEL</Label>
+                                <div className="flex gap-2">
+                                   <Input placeholder="e.g. llama3, mistral" className="bg-black/20 border-orange-500/30 font-mono text-xs" />
+                                   <Button size="sm" className="bg-orange-600/20 text-orange-400 border border-orange-500/50 hover:bg-orange-600/30">
+                                      <Download size={12} className="mr-2" /> Pull
+                                   </Button>
+                                </div>
+                             </div>
+                             
+                             <div className="space-y-2">
+                                <Label className="text-xs font-mono text-muted-foreground">INSTALLED LIBRARY</Label>
+                                <div className="space-y-1">
+                                   {['llama3:8b', 'mistral:7b-instruct', 'neural-chat:7b'].map(m => (
+                                      <div key={m} className="flex justify-between items-center px-3 py-2 bg-white/5 rounded border border-white/5">
+                                         <div className="flex items-center gap-2">
+                                            <Box size={12} className="text-orange-400" />
+                                            <span className="text-xs font-mono text-white">{m}</span>
+                                         </div>
+                                         <span className="text-[10px] text-muted-foreground">4.1GB</span>
+                                      </div>
+                                   ))}
+                                </div>
+                             </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </TabsContent>
+
                 <TabsContent value="profile" className="mt-0 h-full border-none p-0">
                   <div className="space-y-6">
                     <div>
