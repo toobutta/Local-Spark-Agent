@@ -73,12 +73,11 @@ export default function Admin() {
     <div className="min-h-screen bg-background text-foreground font-mono overflow-hidden flex flex-col relative">
       <div className="scanline" />
       <div className="pointer-events-none fixed inset-0 z-50 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
-
       {/* Header */}
       <header className="h-16 border-b border-border/50 bg-card/20 flex items-center justify-between px-6 backdrop-blur-md relative z-10">
         <div className="flex items-center gap-3 text-primary cursor-pointer hover:opacity-80 transition-opacity" onClick={() => setLocation("/")}>
           <Shield size={20} />
-          <h1 className="font-display font-bold tracking-widest text-xl">SPARKPLUG ADMIN</h1>
+          <h1 className="font-display font-bold tracking-widest text-xl">SPARKPLUG CLI</h1>
         </div>
         
         <div className="flex items-center gap-6">
@@ -140,7 +139,6 @@ export default function Admin() {
             </Dialog>
           </div>
         </header>
-
       {/* Main Content */}
       <div className="flex-1 overflow-hidden flex relative z-10 max-w-7xl mx-auto w-full p-6 gap-6">
         <Tabs defaultValue="profile" value={activeTab} onValueChange={setActiveTab} orientation="vertical" className="flex w-full h-full gap-6">
