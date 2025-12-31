@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity } from "lucide-react";
+import { User, Settings, Users, Palette, Shield, ChevronRight, LayoutGrid, FileCode, Wrench, BrainCircuit, Hammer, FolderCog, Sparkles, Folder, Plug, Server, Box, Globe, Database, Briefcase, Plus, Activity, Github, Edit3 } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -202,6 +202,14 @@ export default function Admin() {
                                 <div className="p-3 rounded border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors opacity-60">
                                   <div className="font-bold text-xs mb-1">WEB APPLICATION</div>
                                   <div className="text-[10px] text-gray-400">Standard Full-Stack Env</div>
+                                </div>
+                                <div className="p-3 rounded border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors opacity-60">
+                                  <div className="font-bold text-xs mb-1 flex items-center gap-2"><Github size={12} /> CONNECT GITHUB</div>
+                                  <div className="text-[10px] text-gray-400">Import Repository</div>
+                                </div>
+                                <div className="p-3 rounded border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors opacity-60">
+                                  <div className="font-bold text-xs mb-1 flex items-center gap-2"><Edit3 size={12} /> CREATE CUSTOM</div>
+                                  <div className="text-[10px] text-gray-400">Manual Configuration</div>
                                 </div>
                               </div>
                             </div>
