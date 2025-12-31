@@ -781,6 +781,22 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Connections */}
+        <div className="space-y-3">
+          <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
+            <Network size={14} /> CONNECTIONS
+          </h2>
+          <div className={`p-3 rounded border ${dgxConnected ? 'border-green-500/30 bg-green-500/5' : 'border-destructive/30 bg-destructive/5'} transition-all`}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-bold text-sm">NVIDIA DGX SPARK</span>
+              {dgxConnected ? <ShieldCheck size={14} className="text-green-500" /> : <div className="w-2 h-2 rounded-full bg-destructive" />}
+            </div>
+            <div className="text-[10px] text-muted-foreground">
+              {dgxConnected ? "UPLINK SECURE • 400GB/s" : "DISCONNECTED"}
+            </div>
+          </div>
+        </div>
+
         {/* System Stats */}
         <div className="space-y-3">
           <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
@@ -801,22 +817,6 @@ export default function Home() {
             <div className="flex justify-between text-muted-foreground">
               <span>MEMORY</span>
               <span>72%</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Connections */}
-        <div className="space-y-3">
-          <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
-            <Network size={14} /> CONNECTIONS
-          </h2>
-          <div className={`p-3 rounded border ${dgxConnected ? 'border-green-500/30 bg-green-500/5' : 'border-destructive/30 bg-destructive/5'} transition-all`}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-bold text-sm">NVIDIA DGX SPARK</span>
-              {dgxConnected ? <ShieldCheck size={14} className="text-green-500" /> : <div className="w-2 h-2 rounded-full bg-destructive" />}
-            </div>
-            <div className="text-[10px] text-muted-foreground">
-              {dgxConnected ? "UPLINK SECURE • 400GB/s" : "DISCONNECTED"}
             </div>
           </div>
         </div>
