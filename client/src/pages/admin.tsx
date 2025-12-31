@@ -1386,87 +1386,104 @@ export default function Admin() {
                           
                           {/* ECOSYSTEM TAB */}
                           <TabsContent value="ecosystem" className="h-full p-4 mt-0 overflow-y-auto">
-                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {[{
-                                   id: "CODER-ALPHA",
-                                   role: "Lead Architect",
-                                   status: "active",
-                                   framework: "LangChain",
-                                   runtime: "Python 3.11",
-                                   load: 32
-                                }, {
-                                   id: "SECURITY-PRIME",
-                                   role: "Systems Overwatch",
-                                   status: "active",
-                                   framework: "CrewAI",
-                                   runtime: "Python 3.10",
-                                   load: 12
-                                }, {
-                                   id: "DATA-SENTRY",
-                                   role: "Knowledge Manager",
-                                   status: "training",
-                                   framework: "AutoGPT",
-                                   runtime: "Node.js 20",
-                                   load: 85
-                                }].map((agent) => (
-                                  <Card key={agent.id} className="bg-card/30 border-white/5 backdrop-blur-sm group hover:border-green-500/30 transition-all cursor-pointer">
-                                     <CardHeader className="pb-2">
-                                        <div className="flex justify-between items-start">
-                                           <div className="flex items-center gap-3">
-                                              <div className={`w-10 h-10 rounded flex items-center justify-center border ${agent.status === 'active' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'}`}>
-                                                 <Bot size={20} />
-                                              </div>
-                                              <div>
-                                                 <CardTitle className="text-sm font-mono font-bold group-hover:text-primary transition-colors">{agent.id}</CardTitle>
-                                                 <CardDescription className="text-[10px]">{agent.role}</CardDescription>
-                                              </div>
-                                           </div>
-                                           <Badge className={`${agent.status === 'active' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'} text-[10px] border`}>
-                                              {agent.status.toUpperCase()}
-                                           </Badge>
+                             <div className="flex items-center justify-center min-h-full">
+                                <div className="flex flex-col items-center min-w-[800px] scale-90 origin-top">
+                                    {/* Level 1: Director */}
+                                    <div className="flex flex-col items-center relative z-10">
+                                        <div className="w-48 p-4 bg-purple-500/20 border border-purple-500/50 rounded-lg flex flex-col items-center gap-2 backdrop-blur-md shadow-[0_0_30px_rgba(168,85,247,0.15)]">
+                                            <div className="p-2 bg-purple-500/20 rounded-full text-purple-400"><BrainCircuit size={24} /></div>
+                                            <div className="text-center">
+                                                <div className="font-bold text-purple-400 text-sm">DirectorAI</div>
+                                                <div className="text-[10px] text-muted-foreground">Orchestrator Node</div>
+                                            </div>
                                         </div>
-                                     </CardHeader>
-                                     <CardContent className="space-y-4">
-                                        <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-muted-foreground">
-                                           <div className="p-2 bg-black/40 rounded border border-white/5">
-                                              <div className="text-gray-500 mb-0.5">RUNTIME</div>
-                                              <div className="text-white flex items-center gap-1.5"><Terminal size={10}/> {agent.runtime}</div>
-                                           </div>
-                                           <div className="p-2 bg-black/40 rounded border border-white/5">
-                                              <div className="text-gray-500 mb-0.5">FRAMEWORK</div>
-                                              <div className="text-white flex items-center gap-1.5"><Layers size={10}/> {agent.framework}</div>
-                                           </div>
-                                        </div>
-                                        
-                                        <div className="space-y-1">
-                                           <div className="flex justify-between text-[10px] text-muted-foreground">
-                                              <span>Compute Load</span>
-                                              <span className={agent.load > 80 ? "text-red-400" : "text-green-400"}>{agent.load}%</span>
-                                           </div>
-                                           <div className="w-full bg-black/40 h-1 rounded-full overflow-hidden">
-                                              <div 
-                                                 className={`h-full transition-all duration-1000 ${agent.load > 80 ? 'bg-red-500' : 'bg-green-500'}`} 
-                                                 style={{ width: `${agent.load}%` }} 
-                                              />
-                                           </div>
+                                        {/* Vertical connector */}
+                                        <div className="h-12 w-px bg-gradient-to-b from-purple-500/50 to-purple-500/30"></div>
+                                    </div>
+
+                                    {/* Level 2: Leads */}
+                                    <div className="flex items-start gap-16 relative z-10">
+                                        {/* Horizontal Connector Bar */}
+                                        <div className="absolute top-0 left-24 right-24 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent -translate-y-[1px]"></div>
+                                        <div className="absolute top-0 left-24 right-24 h-px bg-purple-500/30 -translate-y-[1px]"></div>
+
+                                        {/* Research Branch */}
+                                        <div className="flex flex-col items-center group">
+                                             <div className="h-8 w-px bg-purple-500/30 group-hover:bg-blue-500/50 transition-colors"></div>
+                                             <div className="w-44 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-blue-500/20 transition-colors cursor-pointer">
+                                                <div className="p-1.5 bg-blue-500/20 rounded-full text-blue-400"><Globe size={16} /></div>
+                                                <div className="text-center">
+                                                    <div className="font-bold text-blue-400 text-xs">Research Lead</div>
+                                                    <div className="text-[10px] text-muted-foreground">Info Gathering</div>
+                                                </div>
+                                             </div>
+                                             {/* Children */}
+                                             <div className="flex flex-col gap-4 relative pl-6 border-l border-blue-500/20 ml-6 pb-2">
+                                                <div className="flex items-center gap-3 relative">
+                                                    <div className="absolute -left-6 top-1/2 w-6 h-px bg-blue-500/20"></div>
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-blue-500/30 transition-colors">
+                                                        <Network size={12} className="text-blue-500" /> Web Scraper
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-3 relative">
+                                                    <div className="absolute -left-6 top-1/2 w-6 h-px bg-blue-500/20"></div>
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-blue-500/30 transition-colors">
+                                                        <Database size={12} className="text-blue-500" /> Data Analyst
+                                                    </div>
+                                                </div>
+                                             </div>
                                         </div>
 
-                                        <div className="pt-2 border-t border-white/5 flex gap-2">
-                                           <Button size="sm" variant="ghost" className="h-6 text-[10px] flex-1 hover:bg-white/5">LOGS</Button>
-                                           <Button size="sm" variant="ghost" className="h-6 text-[10px] flex-1 hover:bg-white/5">CONFIG</Button>
-                                           <Button size="sm" variant="ghost" className="h-6 text-[10px] flex-1 hover:bg-white/5">TERMINAL</Button>
+                                        {/* DevOps Branch */}
+                                        <div className="flex flex-col items-center group">
+                                             <div className="h-8 w-px bg-purple-500/30 group-hover:bg-orange-500/50 transition-colors"></div>
+                                             <div className="w-44 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-orange-500/20 transition-colors cursor-pointer">
+                                                <div className="p-1.5 bg-orange-500/20 rounded-full text-orange-400"><Hammer size={16} /></div>
+                                                <div className="text-center">
+                                                    <div className="font-bold text-orange-400 text-xs">DevOps Lead</div>
+                                                    <div className="text-[10px] text-muted-foreground">Build & Deploy</div>
+                                                </div>
+                                             </div>
+                                             {/* Children */}
+                                             <div className="flex flex-col gap-4 relative pl-6 border-l border-orange-500/20 ml-6 pb-2">
+                                                <div className="flex items-center gap-3 relative">
+                                                    <div className="absolute -left-6 top-1/2 w-6 h-px bg-orange-500/20"></div>
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-orange-500/30 transition-colors">
+                                                        <Code size={12} className="text-orange-500" /> Builder
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-3 relative">
+                                                    <div className="absolute -left-6 top-1/2 w-6 h-px bg-orange-500/20"></div>
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-orange-500/30 transition-colors">
+                                                        <Server size={12} className="text-orange-500" /> Deployer
+                                                    </div>
+                                                </div>
+                                             </div>
                                         </div>
-                                     </CardContent>
-                                  </Card>
-                                ))}
-                                
-                                {/* Add New Ghost Card */}
-                                <Card className="bg-card/10 border-dashed border-white/10 flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-card/20 hover:border-green-500/30 transition-all group">
-                                   <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform group-hover:bg-green-500/20 group-hover:text-green-400">
-                                      <Plus size={24} className="text-muted-foreground group-hover:text-green-400" />
-                                   </div>
-                                   <h3 className="font-mono font-bold text-sm text-muted-foreground group-hover:text-green-400">Deploy New Agent</h3>
-                                </Card>
+
+                                        {/* Security Branch */}
+                                        <div className="flex flex-col items-center group">
+                                             <div className="h-8 w-px bg-purple-500/30 group-hover:bg-red-500/50 transition-colors"></div>
+                                             <div className="w-44 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex flex-col items-center gap-2 mb-4 backdrop-blur-md hover:bg-red-500/20 transition-colors cursor-pointer">
+                                                <div className="p-1.5 bg-red-500/20 rounded-full text-red-400"><ShieldCheck size={16} /></div>
+                                                <div className="text-center">
+                                                    <div className="font-bold text-red-400 text-xs">Security Lead</div>
+                                                    <div className="text-[10px] text-muted-foreground">Audit & Safety</div>
+                                                </div>
+                                             </div>
+                                             {/* Children */}
+                                             <div className="flex flex-col gap-4 relative pl-6 border-l border-red-500/20 ml-6 pb-2">
+                                                <div className="flex items-center gap-3 relative">
+                                                    <div className="absolute -left-6 top-1/2 w-6 h-px bg-red-500/20"></div>
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-black/40 border border-white/5 rounded text-xs text-gray-300 w-40 hover:border-red-500/30 transition-colors">
+                                                        <Shield size={12} className="text-red-500" /> Auditor
+                                                    </div>
+                                                </div>
+                                             </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                              </div>
                           </TabsContent>
 
