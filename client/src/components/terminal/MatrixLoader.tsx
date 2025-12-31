@@ -94,7 +94,7 @@ export function MatrixLoader({
             key="loader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="relative z-10 text-center space-y-4"
+            className="relative z-10 flex flex-col items-center space-y-4"
           >
             <motion.div 
               initial={{ scale: 0.8, opacity: 0 }}
@@ -105,7 +105,7 @@ export function MatrixLoader({
               SPARKPLUG
             </motion.div>
             
-            <div className="w-64 h-1 bg-green-900 rounded-full overflow-hidden">
+            <div className="w-full h-1 bg-green-900 rounded-full overflow-hidden">
               <motion.div 
                 className="h-full bg-green-500 shadow-[0_0_10px_#22c55e]"
                 style={{ width: `${progress}%` }}

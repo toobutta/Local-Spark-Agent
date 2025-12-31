@@ -105,38 +105,9 @@ export default function Admin() {
               ADMIN MODE
             </div>
             
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8 border-primary/30 text-primary hover:bg-primary/10 gap-2">
-                  <Download size={14} /> DOWNLOAD CLI
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-black/95 border-primary/30 text-white max-w-lg backdrop-blur-xl">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <Terminal size={18} className="text-primary" /> INSTALL SPARKPLUG CLI
-                  </DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label className="text-[10px] text-muted-foreground uppercase tracking-widest">PowerShell / Command Line</Label>
-                    <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs flex items-center justify-between group">
-                      <code className="text-primary">pip install sparkplug-dgx</code>
-                      <button className="opacity-0 group-hover:opacity-100 transition-opacity"><RefreshCw size={12}/></button>
-                    </div>
-                  </div>
-                  <div className="p-3 bg-primary/5 border border-primary/20 rounded-md">
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      SparkPlug is a high-performance TUI designed for direct terminal integration. 
-                      Supports <span className="text-white font-bold">PowerShell</span>, <span className="text-white font-bold">Bash</span>, and <span className="text-white font-bold">Warp</span>.
-                    </p>
-                  </div>
-                  <Button className="w-full bg-primary text-black font-bold">
-                    DOWNLOAD .EXE / .DMG (NATIVE)
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button variant="outline" size="sm" className="h-8 border-primary/30 text-primary hover:bg-primary/10 gap-2" onClick={() => setLocation("/")}>
+              <Terminal size={14} /> RETURN TO CLI
+            </Button>
           </div>
         </header>
       {/* Main Content */}
@@ -208,6 +179,47 @@ export default function Admin() {
                           <Label htmlFor="bio">Bio</Label>
                           <Input id="bio" defaultValue="System Architect & AI Operator" className="bg-black/20 border-border/50 font-mono" />
                         </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
+                      <CardHeader>
+                        <CardTitle className="font-mono text-lg">CLI Access</CardTitle>
+                        <CardDescription>Install the terminal client locally.</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button className="w-full bg-primary/10 text-primary border border-primary/50 hover:bg-primary/20 font-mono gap-2">
+                              <Download size={14} /> DOWNLOAD INSTALLER
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-black/95 border-primary/30 text-white max-w-lg backdrop-blur-xl">
+                            <DialogHeader>
+                              <DialogTitle className="flex items-center gap-2">
+                                <Terminal size={18} className="text-primary" /> INSTALL SPARKPLUG CLI
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div className="space-y-2">
+                                <Label className="text-[10px] text-muted-foreground uppercase tracking-widest">PowerShell / Command Line</Label>
+                                <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs flex items-center justify-between group">
+                                  <code className="text-primary">pip install sparkplug-dgx</code>
+                                  <button className="opacity-0 group-hover:opacity-100 transition-opacity"><RefreshCw size={12}/></button>
+                                </div>
+                              </div>
+                              <div className="p-3 bg-primary/5 border border-primary/20 rounded-md">
+                                <p className="text-xs text-muted-foreground leading-relaxed">
+                                  SparkPlug is a high-performance TUI designed for direct terminal integration. 
+                                  Supports <span className="text-white font-bold">PowerShell</span>, <span className="text-white font-bold">Bash</span>, and <span className="text-white font-bold">Warp</span>.
+                                </p>
+                              </div>
+                              <Button className="w-full bg-primary text-black font-bold">
+                                DOWNLOAD .EXE / .DMG (NATIVE)
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                       </CardContent>
                     </Card>
 
