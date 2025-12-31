@@ -41,7 +41,10 @@ interface ThoughtLog {
 }
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return !params.get("skip");
+  });
   const [history, setHistory] = useState<LogEntry[]>([
     {
       id: "init",

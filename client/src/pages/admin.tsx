@@ -105,7 +105,7 @@ export default function Admin() {
               ADMIN MODE
             </div>
             
-            <Button variant="outline" size="sm" className="h-8 border-primary/30 text-primary hover:bg-primary/10 gap-2" onClick={() => setLocation("/")}>
+            <Button variant="outline" size="sm" className="h-8 border-primary/30 text-primary hover:bg-primary/10 gap-2" onClick={() => setLocation("/?skip=true")}>
               <Terminal size={14} /> RETURN TO CLI
             </Button>
           </div>
