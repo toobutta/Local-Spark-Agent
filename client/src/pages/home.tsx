@@ -7,7 +7,7 @@ import { AgentGraph } from "@/components/terminal/AgentGraph";
 import { MatrixLoader } from "@/components/terminal/MatrixLoader";
 import { ActiveAgentsFeed } from "@/components/terminal/ActiveAgentsFeed";
 import { SphereSpinner } from "@/components/terminal/SphereSpinner";
-import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode, Code, Database, Braces, FileText, Download, Upload, RefreshCw, ChevronRight, ListTodo, Plus, Check, Clock } from "lucide-react";
+import { Terminal, Cpu, Network, Activity, Server, Command, Box, ShieldCheck, PlayCircle, Settings, FolderOpen, Brain, Zap, HardDrive, FileCode, Code, Database, Braces, FileText, Download, Upload, RefreshCw, ChevronRight, ListTodo, Plus, Check, Clock, Globe, AppWindow, MessageSquare, Bot } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
@@ -120,11 +120,87 @@ export default function Home() {
               <span className="text-yellow-500">mcp</span>        <span className="text-muted-foreground">Show MCP connections</span>
               <span className="text-yellow-500">marketplace</span> <span className="text-muted-foreground">Browse plugins</span>
               <span className="text-yellow-500">plugins</span>    <span className="text-muted-foreground">Manage extensions</span>
+              <span className="text-yellow-500">browser</span>     <span className="text-muted-foreground">Open dev preview</span>
+              <span className="text-yellow-500">ollama</span>      <span className="text-muted-foreground">Manage local models</span>
               <span className="text-yellow-500">settings</span>   <span className="text-muted-foreground">Open config panel</span>
               <span className="text-yellow-500">clear</span>      <span className="text-muted-foreground">Clear terminal output</span>
             </div>
             <div className="mt-2 text-xs text-muted-foreground bg-white/5 p-2 rounded">
               <span className="text-blue-400">TIP:</span> You can also use <span className="text-white">/</span> prefix for commands (e.g. <span className="text-white">/settings</span>)
+            </div>
+          </div>
+        ));
+      } else if (command === "browser" || command === "/browser") {
+        addLog("system", "INITIALIZING DEV SERVER PROXY...");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        addLog("output", (
+          <div className="flex flex-col gap-2 font-mono text-xs border border-border p-3 rounded bg-black/20">
+            <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-1">
+              <span className="font-bold text-blue-400 flex items-center gap-2">
+                <Globe size={14} /> WEB PREVIEW
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-green-500/10 text-green-400 text-[10px] border border-green-500/20">LIVE</span>
+                <span className="text-muted-foreground">localhost:5173</span>
+              </div>
+            </div>
+            <div className="aspect-video bg-white/5 rounded border border-white/10 flex items-center justify-center relative overflow-hidden group">
+              <div className="absolute top-2 left-2 flex gap-1">
+                <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                <div className="w-2 h-2 rounded-full bg-green-500/50" />
+              </div>
+              <div className="text-center space-y-2 group-hover:scale-105 transition-transform duration-500">
+                <AppWindow size={32} className="mx-auto text-blue-400/50" />
+                <div className="text-muted-foreground">Preview Available</div>
+              </div>
+              <button className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                <span className="bg-primary text-black px-3 py-1.5 rounded font-bold text-[10px] flex items-center gap-2">
+                   OPEN IN NEW TAB <ChevronRight size={10} />
+                </span>
+              </button>
+            </div>
+          </div>
+        ));
+      } else if (command === "ollama" || command === "/ollama") {
+        addLog("system", "CONNECTING TO LOCAL OLLAMA INSTANCE...");
+        await new Promise(resolve => setTimeout(resolve, 800));
+        addLog("output", (
+          <div className="flex flex-col gap-2 font-mono text-xs border border-border p-3 rounded bg-black/20">
+            <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-1">
+              <span className="font-bold text-orange-400 flex items-center gap-2">
+                <Bot size={14} /> OLLAMA WEB
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-green-500/10 text-green-400 text-[10px] border border-green-500/20">v0.1.28</span>
+                <span className="text-muted-foreground">port:11434</span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2">
+               <div className="p-2 bg-white/5 rounded border border-white/5">
+                 <div className="text-[10px] text-muted-foreground mb-1">ACTIVE MODEL</div>
+                 <div className="text-white font-bold flex items-center gap-2">
+                   <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_5px_#22c55e]" />
+                   llama3:8b
+                 </div>
+               </div>
+               <div className="p-2 bg-white/5 rounded border border-white/5">
+                 <div className="text-[10px] text-muted-foreground mb-1">MEMORY USAGE</div>
+                 <div className="text-white font-bold">4.2 GB / 8.0 GB</div>
+               </div>
+            </div>
+
+            <div className="space-y-1 mt-1">
+              <div className="text-[10px] text-muted-foreground">AVAILABLE MODELS</div>
+              <div className="grid grid-cols-1 gap-1">
+                 {['llama3:8b-instruct', 'mistral:7b', 'nomic-embed-text', 'codellama:7b'].map(m => (
+                   <div key={m} className="flex justify-between px-2 py-1 bg-white/5 rounded hover:bg-white/10 cursor-pointer">
+                     <span className="text-white">{m}</span>
+                     <span className="text-muted-foreground text-[10px]">PULL</span>
+                   </div>
+                 ))}
+              </div>
             </div>
           </div>
         ));

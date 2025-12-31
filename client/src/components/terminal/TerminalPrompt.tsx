@@ -20,6 +20,8 @@ const SUGGESTIONS = [
   { cmd: "/marketplace", desc: "Browse plugin marketplace" },
   { cmd: "/settings", desc: "Open system configuration" },
   { cmd: "/plugins", desc: "Manage installed plugins" },
+  { cmd: "/browser", desc: "Open web dev preview" },
+  { cmd: "/ollama", desc: "Manage local LLM models" },
 ];
 
 export function TerminalPrompt({ onCommand, disabled }: TerminalPromptProps) {
