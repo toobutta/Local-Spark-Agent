@@ -1,2 +1,53 @@
-textual
-rich
+# SparkPlug TUI Requirements
+
+# Core TUI Framework
+textual>=0.40.0
+rich>=13.0.0
+
+# Agent Frameworks - Phase 1 Core
+mem0ai
+langgraph
+crewai
+redis
+nats-py
+pydantic>=2.0.0
+
+# Coding Agent - Aider
+aider-chat
+gitpython
+pathlib
+
+# Additional Agent Infrastructure
+chromadb
+faiss-cpu
+sentence-transformers
+
+# Async and Networking
+aiohttp
+websockets
+fastapi
+uvicorn
+httpx>=0.25.0
+aiofiles
+
+# Data Processing
+pandas
+numpy
+pyyaml
+
+# Monitoring and Metrics
+psutil
+prometheus-client
+
+# Configuration & Security
+cryptography>=41.0.0
+
+# NVIDIA GPU Integration (optional)
+# pynvml  # Uncomment if NVIDIA GPU available
+# nvidia-ml-py
+
+# Ollama Integration (optional)
+# ollama  # Uncomment for Ollama library support
+
+# Plugin System
+importlib-metadata
