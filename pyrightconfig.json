@@ -1,0 +1,10 @@
+{
+  "python": {
+    "pythonPath": "C:/Users/Andrew/bin/python-3.11.9-embed/python.exe"
+  },
+  "include": ["Local-Spark-Agent/tui"],
+  "exclude": ["node_modules", "Local-Spark-Agent/client", "Local-Spark-Agent/server"],
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "extraPaths": ["C:/Users/Andrew/bin/python-3.11.9-embed/Lib/site-packages"]
+}
