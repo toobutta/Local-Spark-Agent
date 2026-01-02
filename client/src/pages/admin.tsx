@@ -532,7 +532,7 @@ export default function Admin() {
                                     <div className="p-3 bg-blue-950/20 border border-blue-500/20 rounded font-mono text-xs space-y-2">
                                       <div className="flex justify-between">
                                         <span className="text-muted-foreground">Hostname:</span>
-                                        <span className="text-white">dgx-h100-node-01</span>
+                                        <span className="text-white">dgx-h200-node-01</span>
                                       </div>
                                       <div className="flex justify-between">
                                         <span className="text-muted-foreground">IP Address:</span>
@@ -579,7 +579,7 @@ export default function Admin() {
                                   <div className="space-y-4">
                                      <div className="flex items-center justify-between">
                                         <Label className="text-xs font-mono text-blue-300">COMPUTE ALLOCATION</Label>
-                                        <span className="text-xs font-mono text-white">4x H100 GPU</span>
+                                        <span className="text-xs font-mono text-white">DGX Spark LPDDR5x</span>
                                      </div>
                                      <div className="h-2 bg-black/40 rounded-full overflow-hidden flex">
                                         <div className="h-full bg-blue-500 w-1/2" />
@@ -669,7 +669,7 @@ export default function Admin() {
                               <br/>
                               PROJECT_TYPE="research"
                               <br/>
-                              DGX_ALLOCATION="8x"
+                              DGX_ALLOCATION="8x H200"
                               <br/>
                               <br/>
                               <span className="text-green-400"># Overrides applied</span>
@@ -707,7 +707,7 @@ export default function Admin() {
                                 <CardTitle className="font-mono text-lg flex items-center gap-2">
                                   <Cpu size={18} className="text-blue-400" /> DGX Superchip
                                 </CardTitle>
-                                <CardDescription>NVIDIA GB200 Grace Blackwell</CardDescription>
+                                <CardDescription>NVIDIA DGX Spark - LPDDR5x Unified Memory</CardDescription>
                               </CardHeader>
                               <CardContent className="space-y-4 relative z-10">
                                 <div className="grid grid-cols-2 gap-4">
@@ -721,7 +721,7 @@ export default function Admin() {
                                     <div className="text-[10px] uppercase text-muted-foreground tracking-widest">Allocation</div>
                                     <div className="font-mono text-xs text-blue-400 bg-blue-950/20 p-2 rounded border border-blue-500/20 flex items-center gap-2">
                                       <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                                      4x H100 (ACTIVE)
+                                      DGX SPARK (ACTIVE)
                                     </div>
                                   </div>
                                 </div>
@@ -756,7 +756,7 @@ export default function Admin() {
                                           <div className="p-3 bg-blue-950/20 border border-blue-500/20 rounded font-mono text-xs space-y-2">
                                             <div className="flex justify-between">
                                               <span className="text-muted-foreground">Hostname:</span>
-                                              <span className="text-white">dgx-h100-node-01</span>
+                                              <span className="text-white">dgx-h200-node-01</span>
                                             </div>
                                             <div className="flex justify-between">
                                               <span className="text-muted-foreground">IP Address:</span>
@@ -765,6 +765,39 @@ export default function Admin() {
                                             <div className="flex justify-between">
                                               <span className="text-muted-foreground">MAC:</span>
                                               <span className="text-white">00:1A:2B:3C:4D:5E</span>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        {/* Performance Specs */}
+                                        <div className="space-y-3">
+                                          <Label className="text-xs font-mono text-blue-300">PERFORMANCE SPECIFICATIONS</Label>
+                                          <div className="p-3 bg-blue-950/20 border border-blue-500/20 rounded space-y-2">
+                                            <div className="grid grid-cols-2 gap-4 text-xs">
+                                              <div className="flex justify-between">
+                                                <span className="text-muted-foreground">Memory:</span>
+                                                <span className="text-white font-bold">128GB LPDDR5x</span>
+                                              </div>
+                                              <div className="flex justify-between">
+                                                <span className="text-muted-foreground">Bandwidth:</span>
+                                                <span className="text-white font-bold">273 GB/s</span>
+                                              </div>
+                                              <div className="flex justify-between">
+                                                <span className="text-muted-foreground">Generation:</span>
+                                                <span className="text-green-400 font-bold">32-38 tok/s</span>
+                                              </div>
+                                              <div className="flex justify-between">
+                                                <span className="text-muted-foreground">Prefill:</span>
+                                                <span className="text-green-400 font-bold">~1,723 tok/s</span>
+                                              </div>
+                                              <div className="flex justify-between">
+                                                <span className="text-muted-foreground">TTFT:</span>
+                                                <span className="text-blue-400 font-bold">0.2-1.6s</span>
+                                              </div>
+                                              <div className="flex justify-between">
+                                                <span className="text-muted-foreground">Software:</span>
+                                                <span className="text-white font-bold">DGX OS + CUDA</span>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -803,7 +836,7 @@ export default function Admin() {
                                         <div className="space-y-4">
                                            <div className="flex items-center justify-between">
                                               <Label className="text-xs font-mono text-blue-300">COMPUTE ALLOCATION</Label>
-                                              <span className="text-xs font-mono text-white">4x H100 GPU</span>
+                                              <span className="text-xs font-mono text-white">DGX Spark LPDDR5x</span>
                                            </div>
                                            <div className="h-2 bg-black/40 rounded-full overflow-hidden flex">
                                               <div className="h-full bg-blue-500 w-1/2" />
@@ -880,12 +913,12 @@ export default function Admin() {
                                   </div>
                                   <div className="p-3 bg-orange-900/10 border border-orange-500/20 rounded-md space-y-3">
                                     <p className="text-[10px] text-muted-foreground">
-                                      Pipe prompts through your local <code className="text-white">claude</code> CLI installation. Uses your existing authenticated session.
+                                      Pipe prompts through your local <code className="text-white">cursor</code> IDE via Factory CLI. Uses your existing authenticated session.
                                     </p>
                                     <div className="grid grid-cols-[1fr_auto] gap-2 items-end">
                                       <div className="space-y-1">
                                         <Label className="text-[10px] text-muted-foreground">CLI BINARY PATH</Label>
-                                        <Input defaultValue="claude" className="bg-black/40 border-orange-500/30 font-mono h-8 text-xs text-orange-200" />
+                                        <Input defaultValue="cursor" className="bg-black/40 border-blue-500/30 font-mono h-8 text-xs text-blue-200" />
                                       </div>
                                       <div className="space-y-1">
                                          <Label className="text-[10px] text-muted-foreground opacity-0">Action</Label>
@@ -895,8 +928,8 @@ export default function Admin() {
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                       <Switch id="claude-bridge" />
-                                       <Label htmlFor="claude-bridge" className="text-xs text-gray-300">Enable CLI Passthrough</Label>
+                                       <Switch id="cursor-bridge" />
+                                       <Label htmlFor="cursor-bridge" className="text-xs text-gray-300">Enable IDE Bridge</Label>
                                     </div>
                                   </div>
                                 </div>

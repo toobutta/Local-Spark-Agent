@@ -130,7 +130,7 @@ class CodeAssistantPanel(Widget):
         self.aider_process: Optional[asyncio.subprocess.Process] = None
         self.aider_output: List[str] = []
         self.git_repo = None
-        self._ollama_service: Optional[OllamaService] = None
+        self._ollama_service: Optional[Any] = None
         self._event_bus = None
         self._config_store = None
         self._streaming = False
@@ -139,10 +139,10 @@ class CodeAssistantPanel(Widget):
         self._ollama_check_task = None  # Store reference to prevent GC
 
         # Initialize services
-        if HAS_OLLAMA:
+        if HAS_OLLAMA and get_ollama_service is not None:
             self._ollama_service = get_ollama_service()
-        
-        if HAS_SERVICES:
+
+        if HAS_SERVICES and get_event_bus is not None and get_config_store is not None:
             self._event_bus = get_event_bus()
             self._config_store = get_config_store()
             
@@ -157,6 +157,10 @@ class CodeAssistantPanel(Widget):
 
     def _init_git_repo(self):
         """Initialize git repository connection."""
+        if not HAS_GIT or git is None:
+            self.git_repo = None
+            return
+
         try:
             self.git_repo = git.Repo(self.project_root)
         except Exception:
@@ -428,7 +432,7 @@ class CodeAssistantPanel(Widget):
             self.app.notify(f"Loaded {file_path.name}", title="File", severity="information")
 
             # Emit event
-            if self._event_bus:
+            if self._event_bus and EventType is not None:
                 await self._event_bus.emit_async(
                     EventType.FILE_OPENED,
                     data={"file": str(file_path)},
@@ -454,7 +458,7 @@ class CodeAssistantPanel(Widget):
             self.update_git_status()
             
             # Emit event
-            if self._event_bus:
+            if self._event_bus and EventType is not None:
                 await self._event_bus.emit_async(
                     EventType.FILE_SAVED,
                     data={"file": str(self.current_file)},
@@ -554,10 +558,10 @@ class CodeAssistantPanel(Widget):
             status_label = self.query_one("#aider-status", Static)
             status_label.update(f"Status: Running ({self._current_model})")
 
-            self.app.notify("Aider started successfully", title="Aider", severity="success")
+            self.app.notify("Aider started successfully", title="Aider", severity="information")
             
             # Emit event
-            if self._event_bus:
+            if self._event_bus and EventType is not None:
                 await self._event_bus.emit_async(
                     EventType.AIDER_STARTED,
                     data={"model": self._current_model},
@@ -604,7 +608,7 @@ class CodeAssistantPanel(Widget):
                 output_area.scroll_end()
                 
                 # Emit event for streaming response
-                if self._event_bus:
+                if self._event_bus and EventType is not None:
                     self._event_bus.emit(
                         EventType.AIDER_RESPONSE,
                         data={"chunk": text, "streaming": True},
@@ -627,10 +631,10 @@ class CodeAssistantPanel(Widget):
             status_label = self.query_one("#aider-status", Static)
             status_label.update("Status: Stopped")
 
-            self.app.notify("Aider stopped", title="Aider", severity="info")
+            self.app.notify("Aider stopped", title="Aider", severity="information")
             
             # Emit event
-            if self._event_bus:
+            if self._event_bus and EventType is not None:
                 await self._event_bus.emit_async(
                     EventType.AIDER_STOPPED,
                     data={},
@@ -649,7 +653,7 @@ class CodeAssistantPanel(Widget):
             return
 
         # If Aider process is running, send to it
-        if self.aider_process and self.aider_process.returncode is None:
+        if self.aider_process and self.aider_process.returncode is None and self.aider_process.stdin is not None:
             try:
                 self.aider_process.stdin.write((message + '\n').encode())
                 await self.aider_process.stdin.drain()
@@ -659,7 +663,7 @@ class CodeAssistantPanel(Widget):
                 output_area.load_text(f"{current_output}\n> {message}\n")
 
                 input_field.value = ""
-                self.app.notify(f"Sent to Aider", title="Aider", severity="info")
+                self.app.notify(f"Sent to Aider", title="Aider", severity="information")
 
             except Exception as e:
                 self.app.notify(f"Failed to send to Aider: {e}", title="Aider", severity="error")
@@ -730,7 +734,7 @@ class CodeAssistantPanel(Widget):
         if self._ollama_service:
             self._ollama_service.clear_chat_history()
         
-        self.app.notify("Chat cleared", title="Aider", severity="info")
+        self.app.notify("Chat cleared", title="Aider", severity="information")
 
     async def preview_diff(self):
         """Preview code diff before applying changes."""
@@ -750,9 +754,9 @@ class CodeAssistantPanel(Widget):
                 # Show diff in output area
                 output_area = self.query_one("#aider-output", TextArea)
                 output_area.load_text(f"=== DIFF PREVIEW ===\n{diff}\n===================")
-                self.app.notify("Diff preview shown", title="Diff", severity="info")
+                self.app.notify("Diff preview shown", title="Diff", severity="information")
             else:
-                self.app.notify("No changes to preview", title="Diff", severity="info")
+                self.app.notify("No changes to preview", title="Diff", severity="information")
         
         except Exception as e:
             self.app.notify(f"Diff error: {e}", title="Diff", severity="error")

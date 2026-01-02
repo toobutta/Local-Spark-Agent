@@ -25,7 +25,7 @@ python sparkplug_tui.py
 
 ## Features
 
-- **DGX Superchip Management**: Monitor and configure NVIDIA GB200/H100 nodes.
+- **DGX Spark Management**: Monitor and configure NVIDIA DGX Spark with LPDDR5x unified memory (128GB @ 273GB/s).
 - **Warp-like Interface**: Modern command palette and block-based output.
 - **Secure Vault**: Manage API keys for Anthropic, OpenAI, and Gemini.
 - **Agent Deployment**: Launch and monitor autonomous agents.
