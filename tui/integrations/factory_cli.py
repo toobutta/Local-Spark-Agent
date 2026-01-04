@@ -382,7 +382,7 @@ class FactoryCLIAdapter:
         self._active_runs[run_id] = run
         
         # Emit event
-        if self._event_bus:
+        if self._event_bus and EventType is not None:
             await self._event_bus.emit_async(
                 EventType.FACTORY_WORKFLOW_STARTED,
                 data={"workflow_id": workflow_id, "run_id": run_id},
@@ -463,7 +463,7 @@ class FactoryCLIAdapter:
         run.completed_at = datetime.now().isoformat()
         
         # Emit event
-        if self._event_bus:
+        if self._event_bus and EventType is not None:
             await self._event_bus.emit_async(
                 EventType.FACTORY_WORKFLOW_COMPLETED,
                 data={"workflow_id": run.workflow_id, "run_id": run.run_id},
@@ -573,9 +573,10 @@ class FactoryCLIAdapter:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )
-            
-            async for line in process.stdout:
-                yield line.decode().rstrip()
+
+            if process.stdout is not None:
+                async for line in process.stdout:
+                    yield line.decode().rstrip()
         
         except Exception as e:
             logger.error(f"Failed to stream logs: {e}")
@@ -612,18 +613,23 @@ class FactoryCLIAdapter:
                 )
                 
                 stdout_lines = []
-                async for line in process.stdout:
-                    decoded = line.decode().rstrip()
-                    stdout_lines.append(decoded)
-                    for callback in self._output_callbacks:
-                        callback(decoded)
-                
+                if process.stdout is not None:
+                    async for line in process.stdout:
+                        decoded = line.decode().rstrip()
+                        stdout_lines.append(decoded)
+                        for callback in self._output_callbacks:
+                            callback(decoded)
+
                 await process.wait()
-                
+
+                stderr_data = ""
+                if process.stderr is not None:
+                    stderr_data = (await process.stderr.read()).decode()
+
                 return {
                     "success": process.returncode == 0,
                     "stdout": "\n".join(stdout_lines),
-                    "stderr": (await process.stderr.read()).decode(),
+                    "stderr": stderr_data,
                 }
             else:
                 process = await asyncio.create_subprocess_exec(

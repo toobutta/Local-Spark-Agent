@@ -23,7 +23,7 @@ class MemoryManager(Widget):
         try:
             from mem0 import Memory
             self.memory_client = Memory()
-            self.notify("Memory system initialized", title="Memory", severity="success")
+            self.notify("Memory system initialized", title="Memory", severity="information")
         except ImportError:
             self.notify("Mem0 not installed. Run: pip install mem0ai", title="Memory", severity="warning")
         except Exception as e:
@@ -45,9 +45,9 @@ class MemoryManager(Widget):
 
             # Memory operations
             with Horizontal():
-                yield Button("View Memory", variant="outline", id="view-memory-btn")
-                yield Button("Add Memory", variant="outline", id="add-memory-btn")
-                yield Button("Search Memory", variant="outline", id="search-memory-btn")
+                yield Button("View Memory", variant="default", id="view-memory-btn")
+                yield Button("Add Memory", variant="default", id="add-memory-btn")
+                yield Button("Search Memory", variant="default", id="search-memory-btn")
                 yield Button("Clear Memory", variant="warning", id="clear-memory-btn")
 
             # Memory input (for adding)
@@ -89,7 +89,7 @@ class MemoryManager(Widget):
 
         if new_agent:
             self.current_agent = new_agent
-            self.notify(f"Switched to agent: {new_agent}", title="Memory", severity="info")
+            self.notify(f"Switched to agent: {new_agent}", title="Memory", severity="information")
             await self.view_memory()
         else:
             self.notify("Please enter an agent name", title="Memory", severity="warning")
@@ -108,7 +108,7 @@ class MemoryManager(Widget):
             # Update display
             await self.update_memory_display()
 
-            self.notify(f"Loaded {len(self.memories)} memories", title="Memory", severity="success")
+            self.notify(f"Loaded {len(self.memories)} memories", title="Memory", severity="information")
 
         except Exception as e:
             self.notify(f"Failed to load memories: {e}", title="Memory", severity="error")
@@ -137,7 +137,7 @@ class MemoryManager(Widget):
             # Refresh memory display
             await self.view_memory()
 
-            self.notify("Memory saved successfully", title="Memory", severity="success")
+            self.notify("Memory saved successfully", title="Memory", severity="information")
 
         except Exception as e:
             self.notify(f"Failed to save memory: {e}", title="Memory", severity="error")
@@ -151,7 +151,7 @@ class MemoryManager(Widget):
         # For now, just refresh the current view
         # In the future, add search input
         await self.view_memory()
-        self.notify("Memory search completed", title="Memory", severity="info")
+        self.notify("Memory search completed", title="Memory", severity="information")
 
     async def clear_memory(self):
         """Clear all memories for current agent"""

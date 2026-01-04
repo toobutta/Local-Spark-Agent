@@ -90,9 +90,12 @@ class ProjectTemplate:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'ProjectTemplate':
         """Create from dictionary."""
+        if "name" not in data:
+            raise ValueError("ProjectTemplate.from_dict missing required field 'name'")
+
         agents = [AgentTemplate(**a) for a in data.get("agents", [])]
         mcp_servers = [MCPServerTemplate(**m) for m in data.get("mcp_servers", [])]
-        
+
         return cls(
             id=data.get("id", str(uuid.uuid4())[:8]),
             name=data["name"],
@@ -404,8 +407,12 @@ class TemplateManager:
             try:
                 with open(file_path, 'r') as f:
                     data = yaml.safe_load(f)
-                
-                template = ProjectTemplate.from_dict(data)
+
+                if isinstance(data, dict):
+                    template = ProjectTemplate.from_dict(data)
+                else:
+                    logger.error(f"Template file {file_path} does not contain a valid dictionary")
+                    continue
                 self._templates[template.id] = template
                 logger.info(f"Loaded custom template: {template.name}")
             except Exception as e:
@@ -415,8 +422,12 @@ class TemplateManager:
             try:
                 with open(file_path, 'r') as f:
                     data = json.load(f)
-                
-                template = ProjectTemplate.from_dict(data)
+
+                if isinstance(data, dict):
+                    template = ProjectTemplate.from_dict(data)
+                else:
+                    logger.error(f"Template file {file_path} does not contain a valid dictionary")
+                    continue
                 self._templates[template.id] = template
                 logger.info(f"Loaded custom template: {template.name}")
             except Exception as e:
@@ -657,7 +668,8 @@ class TemplateManager:
         if format == "json":
             return json.dumps(data, indent=2)
         else:
-            return yaml.dump(data, default_flow_style=False)
+            result = yaml.dump(data, default_flow_style=False)
+            return result if isinstance(result, str) else str(result)
     
     def import_template(self, content: str, format: str = "yaml") -> Optional[ProjectTemplate]:
         """
@@ -675,12 +687,16 @@ class TemplateManager:
                 data = json.loads(content)
             else:
                 data = yaml.safe_load(content)
-            
+
+            if not isinstance(data, dict):
+                logger.error("Template content does not contain a valid dictionary")
+                return None
+
             # Generate new ID to avoid conflicts
             data["id"] = str(uuid.uuid4())[:8]
             data["is_builtin"] = False
             data["author"] = "Imported"
-            
+
             template = ProjectTemplate.from_dict(data)
             self._templates[template.id] = template
             self._save_template(template)

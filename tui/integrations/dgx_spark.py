@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 # Try to import pynvml
 try:
-    import pynvml
+    import pynvml  # type: ignore
     HAS_PYNVML = True
 except ImportError:
     HAS_PYNVML = False
@@ -351,7 +351,10 @@ class DGXSparkAPI:
                 stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=5.0)
             except asyncio.TimeoutError:
                 logger.warning("nvidia-smi GPU metrics query timed out after 5 seconds")
-                proc.kill()
+                try:
+                    proc.kill()
+                except Exception as e:
+                    logger.debug(f"Exception killing process after timeout: {e}")
                 await proc.wait()
                 return None
             
@@ -398,7 +401,10 @@ class DGXSparkAPI:
                 driver_stdout, _ = await asyncio.wait_for(driver_proc.communicate(), timeout=5.0)
             except asyncio.TimeoutError:
                 logger.warning("nvidia-smi driver version query timed out after 5 seconds")
-                driver_proc.kill()
+                try:
+                    driver_proc.kill()
+                except Exception as e:
+                    logger.debug(f"Exception killing process after timeout: {e}")
                 await driver_proc.wait()
                 return None
             driver_version = driver_stdout.decode().strip().split('\n')[0] if driver_proc.returncode == 0 else "Unknown"

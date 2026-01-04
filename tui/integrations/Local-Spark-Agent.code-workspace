@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../../DEVELLO/Apps/FLeet"
+		}
+	],
+	"settings": {
+		"github-enterprise.uri": "https://gitsafe"
+	}
+}
