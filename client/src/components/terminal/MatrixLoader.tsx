@@ -15,7 +15,7 @@ export function MatrixLoader({
 
   const recentProjects = [
     { id: "genesis", name: "Project Genesis", path: "~/workspace/genesis" },
-    { id: "dgx-spark", name: "SparkPlug DGX", path: "~/compute/dgx-spark" },
+    { id: "dgx-spark", name: "DGX Spark Connection", path: "~/compute/dgx-spark" },
     { id: "neural-net", name: "Neural Interface v2", path: "~/research/neural" },
   ];
 
@@ -96,13 +96,13 @@ export function MatrixLoader({
             exit={{ opacity: 0, scale: 0.95 }}
             className="relative z-10 flex flex-col items-center space-y-4"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
               className="text-4xl font-bold tracking-[0.5em] text-shadow-glow"
             >
-              SPARKPLUG
+              FLEETD
             </motion.div>
             
             <div className="w-full h-1 bg-green-900 rounded-full overflow-hidden">

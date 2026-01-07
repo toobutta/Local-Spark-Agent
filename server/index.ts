@@ -2,6 +2,8 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { wsManager } from "./websocket";
+import { mcpManager } from "./mcp";
 
 const app = express();
 const httpServer = createServer(app);
@@ -61,6 +63,17 @@ app.use((req, res, next) => {
 
 (async () => {
   await registerRoutes(httpServer, app);
+
+  // Setup WebSocket server for real-time communication
+  wsManager.setupWebSocket(httpServer);
+
+  // Start MCP server status monitoring
+  try {
+    await mcpManager.startStatusMonitoring();
+    log("MCP server status monitoring started");
+  } catch (error: any) {
+    log(`Failed to start MCP monitoring: ${error.message}`, "error");
+  }
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

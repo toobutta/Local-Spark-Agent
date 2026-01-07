@@ -84,14 +84,14 @@ export default function Admin() {
       <header className="h-16 border-b border-border/50 bg-card/20 flex items-center justify-between px-6 backdrop-blur-md relative z-10">
         <div className="flex items-center gap-3 text-primary cursor-pointer hover:opacity-80 transition-opacity" onClick={() => setLocation("/")}>
           <Shield size={20} />
-          <h1 className="font-display font-bold tracking-widest text-xl">SPARKPLUG CLI</h1>
+          <h1 className="font-display font-bold tracking-widest text-xl">FLEETD</h1>
         </div>
         
         <div className="flex items-center gap-6">
           <div className="text-xs font-mono text-muted-foreground flex items-center gap-2">
             <span>PROJECT =</span>
             <span className="text-primary font-bold flex items-center gap-2">
-              <Box size={14} /> SparkPlug DGX
+              <Box size={14} /> FLEETD
             </span>
           </div>
 
@@ -113,7 +113,7 @@ export default function Admin() {
             </div>
             
             <Button variant="outline" size="sm" className="h-8 border-primary/30 text-primary hover:bg-primary/10 gap-2" onClick={() => setLocation("/?skip=true")}>
-              <Terminal size={14} /> RETURN TO CLI
+              <Terminal size={14} /> RETURN TO FLEETD
             </Button>
           </div>
         </header>
@@ -372,44 +372,49 @@ export default function Admin() {
                     <Card className="bg-card/30 border-border/50 backdrop-blur-sm">
                       <CardHeader>
                         <CardTitle className="font-mono text-lg">CLI Access</CardTitle>
-                        <CardDescription>Install the terminal client locally.</CardDescription>
+                        <CardDescription>Configure SSH-based connections to remote DGX systems.</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button className="w-full bg-primary/10 text-primary border border-primary/50 hover:bg-primary/20 font-mono gap-2">
-                              <Download size={14} /> DOWNLOAD INSTALLER
+                              <Terminal size={14} /> CONFIGURE DGX SYNC
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="bg-black/95 border-primary/30 text-white max-w-lg backdrop-blur-xl">
                             <DialogHeader>
                               <DialogTitle className="flex items-center gap-2">
-                                <Terminal size={18} className="text-primary" /> INSTALL SPARKPLUG CLI
+                                <Terminal size={18} className="text-primary" /> DGX SYNC CONNECTION
                               </DialogTitle>
                             </DialogHeader>
                             <div className="space-y-4 py-4">
                               <div className="p-4 bg-black/40 border border-border/50 rounded-lg">
-                                <Label className="text-xs text-muted-foreground uppercase tracking-widest mb-2 block">Option 1: Python Package (Recommended)</Label>
+                                <Label className="text-xs text-muted-foreground uppercase tracking-widest mb-2 block">SSH Key Configuration</Label>
                                 <div className="space-y-3">
                                   <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs text-primary">
-                                    pip install -r tui/requirements.txt
+                                    ssh-keygen -t rsa -b 4096 -C "fleetd@dgx"
                                   </div>
                                   <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs text-primary">
-                                    python tui/sparkplug_tui.py
+                                    ssh-copy-id user@dgx-server
                                   </div>
                                   <p className="text-xs text-muted-foreground">
-                                    Run the source code directly. Requires Python 3.8+.
+                                    Configure SSH key authentication for automatic DGX connections via SparkPlug CLI.
                                   </p>
                                 </div>
                               </div>
                               
-                              <div className="p-4 bg-black/40 border border-border/50 rounded-lg opacity-50 cursor-not-allowed">
-                                <Label className="text-xs text-muted-foreground uppercase tracking-widest mb-2 block">Option 2: Native Binary (Coming Soon)</Label>
-                                <Button className="w-full bg-primary/20 text-primary font-bold border border-primary/20" disabled>
-                                  DOWNLOAD .EXE (WINDOWS)
-                                </Button>
-                                <p className="text-[10px] text-muted-foreground mt-2 text-center">
-                                  Native compilation pipeline is currently building...
+                              <div className="p-4 bg-black/40 border border-border/50 rounded-lg">
+                                <Label className="text-xs text-muted-foreground uppercase tracking-widest mb-2 block">SparkPlug CLI Integration</Label>
+                                <div className="space-y-3">
+                                  <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs text-primary">
+                                    pip install sparkplug-dgx
+                                  </div>
+                                  <div className="bg-black p-3 rounded border border-white/10 font-mono text-xs text-primary">
+                                    sparkplug connect --auto-ssh
+                                  </div>
+                                </div>
+                                <p className="text-xs text-muted-foreground mt-2">
+                                  Install SparkPlug CLI for direct DGX management and sync operations.
                                 </p>
                               </div>
                             </div>
@@ -463,7 +468,7 @@ export default function Admin() {
                               <div className="grid grid-cols-2 gap-3">
                                 <div className="p-3 rounded border border-blue-500/50 bg-blue-500/10 cursor-pointer hover:bg-blue-500/20 transition-colors">
                                   <div className="font-bold text-xs mb-1">AI / ML RESEARCH</div>
-                                  <div className="text-[10px] text-gray-400">Includes DGX SparkPlug & Foundry</div>
+                                  <div className="text-[10px] text-gray-400">Includes DGX Sync & Foundry</div>
                                 </div>
                                 <div className="p-3 rounded border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors opacity-60">
                                   <div className="font-bold text-xs mb-1">WEB APPLICATION</div>
@@ -504,7 +509,7 @@ export default function Admin() {
                         <CardContent className="space-y-4">
                           <div className="space-y-2 text-xs font-mono text-muted-foreground">
                             <div className="flex justify-between"><span>Type:</span> <span className="text-foreground">AI Research</span></div>
-                            <div className="flex justify-between"><span>Modules:</span> <span className="text-foreground">SparkPlug, Foundry</span></div>
+                            <div className="flex justify-between"><span>Modules:</span> <span className="text-foreground">FLEETD, Foundry</span></div>
                             <div className="flex justify-between"><span>Created:</span> <span className="text-foreground">2024-12-01</span></div>
                           </div>
                           <Separator className="bg-blue-500/20" />
@@ -651,7 +656,7 @@ export default function Admin() {
                                   <Switch defaultChecked />
                                 </div>
                                 <div className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
-                                  <span className="text-xs font-mono">SparkPlug (DGX)</span>
+                                  <span className="text-xs font-mono">DGX Sync Module</span>
                                   <Switch defaultChecked />
                                 </div>
                                 <div className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
@@ -1001,24 +1006,20 @@ export default function Admin() {
                             <CardDescription>Model Context Protocol servers.</CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-3">
-                            {[
-                              { name: "PostgreSQL Connector", status: "Active", type: "Database" },
-                              { name: "Filesystem Watcher", status: "Active", type: "System" },
-                              { name: "GitHub Repository", status: "Inactive", type: "VCS" },
-                              { name: "Memory Service", status: "Inactive", type: "Core" },
-                              { name: "Google Drive", status: "Inactive", type: "Storage" }
-                            ].map((mcp) => (
-                              <div key={mcp.name} className="flex items-center justify-between p-2 rounded bg-black/20 border border-white/5">
-                                <div className="flex items-center gap-3">
-                                  <div className={`w-2 h-2 rounded-full ${mcp.status === 'Active' ? 'bg-green-500 shadow-[0_0_5px_#22c55e]' : 'bg-muted'}`} />
-                                  <div>
-                                    <div className="font-bold text-xs">{mcp.name}</div>
-                                    <div className="text-[10px] text-muted-foreground">{mcp.type}</div>
-                                  </div>
+                            <div className="flex items-center justify-between p-3 rounded bg-black/20 border border-white/5">
+                              <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_5px_#3b82f6]" />
+                                <div className="flex-1">
+                                  <div className="font-bold text-xs">MCP Integration</div>
+                                  <div className="text-[10px] text-muted-foreground">Coming Soon</div>
+                                  <div className="text-[9px] text-blue-400 mt-0.5">Advanced tool orchestration</div>
                                 </div>
-                                <Button size="sm" variant="ghost" className="h-6 text-[10px]">CONFIG</Button>
                               </div>
-                            ))}
+                              <Button size="sm" variant="ghost" className="h-6 text-[10px] text-muted-foreground" disabled>CONFIG</Button>
+                            </div>
+                            <div className="text-xs text-muted-foreground text-center py-2">
+                                MCP integration coming in future update
+                              </div>
                             <Button variant="outline" className="w-full border-dashed border-border text-muted-foreground hover:text-primary hover:border-primary/50 h-8 text-xs">
                               + ADD MCP SERVER
                             </Button>
@@ -1162,7 +1163,8 @@ export default function Admin() {
                                   <div className="absolute left-10 right-10 top-[88px] h-0.5 bg-white/10 -z-0" />
                                   {/* Active Progress */}
                                   <div 
-                                    className="absolute left-10 h-0.5 bg-blue-500 transition-all duration-300 -z-0" 
+                                    className="absolute left-10 h-0.5 bg-blue-500 transition-all duration-300 -z-0"
+                                    title="Progress"
                                     style={{ width: `${((toolWizardStep - 1) / 2) * 80}%` }}
                                   />
                                 </div>
@@ -1726,12 +1728,20 @@ export default function Admin() {
                                       </div>
                                    </div>
                                    <div className="mt-auto p-4 border-t border-white/10">
-                                      <div className="text-[10px] text-muted-foreground mb-2">SDK VERSION</div>
-                                      <Select defaultValue="v2">
+                                      <div className="text-[10px] text-muted-foreground mb-2">SDK</div>
+                                      <Select defaultValue="openai">
                                          <SelectTrigger className="h-7 text-xs bg-black/40 border-white/10"><SelectValue/></SelectTrigger>
                                          <SelectContent className="bg-black/90 border-white/10">
-                                            <SelectItem value="v2">SparkPlug SDK v2.1 (Stable)</SelectItem>
-                                            <SelectItem value="v3">SparkPlug SDK v3.0 (Beta)</SelectItem>
+                                            <SelectItem value="openai">OpenAI SDK</SelectItem>
+                                            <SelectItem value="anthropic">Anthropic SDK (Claude)</SelectItem>
+                                            <SelectItem value="langchain">LangChain</SelectItem>
+                                            <SelectItem value="llamaindex">LlamaIndex</SelectItem>
+                                            <SelectItem value="huggingface">Hugging Face Transformers</SelectItem>
+                                            <SelectItem value="vercel-ai">Vercel AI SDK</SelectItem>
+                                            <SelectItem value="google-ai">Google AI SDK (Gemini)</SelectItem>
+                                            <SelectItem value="cohere">Cohere SDK</SelectItem>
+                                            <SelectItem value="tensorflow-js">TensorFlow.js</SelectItem>
+                                            <SelectItem value="pytorch">PyTorch</SelectItem>
                                          </SelectContent>
                                       </Select>
                                    </div>
@@ -1754,7 +1764,7 @@ export default function Admin() {
                                    </div>
                                    
                                    {/* Canvas Area */}
-                                   <div className="flex-1 flex items-center justify-center relative">
+                                   <div className="flex-1 flex items-center justify-center relative" title="Canvas Area">
                                       <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #333 1px, transparent 0)', backgroundSize: '20px 20px' }}></div>
                                       
                                       {/* Empty State / Placeholder */}
@@ -1864,7 +1874,7 @@ export default function Admin() {
                                  <Palette className="text-white opacity-50" />
                               </div>
                               <div className="font-mono text-xs text-center font-bold">Custom</div>
-                              <input type="color" className="absolute inset-0 opacity-0 cursor-pointer" />
+                              <input type="color" title="Custom Color Picker" className="absolute inset-0 opacity-0 cursor-pointer" />
                            </div>
                         </div>
                       </CardContent>

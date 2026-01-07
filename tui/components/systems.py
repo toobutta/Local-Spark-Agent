@@ -6,9 +6,7 @@ Provides DGX configuration, model configuration, tools grid, and MCP integration
 
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import (
-    Static, Button, TabbedContent, TabPane, Input, Switch, Label, Tree, ProgressBar
-)
+from textual.widgets import Static, Button, TabbedContent, TabPane, Input, Switch, Label
 from textual.containers import Horizontal, Vertical, Grid
 from components.memory_manager import MemoryManager
 from components.orchestrator import AgentOrchestrator
@@ -259,32 +257,66 @@ class ToolCard(Static):
 
 
 class ToolsGrid(Widget):
+    def __init__(self, api_client=None):
+        super().__init__()
+        self.api_client = api_client
+        self.tools_data = self._default_tools()
+
+    async def on_mount(self):
+        """Load tools data when component mounts"""
+        await self._render_tools()
+        await self.load_tools_data()
+
+    def _default_tools(self):
+        return [
+            {"name": "GitHub", "status": "off"},
+            {"name": "PostgreSQL", "status": "on"},
+            {"name": "Pinecone", "status": "on"},
+            {"name": "Brave Search", "status": "on"},
+            {"name": "Slack", "status": "off"},
+            {"name": "Vercel", "status": "off"},
+            {"name": "Sentry", "status": "off"},
+            {"name": "Hugging Face", "status": "off"},
+        ]
+
+    async def load_tools_data(self):
+        """Load real tools data from API"""
+        try:
+            # Placeholder for future API integration
+            self.tools_data = self._default_tools()
+            await self._render_tools()
+        except Exception as e:
+            if self.app:
+                self.app.notify(f"Failed to load tools data: {e}", severity="error")
+
+    async def _render_tools(self):
+        grid = self.query_one(".tools-grid", Grid)
+        for child in list(grid.children):
+            await child.remove()
+        await grid.mount(*[ToolCard(tool["name"], tool["status"]) for tool in self.tools_data])
+
     def compose(self) -> ComposeResult:
         yield Static("EXTERNAL TOOLS & APIs", classes="section-header")
         with Grid(classes="tools-grid"):
-            yield ToolCard("GitHub", "off")
-            yield ToolCard("PostgreSQL", "on")
-            yield ToolCard("Pinecone", "on")
-            yield ToolCard("Brave Search", "on")
-            yield ToolCard("Slack", "off")
-            yield ToolCard("Vercel", "off")
-            yield ToolCard("Sentry", "off")
-            yield ToolCard("Hugging Face", "off")
+            for tool in self.tools_data:
+                yield ToolCard(tool["name"], tool["status"])
         yield Button("+ ADD CUSTOM TOOL / API", variant="primary", id="add-tool-btn")
 
 
 class MCPIntegrationTree(Widget):
+    def __init__(self, api_client=None, **kwargs):
+        super().__init__(**kwargs)
+        self.api_client = api_client
+
     def compose(self) -> ComposeResult:
         yield Static("MCP INTEGRATIONS", classes="section-header")
-        tree = Tree("MCP Servers")
-        tree.root.expand()
-        tree.root.add("PostgreSQL Connector [CONFIG]", expand=True)
-        tree.root.add("Filesystem Watcher [CONFIG]")
-        tree.root.add("GitHub Repository [CONFIG]")
-        tree.root.add("Memory Service [CONFIG]")
-        tree.root.add("Google Drive [CONFIG]")
-        yield tree
-        yield Button("+ ADD MCP SERVER", variant="success")
+
+        # Show coming soon message
+        yield Static("MCP Integration", classes="mcp-title")
+        yield Static("Coming Soon", classes="mcp-status")
+        yield Static("Advanced tool orchestration and agent connectivity", classes="mcp-description")
+
+        yield Button("CONFIGURE MCP", variant="primary", disabled=True)
 
 
 class BuildPipelinePanel(Widget):
@@ -302,6 +334,10 @@ class BuildPipelinePanel(Widget):
 
 
 class SystemsContent(Widget):
+    def __init__(self, api_client=None, **kwargs):
+        super().__init__(**kwargs)
+        self.api_client = api_client
+
     def compose(self) -> ComposeResult:
         with TabbedContent():
             with TabPane("Infrastructure", id="infra-tab"):
@@ -309,9 +345,9 @@ class SystemsContent(Widget):
                     yield Static("SYSTEMS INFRASTRUCTURE", classes="section-header")
                     yield DGXConfigPanel()
                     yield ModelConfigPanel()
-                    yield ToolsGrid()
+                    yield ToolsGrid(api_client=self.api_client)
                     yield Horizontal(
-                        MCPIntegrationTree(classes="card"),
+                        MCPIntegrationTree(api_client=self.api_client, classes="card"),
                         BuildPipelinePanel(classes="card")
                     )
 

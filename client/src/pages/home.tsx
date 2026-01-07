@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { TerminalPrompt } from "@/components/terminal/TerminalPrompt";
 import { LegoLoader } from "@/components/terminal/LegoLoader";
@@ -21,7 +21,7 @@ import { Badge } from "@/components/ui/badge";
 interface LogEntry {
   id: string;
   type: "command" | "output" | "system" | "error" | "success";
-  content: string | React.ReactNode;
+  content: string | ReactNode;
   timestamp: Date;
 }
 
@@ -52,15 +52,15 @@ export default function Home() {
       content: (
         <div className="font-mono text-xs leading-tight">
           <span className="text-green-500">
-            ███████╗██████╗  █████╗ ██████╗ ██╗  ██╗██████╗ ██╗     ██╗   ██╗ ██████╗ <br/>
-            ██╔════╝██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝██╔══██╗██║     ██║   ██║██╔════╝ <br/>
-            ███████╗██████╔╝███████║██████╔╝█████╔╝ ██████╔╝██║     ██║   ██║██║  ███╗<br/>
-            ╚════██║██╔═══╝ ██╔══██║██╔══██╗██╔═██╗ ██╔═══╝ ██║     ██║   ██║██║   ██║<br/>
-            ███████║██║     ██║  ██║██║  ██║██║  ██╗██║     ███████╗╚██████╔╝╚██████╔╝<br/>
-            ╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ <br/>
+            ███████╗██╗     ███████╗███████╗████████╗██████╗ <br/>
+            ██╔════╝██║     ██╔════╝██╔════╝╚══██╔══╝██╔══██╗<br/>
+            █████╗  ██║     █████╗  █████╗     ██║   ██║  ██║<br/>
+            ██╔══╝  ██║     ██╔══╝  ██╔══╝     ██║   ██║  ██║<br/>
+            ██║     ███████╗███████╗███████╗   ██║   ██████╔╝<br/>
+            ╚═╝     ╚══════╝╚══════╝╚══════╝   ╚═╝   ╚═════╝ <br/>
           </span>
           <br/>
-          <span className="text-blue-400">SparkPlug DGX v1.0</span> <span className="text-muted-foreground">|</span> <span className="text-yellow-500">READY</span>
+          <span className="text-blue-400">FLEETD v1.0</span> <span className="text-muted-foreground">|</span> <span className="text-yellow-500">READY</span>
         </div>
       ),
       timestamp: new Date()
@@ -72,6 +72,7 @@ export default function Home() {
   const [thoughtLogs, setThoughtLogs] = useState<ThoughtLog[]>([]);
   const [selectedCoreView, setSelectedCoreView] = useState("core");
   const outputRef = useRef<HTMLDivElement>(null);
+  const wsRef = useRef<WebSocket | null>(null);
   const [_, setLocation] = useLocation();
 
   // Auto-scroll to bottom
@@ -81,7 +82,48 @@ export default function Home() {
     }
   }, [history]);
 
-  const addLog = (type: LogEntry["type"], content: string | React.ReactNode) => {
+  // WebSocket connection for real-time updates
+  useEffect(() => {
+    const connectWebSocket = () => {
+      // Construct WebSocket URL dynamically from current window location
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${protocol}//${window.location.host}/ws`;
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        console.log('WebSocket connected');
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          handleWebSocketMessage(message);
+        } catch (error) {
+          console.error('Failed to parse WebSocket message:', error);
+        }
+      };
+
+      ws.onclose = () => {
+        console.log('WebSocket disconnected, reconnecting...');
+        setTimeout(connectWebSocket, 3000);
+      };
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+    };
+
+    connectWebSocket();
+
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
+  }, []);
+
+  const addLog = (type: LogEntry["type"], content: string | ReactNode) => {
     setHistory(prev => [...prev, {
       id: Math.random().toString(36).substring(7),
       type,
@@ -100,16 +142,59 @@ export default function Home() {
     }]);
   };
 
+  const handleWebSocketMessage = (message: any) => {
+    const { type, data } = message;
+
+    switch (type) {
+      case 'agent_thought':
+        addThought(data.agent, data.thought, data.file);
+        break;
+
+      case 'agent_created':
+        setActiveAgents(prev => [...prev, {
+          id: data.id,
+          name: data.name,
+          status: data.status,
+          role: data.role
+        }]);
+        addLog("success", `Agent ${data.name} deployed successfully`);
+        break;
+
+      case 'agent_updated':
+        setActiveAgents(prev => prev.map(agent =>
+          agent.id === data.id ? { ...agent, ...data } : agent
+        ));
+        break;
+
+      case 'agent_deleted':
+        setActiveAgents(prev => prev.filter(agent => agent.id !== data.id));
+        break;
+
+      case 'command_executed':
+        // Command results are already handled in handleCommand
+        break;
+
+      case 'command_error':
+        addLog("error", `Command error: ${data.error}`);
+        break;
+
+      case 'build_progress':
+        // Could add build progress visualization here
+        break;
+
+      default:
+        console.log('Unhandled WebSocket message:', type, data);
+    }
+  };
+
   const handleCommand = async (cmd: string) => {
     const command = cmd.trim().toLowerCase();
-    addLog("command", cmd);
     setIsProcessing(true);
-
-    // Simulate processing delay with spinning sphere
-    await new Promise(resolve => setTimeout(resolve, 600));
+    addLog("command", cmd);
 
     try {
-      if (command === "help") {
+      if (command === "help" || command === "/help") {
+        addLog("system", "AVAILABLE COMMANDS:");
         addLog("output", (
           <div className="font-mono text-sm space-y-2">
             <div className="text-primary font-bold border-b border-primary/30 pb-1 mb-2">AVAILABLE COMMANDS</div>
@@ -126,6 +211,7 @@ export default function Home() {
               <span className="text-yellow-500">browser</span>     <span className="text-muted-foreground">Open dev preview</span>
               <span className="text-yellow-500">ollama</span>      <span className="text-muted-foreground">Manage local models</span>
               <span className="text-yellow-500">settings</span>   <span className="text-muted-foreground">Open config panel</span>
+              <span className="text-yellow-500">claude</span>     <span className="text-muted-foreground">Claude bridge</span>
               <span className="text-yellow-500">cursor</span>     <span className="text-muted-foreground">Factory CLI to Cursor bridge</span>
               <span className="text-yellow-500">clear</span>      <span className="text-muted-foreground">Clear terminal output</span>
             </div>
@@ -263,18 +349,14 @@ export default function Home() {
         addLog("output", (
           <div className="space-y-2 font-mono text-xs">
              <div className="text-purple-400 font-bold border-b border-purple-500/30 pb-1">MODEL CONTEXT PROTOCOL</div>
-             <div className="grid grid-cols-2 gap-2">
-                {[
-                  { id: "github", status: "offline", latency: "-" },
-                  { id: "postgres", status: "online", latency: "12ms" },
-                  { id: "filesystem", status: "online", latency: "1ms" },
-                  { id: "brave-search", status: "online", latency: "145ms" },
-                ].map(mcp => (
-                  <div key={mcp.id} className="bg-white/5 p-2 rounded border border-white/5 flex justify-between items-center">
-                    <span className="text-white">{mcp.id}</span>
-                    <span className={mcp.status === 'online' ? "text-green-400" : "text-red-400"}>{mcp.status.toUpperCase()}</span>
-                  </div>
-                ))}
+             <div className="bg-white/5 p-3 rounded border border-white/5">
+               <div className="flex items-center justify-between">
+                 <span className="text-white">MCP Integration</span>
+                 <span className="text-blue-400">COMING SOON</span>
+               </div>
+               <div className="text-[10px] text-muted-foreground mt-1">
+                 Advanced tool orchestration and agent connectivity
+               </div>
              </div>
           </div>
         ));
@@ -415,7 +497,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-primary">
               <Terminal size={18} />
-              <h1 className="font-display font-bold tracking-widest text-lg">SparkPlug</h1>
+              <h1 className="font-display font-bold tracking-widest text-lg">FLEETD</h1>
             </div>
             
             <div className="h-8 w-px bg-border/30 mx-2 hidden md:block" />
@@ -598,7 +680,7 @@ export default function Home() {
             <h2 className="text-xs font-bold text-muted-foreground flex items-center gap-2">
               <Cpu size={14} /> 
               {selectedCoreView === 'core' && 'SYSTEM CORE'}
-              {selectedCoreView === 'spark' && 'SPARKPLUG (DGX)'}
+              {selectedCoreView === 'spark' && 'SPARKPLUG CLI'}
               {selectedCoreView === 'ml' && 'AI/ML WORKLOADS'}
             </h2>
             <Select value={selectedCoreView} onValueChange={setSelectedCoreView}>
@@ -607,7 +689,7 @@ export default function Home() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="core">System Core</SelectItem>
-                <SelectItem value="spark">SparkPlug (DGX)</SelectItem>
+                <SelectItem value="spark">SparkPlug CLI (DGX Sync)</SelectItem>
                 <SelectItem value="ml">AI/ML Work</SelectItem>
                 <SelectItem value="custom">Custom View</SelectItem>
               </SelectContent>
@@ -641,7 +723,7 @@ export default function Home() {
                 >
                   <div className="flex items-center justify-between border-b border-green-500/20 pb-2 mb-2">
                      <span className="text-green-400 font-bold text-xs flex items-center gap-2">
-                       <Zap size={12} /> NVIDIA DGX SPARK
+                       <Terminal size={12} /> SPARKPLUG CLI CONNECTION
                      </span>
                      <Badge variant="outline" className="text-[10px] h-4 border-green-500/40 text-green-400 bg-green-500/5">ONLINE</Badge>
                   </div>
@@ -676,13 +758,13 @@ export default function Home() {
                   <Dialog>
                     <DialogTrigger asChild>
                       <button className="w-full mt-2 bg-green-500/10 hover:bg-green-500/20 text-green-400 border border-green-500/30 rounded p-2 text-[10px] font-bold flex items-center justify-center gap-2 transition-colors">
-                        <Terminal size={12} /> OPEN DGX COMMANDER
+                        <Terminal size={12} /> LAUNCH SPARKPLUG CLI
                       </button>
                     </DialogTrigger>
                     <DialogContent className="bg-black/95 border-green-500/30 text-green-400 max-w-4xl h-[600px] flex flex-col p-0 gap-0 font-mono backdrop-blur-xl">
                       <DialogHeader className="px-4 py-2 border-b border-green-500/20 bg-green-500/5 flex flex-row items-center justify-between">
                         <DialogTitle className="text-sm font-bold flex items-center gap-2">
-                          <Zap size={16} /> DGX SPARK H200 :: SSH://192.168.1.108
+                          <Zap size={16} /> DGX SPARK H200 // <Terminal size={16} /> SPARKPLUG CLI :: SSH://192.168.1.108
                         </DialogTitle>
                         <div className="text-[10px] bg-green-500/20 px-2 py-0.5 rounded text-green-300">CONNECTED</div>
                       </DialogHeader>

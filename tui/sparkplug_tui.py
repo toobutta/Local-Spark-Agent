@@ -6,16 +6,19 @@ Enhanced with keyboard navigation, tab switching, and integrated services.
 
 from textual.app import App, ComposeResult
 from textual.containers import Container
-from textual.widgets import Static, Input, TabbedContent
+from textual.widgets import Input, TabbedContent
 from textual.binding import Binding
-from textual import events
-import asyncio
 
 from components.header import HeaderWidget
 from components.sidebar import Sidebar
 from components.systems import SystemsContent
 from components.footer import FooterWidget
-from components.command_palette import CommandPalette
+from components.command_bar import CommandBar
+
+try:
+    from api_client import SparkPlugAPI
+except ImportError:
+    from tui.api_client import SparkPlugAPI
 
 # Import services with fallback
 try:
@@ -26,7 +29,6 @@ try:
     HAS_SERVICES = True
 except ImportError:
     HAS_SERVICES = False
-
 
 class SparkPlugTUI(App):
     """SparkPlug Advanced Agent Platform TUI."""
@@ -83,6 +85,10 @@ class SparkPlugTUI(App):
     
     def __init__(self):
         super().__init__()
+        try:
+            self.api_client: SparkPlugAPI | None = SparkPlugAPI()
+        except Exception:
+            self.api_client = None
         self._config_store = None
         self._event_bus = None
         self._workspace_manager = None
@@ -99,17 +105,22 @@ class SparkPlugTUI(App):
             self._plugin_loader = get_plugin_loader()
     
     def compose(self) -> ComposeResult:
-        yield Container(
-            HeaderWidget(),
-            Sidebar(),
-            SystemsContent(),
-            CommandPalette(id="command-palette"),
-            FooterWidget(),
-            id="app-grid"
-        )
+        with Container(id="app-grid"):
+            yield HeaderWidget()
+            yield Sidebar()
+            yield SystemsContent(api_client=self.api_client)
+            yield CommandBar(api_client=self.api_client, id="command-bar")
+            yield FooterWidget()
 
     async def on_mount(self):
         """Initialize services and plugins when app is mounted."""
+        if self.api_client:
+            try:
+                await self.api_client.connect_websocket()
+                self.notify("Connected to SparkPlug backend", severity="success")
+            except Exception as e:
+                self.notify(f"Failed to connect to backend: {e}", severity="error")
+
         if HAS_SERVICES:
             # Set up plugin loader
             if self._plugin_loader:
@@ -133,6 +144,11 @@ class SparkPlugTUI(App):
                     data={"app": "sparkplug"},
                     source="app"
                 )
+
+    async def on_unmount(self) -> None:
+        """Clean up API client when app closes."""
+        if self.api_client:
+            await self.api_client.close()
 
     # ==================== Tab Navigation ====================
     
@@ -369,6 +385,28 @@ Code Assistant:
         self.action_switch_tab('code-tab')
         self.notify("Use Git Status button in Code tab", title="Git")
 
+
+    async def on_command_bar_command_submitted(self, message: CommandBar.CommandSubmitted) -> None:
+        """Handle command submission"""
+        command = message.command
+        self.notify(f"Executing: {command}", severity="information")
+
+        # The command bar handles execution, but we can add additional UI feedback here
+        pass
+
+    async def on_command_bar_command_result(self, message: CommandBar.CommandResult) -> None:
+        """Handle command results"""
+        result = message.result
+
+        if result.get("success"):
+            output = result.get("output", "")
+            if output:
+                self.notify(f"Command successful: {output[:50]}...", severity="success")
+            else:
+                self.notify("Command completed successfully", severity="success")
+        else:
+            error = result.get("error", "Unknown error")
+            self.notify(f"Command failed: {error}", severity="error")
 
 if __name__ == "__main__":
     app = SparkPlugTUI()

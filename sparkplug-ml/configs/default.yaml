@@ -1,0 +1,71 @@
+# Default configuration for SparkPlug ML Pipeline
+
+# Pipeline configuration
+pipeline:
+  name: "default_ml_pipeline"
+  version: "1.0.0"
+  description: "Default machine learning pipeline configuration"
+
+  # Data configuration
+  data_source: "local"
+  data_format: "csv"
+  preprocessing_steps:
+    - "normalize"
+    - "encode_categorical"
+    - "handle_missing"
+
+  # Model configuration
+  model_type: "neural_network"
+  model_config:
+    layers: [64, 32, 16, 1]
+    activation: "relu"
+    dropout: 0.2
+
+  # Training configuration
+  training_config:
+    epochs: 100
+    batch_size: 32
+    learning_rate: 0.001
+    optimizer: "adam"
+    loss_function: "mse"
+    validation_split: 0.2
+
+  # Deployment configuration
+  deployment_config:
+    target: "local"
+    format: "pickle"
+    monitoring_enabled: true
+
+  # Monitoring configuration
+  monitoring_config:
+    enabled: true
+    metrics:
+      - "accuracy"
+      - "precision"
+      - "recall"
+      - "f1_score"
+      - "loss"
+    alerting:
+      enabled: false
+      thresholds:
+        accuracy_min: 0.8
+
+# Environment configuration
+environment:
+  database_url: "sqlite:///ml_pipeline.db"
+  cache_dir: "./cache"
+  output_dir: "./outputs"
+  log_level: "INFO"
+  max_concurrent_jobs: 2
+
+# Version control configuration
+versioning:
+  backend: "file"
+  base_path: "./data/versioning"
+  auto_version: true
+
+# Security configuration
+security:
+  encryption_enabled: true
+  key_file: ".sparkplug_key"
+  access_control_enabled: false
