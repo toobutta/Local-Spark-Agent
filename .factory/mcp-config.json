@@ -1,0 +1,6 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/mcp-config.json",
+  "mcpServers": {},
+  "_comment": "MCP servers will be configured here when needed. See: https://modelcontextprotocol.io"
+}
+
